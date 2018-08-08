@@ -475,6 +475,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $discount += abs((double)$discountData->getDiscountAmount());
         }
 
+        if (Mage::helper('buckaroo3extended')->isEnterprise() && abs((double)$discountData->getCustomerBalanceAmount()) > 0) {
+            $discount += abs((double)$discountData->getCustomerBalanceAmount());
+        }
+
         $discount = round($discount,2);
 
         //add order Info

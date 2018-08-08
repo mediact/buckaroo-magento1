@@ -920,6 +920,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
         if (Mage::helper('buckaroo3extended')->isEnterprise()) {
             $discount += (double)$discountData->getGiftCardsAmount();
+            $discount += (double)$discountData->getCustomerBalanceAmount();
+
         }
 
         if ($discount <= 0) {
