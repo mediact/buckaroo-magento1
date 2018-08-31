@@ -3708,7 +3708,7 @@
                 </buckaroo3extended_paypal>
                 <buckaroo3extended_payconiq translate="label">
                     <label>Payconiq</label>
-                    <sort_order>9000</sort_order>
+                    <sort_order>9500</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -3756,7 +3756,7 @@
                             <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>44</sort_order>
+                            <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3765,7 +3765,7 @@
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>45</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3774,7 +3774,7 @@
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>46</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3787,7 +3787,7 @@
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>47</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3796,81 +3796,12 @@
                                 <show_advanced>1</show_advanced>
                             </depends>
                         </payment_fee_label>
-                        <sellers_protection translate="label comment">
-                            <label>Seller protection enabled</label>
-                            <comment>WARNING: Payconiq Seller Protection requires additional configuration. Please consult Buckaroo for more information.</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>53</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                            </depends>
-                        </sellers_protection>
-                        <sellers_protection_eligible translate="label comment">
-                            <label>Seller protection eligible</label>
-                            <comment>Seller protection for unauthorized payment and item not received</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>54</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <sellers_protection>1</sellers_protection>
-                            </depends>
-                        </sellers_protection_eligible>
-                        <sellers_protection_itemnotreceived_eligible translate="label comment">
-                            <label>Seller protection item not received</label>
-                            <comment>Seller protection for item not received</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>55</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <sellers_protection>1</sellers_protection>
-                            </depends>
-                        </sellers_protection_itemnotreceived_eligible>
-                        <sellers_protection_unauthorizedpayment_eligible translate="label comment">
-                            <label>Seller protection unauthorized payment</label>
-                            <comment>Seller protection for unauthorized payment</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>56</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <sellers_protection>1</sellers_protection>
-                            </depends>
-                        </sellers_protection_unauthorizedpayment_eligible>
-                        <sellers_protection_ineligible translate="label comment">
-                            <label>Seller protection ineligible</label>
-                            <comment>Merchant is not protected by Seller Protection</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>57</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <depends>
-                                <show_advanced>1</show_advanced>
-                                <sellers_protection>1</sellers_protection>
-                            </depends>
-                        </sellers_protection_ineligible>
                         <max_amount translate="label comment tooltip">
                             <label>Max order amount (in Base Currency)</label>
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>58</sort_order>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3883,7 +3814,7 @@
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>59</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3896,7 +3827,7 @@
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>60</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3910,7 +3841,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>61</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3926,7 +3857,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesFailed</source_model>
-                            <sort_order>62</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3942,7 +3873,7 @@
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>buckaroo3extended/sources_payconiq_availableCurrencies</source_model>
-                            <sort_order>80</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3955,7 +3886,7 @@
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <source_model>buckaroo3extended/sources_allspecificcountries</source_model>
-                            <sort_order>90</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3968,7 +3899,7 @@
                             <comment>Only available when set to 'specific countries'.</comment>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>adminhtml/system_config_source_country</source_model>
-                            <sort_order>100</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -3983,7 +3914,7 @@
                             <tooltip>Magento developer client restrictions.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

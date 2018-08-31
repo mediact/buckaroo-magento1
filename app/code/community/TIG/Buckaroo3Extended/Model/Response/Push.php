@@ -701,20 +701,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         //sort the array
         $sortableArray = $this->buckarooSort($origArray);
 
-        //check if encoding is used for the received postData
-        $doUrlDecode = $this->_checkDoubleEncoding($sortableArray['brq_timestamp']);
-        $this->_debugEmail .= "URL Encoding = " . var_export($doUrlDecode, true) . "\n";
-
         //turn into string and add the secret key to the end
         $signatureString = '';
         foreach($sortableArray as $key => $value) {
-            if ('brq_SERVICE_masterpass_CustomerPhoneNumber' !== $key
-                && 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber' !== $key
-            ) {
-                if ($doUrlDecode) {
-                    $value = urldecode($value);
-                }
-            }
+            $value = $this->decodePuhValue($key, $value);
             $signatureString .= $key . '=' . $value;
         }
         $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId());
@@ -727,6 +717,35 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $this->_debugEmail .= "\nSignature: {$signature}\n";
 
         return $signature;
+    }
+
+    /**
+     * @param $brqKey
+     * @param $brqValue
+     *
+     * @return string
+     */
+    private function decodePuhValue($brqKey, $brqValue)
+    {
+        //Only pushes need to be decoded, not responses
+        if (get_class($this) == 'TIG_Buckaroo3Extended_Model_Response_Return') {
+            return $brqValue;
+        }
+
+        switch ($brqKey) {
+            case 'brq_SERVICE_masterpass_CustomerPhoneNumber':
+            case 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber':
+            case 'brq_InvoiceDate':
+            case 'brq_DueDate':
+            case 'brq_PreviousStepDateTime':
+            case 'brq_EventDateTime':
+                $decodedValue = $brqValue;
+                break;
+            default:
+                $decodedValue = urldecode($brqValue);
+        }
+
+        return $decodedValue;
     }
 
     /**

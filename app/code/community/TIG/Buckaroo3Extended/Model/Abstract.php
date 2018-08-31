@@ -402,8 +402,6 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowed_currencies', $this->getStoreId());
                 break;
             case 'buckaroo3extended_payconiq':
-            case 'buckaroopayconiq':
-            case 'buckaroo2012payconiq':
                 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_payconiq_paymentMethod');
                 $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_payconiq/allowed_currencies', $this->getStoreId());
                 break;

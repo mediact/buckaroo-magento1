@@ -1321,13 +1321,6 @@
                         <method>buckaroo3extended_push_custom_processing_after</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
                 </observers>
-                <observers>
-                    <buckaroo3extended_paymentmethod_observer_payconiq>
-                        <type>Singleton</type>
-                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
-                        <method>buckaroo3extended_push_custom_processing_after</method>
-                    </buckaroo3extended_paymentmethod_observer_payconiq>
-                </observers>
             </buckaroo3extended_push_custom_processing_after>
             <buckaroo3extended_response_custom_processing>
                 <observers>
@@ -1529,7 +1522,7 @@
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_payconiq_paymentMethod</model>
                 <title>Payconiq</title>
-                <sort_order>90</sort_order>
+                <sort_order>95</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_payconiq>
             <buckaroo3extended_transfer>
@@ -1747,14 +1740,6 @@
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
             </buckaroopaypal>
-            <buckaroo2012payconiq>
-                <active>0</active>
-                <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
-            </buckaroo2012payconiq>
-            <buckaroopayconiq>
-                <active>0</active>
-                <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
-            </buckaroopayconiq>
             <buckaroo2012payperemail>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
@@ -1942,15 +1927,10 @@
                 <specificcountry></specificcountry>
                 <order_status_success></order_status_success>
                 <order_status_failed></order_status_failed>
-                <sort_order>90</sort_order>
+                <sort_order>95</sort_order>
                 <limit_by_ip>0</limit_by_ip>
                 <allowed_currencies>EUR</allowed_currencies>
                 <payment_fee_label>Fee</payment_fee_label>
-                <sellers_protection>1</sellers_protection>
-                <sellers_protection_eligible>processing</sellers_protection_eligible>
-                <sellers_protection_itemnotreceived_eligible>processing</sellers_protection_itemnotreceived_eligible>
-                <sellers_protection_unauthorizedpayment_eligible>processing</sellers_protection_unauthorizedpayment_eligible>
-                <sellers_protection_ineligible>processing</sellers_protection_ineligible>
                 <order_email>1</order_email>
             </buckaroo3extended_payconiq>
 
