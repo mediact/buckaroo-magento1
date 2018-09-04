@@ -29,42 +29,17 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_Response_Payconiq extends TIG_Buckaroo3Extended_Model_Response_Abstract
 {
-    public $allowedCurrencies = array(
-        'AUD',
-        'BRL',
-        'CAD',
-        'CHF',
-        'DKK',
-        'EUR',
-        'GBP',
-        'HKD',
-        'HUF',
-        'ILS',
-        'JPY',
-        'MYR',
-        'NOK',
-        'NZD',
-        'PHP',
-        'PLN',
-        'SEK',
-        'SGD',
-        'THB',
-        'TRY',
-        'TWD',
-        'USD',
-    );
-
-    protected $_code = 'buckaroo3extended_payconiq';
-
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_payconiq_checkout_form';
-
     /**
      * {@inheritdoc}
      */
-    public function getOrderPlaceRedirectUrl()
+    public function processResponse()
     {
-        return Mage::getUrl('buckaroo3extended/payconiq/checkout', array('_secure' => true, 'method' => $this->_code));
+        if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
+            $this->_response->RequiredAction->Type = false;
+        }
+
+        return parent::processResponse();
     }
 }

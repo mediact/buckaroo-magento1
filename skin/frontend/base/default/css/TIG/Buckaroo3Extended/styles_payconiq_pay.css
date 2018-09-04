@@ -1,4 +1,3 @@
-<?php
 /**
  *
  *          ..::..
@@ -29,42 +28,30 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
-{
-    public $allowedCurrencies = array(
-        'AUD',
-        'BRL',
-        'CAD',
-        'CHF',
-        'DKK',
-        'EUR',
-        'GBP',
-        'HKD',
-        'HUF',
-        'ILS',
-        'JPY',
-        'MYR',
-        'NOK',
-        'NZD',
-        'PHP',
-        'PLN',
-        'SEK',
-        'SGD',
-        'THB',
-        'TRY',
-        'TWD',
-        'USD',
-    );
 
-    protected $_code = 'buckaroo3extended_payconiq';
+#tig_buckaroo_payconiq_loader {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 100;
+    background-color: #ffffff;
+    opacity: 0.5;
+}
 
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_payconiq_checkout_form';
+#tig_buckaroo_payconiq_container {
+    position: relative;
+    text-align: center;
+    z-index: 150;
+}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderPlaceRedirectUrl()
-    {
-        return Mage::getUrl('buckaroo3extended/payconiq/checkout', array('_secure' => true, 'method' => $this->_code));
-    }
+#tig_buckaroo_payconiq_items {
+    display: inline-block;
+    text-align: right;
+}
+
+#tig_buckaroo_payconiq_qr img {
+    display: inline-block;
 }

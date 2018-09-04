@@ -412,6 +412,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                 if (isset($value['groupId']) && !empty($value['groupId'])) {
                     $requestParameter->GroupID = $value['groupId'];
                 }
+
+                if (isset($value['key']) && !empty($value['key'])) {
+                    $requestParameter->Key = $value['key'];
+                }
             } else {
                 $requestParameter->_ = $value;
             }
@@ -775,6 +779,7 @@ class Service
 
 /**
  * @property int|string GroupID
+ * @property int|string Key
  */
 class RequestParameter
 {

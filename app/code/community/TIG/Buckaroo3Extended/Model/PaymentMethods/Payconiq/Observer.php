@@ -104,6 +104,73 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_Observer extends TIG_B
      *
      * @return $this
      */
+    public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+
+        if ($order->isCanceled()) {
+            return $this;
+        }
+
+        /** @var TIG_Buckaroo3Extended_Model_Response_Abstract $responseModel */
+        $responseModel = $observer->getModel();
+
+        //Order can't be paid when it's been canceled.
+        if (get_class($responseModel) == 'TIG_Buckaroo3Extended_Model_Response_CancelAuthorize') {
+            return $this;
+        }
+
+        $responseModel->sendDebugEmail();
+
+        $returnUrl = Mage::getUrl('buckaroo3extended/payconiq/pay', array('_secure' => true));
+        Mage::app()->getFrontController()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        exit;
+    }
+
+    public function buckaroo3extended_cancelauthorize_request_addservices(Varien_Event_Observer $observer)
+    {
+        if($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request = $observer->getRequest();
+        $vars = $request->getVars();
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = $observer->getOrder();
+
+        $array = array(
+            'Transaction' => array(
+                'value' => '',
+                'key' => $order->getTransactionKey()
+            )
+        );
+
+        $vars['request_type'] = 'CancelTransaction';
+        $vars['services'] = array();
+
+        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {

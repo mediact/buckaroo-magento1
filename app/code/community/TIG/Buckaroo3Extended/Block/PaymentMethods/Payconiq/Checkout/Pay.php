@@ -29,42 +29,40 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay extends Mage_Core_Block_Template
 {
-    public $allowedCurrencies = array(
-        'AUD',
-        'BRL',
-        'CAD',
-        'CHF',
-        'DKK',
-        'EUR',
-        'GBP',
-        'HKD',
-        'HUF',
-        'ILS',
-        'JPY',
-        'MYR',
-        'NOK',
-        'NZD',
-        'PHP',
-        'PLN',
-        'SEK',
-        'SGD',
-        'THB',
-        'TRY',
-        'TWD',
-        'USD',
-    );
+    /** @var string */
+    private $transactionKey;
 
-    protected $_code = 'buckaroo3extended_payconiq';
+    public function _construct()
+    {
+        parent::_construct();
 
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_payconiq_checkout_form';
+        $session = Mage::getSingleton('checkout/session');
+        $orderId = $session->getLastRealOrderId();
+
+        if (empty($orderId)) {
+            exit; //TODO; quote restore and redirect to checkout
+        }
+
+        /** @var Mage_Sales_Model_Order $order */
+        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $this->transactionKey = $order->getTransactionKey();
+    }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getOrderPlaceRedirectUrl()
+    public function getTransactionKey()
     {
-        return Mage::getUrl('buckaroo3extended/payconiq/checkout', array('_secure' => true, 'method' => $this->_code));
+        return $this->transactionKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCancelUrl()
+    {
+        return $this->getUrl('buckaroo3extended/payconiq/cancel', array('_secure'=>true));
     }
 }
