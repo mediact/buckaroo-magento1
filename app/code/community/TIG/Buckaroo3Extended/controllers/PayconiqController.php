@@ -62,35 +62,16 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
             return;
         }
 
-//        $order = $this->getOrder();
-//        $payment = $order->getPayment();
-//
-//        /** @var TIG_Buckaroo3Extended_Model_Request_CancelAuthorize $cancelAuthorizeRequest */
-//        $cancelAuthorizeRequest = Mage::getModel(
-//            'buckaroo3extended/request_cancelAuthorize',
-//            array(
-//                'payment' => $payment
-//            )
-//        );
-//
-//        try {
-//            $cancelAuthorizeRequest->sendRequest();
-//        } catch (Exception $e) {
-//            Mage::helper('buckaroo3extended')->logException($e);
-//            Mage::throwException($e->getMessage());
-//        }
-
+        $this->sendCancelRequest();
         $this->updateStatusHistory();
         $this->restoreQuote();
         $this->addErrorMessage();
         $this->cancelOrder();
 
         $storeId = $this->getOrder()->getStoreId();
-        $urlConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $storeId);
-        $url = Mage::getUrl($urlConfig, array('_secure' => true));
-
-        header('Location:' . $url);
-        exit;
+        $url = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $storeId);
+        $this->_redirect($url);
+        return;
     }
 
     /**
@@ -126,11 +107,29 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     /**
      * @throws Mage_Core_Exception
      */
+    private function sendCancelRequest()
+    {
+        $payment = $this->getOrder()->getPayment();
+
+        /** @var TIG_Buckaroo3Extended_Model_Request_CancelAuthorize $cancelRequest */
+        $cancelRequest = Mage::getModel('buckaroo3extended/request_cancelAuthorize', array('payment' => $payment));
+
+        try {
+            $cancelRequest->sendRequest();
+        } catch (Exception $e) {
+            Mage::helper('buckaroo3extended')->logException($e);
+            Mage::throwException($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws Mage_Core_Exception
+     */
     private function updateStatusHistory()
     {
         $order = $this->getOrder();
-        $historyComment = Mage::helper('buckaroo3extended')->__('The payment request has been denied by Buckaroo.');
-        $order->addStatusHistoryComment($historyComment);
+        $comment = Mage::helper('buckaroo3extended')->__('Your payment was unsuccessful, cancelled by consumer.');
+        $order->addStatusHistoryComment($comment);
 
         try {
             $order->save();
@@ -213,8 +212,6 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
             return;
         }
 
-        $giftCard->revert($card['authorized'])
-            ->unsOrder()
-            ->save();
+        $giftCard->revert($card['authorized'])->unsOrder()->save();
     }
 }

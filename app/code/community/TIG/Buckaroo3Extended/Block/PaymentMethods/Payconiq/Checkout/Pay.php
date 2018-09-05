@@ -41,10 +41,6 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay extends M
         $session = Mage::getSingleton('checkout/session');
         $orderId = $session->getLastRealOrderId();
 
-        if (empty($orderId)) {
-            exit; //TODO; quote restore and redirect to checkout
-        }
-
         /** @var Mage_Sales_Model_Order $order */
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
         $this->transactionKey = $order->getTransactionKey();

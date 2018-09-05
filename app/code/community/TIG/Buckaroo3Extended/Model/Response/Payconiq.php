@@ -37,7 +37,10 @@ class TIG_Buckaroo3Extended_Model_Response_Payconiq extends TIG_Buckaroo3Extende
     public function processResponse()
     {
         if (is_object($this->_response) && isset($this->_response->RequiredAction)) {
-            $this->_response->RequiredAction->Type = false;
+            $payUrl =  Mage::getUrl('buckaroo3extended/payconiq/pay', array('_secure' => true));
+
+            $this->_response->RequiredAction->Type = 'Redirect';
+            $this->_response->RequiredAction->RedirectURL = $payUrl;
         }
 
         return parent::processResponse();

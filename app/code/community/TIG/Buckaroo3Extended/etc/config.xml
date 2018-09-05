@@ -1339,11 +1339,6 @@
                         <class>buckaroo3extended/paymentMethods_pospayment_observer</class>
                         <method>buckaroo3extended_response_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_pospayment>
-                    <buckaroo3extended_paymentmethod_observer_payconiq>
-                        <type>Singleton</type>
-                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
-                        <method>buckaroo3extended_response_custom_processing</method>
-                    </buckaroo3extended_paymentmethod_observer_payconiq>
                 </observers>
             </buckaroo3extended_response_custom_processing>
             <buckaroo3extended_push_custom_save_invoice_after>

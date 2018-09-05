@@ -50,7 +50,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_Observer extends TIG_B
 
         $array = array(
             $this->_method => array(
-                'action' => 'Pay'
+                'action'  => 'Pay',
+                'version' => 1,
             ),
         );
 
@@ -99,40 +100,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_Observer extends TIG_B
         return $this;
     }
 
-    /**
-     * @param Varien_Event_Observer $observer
-     *
-     * @return $this
-     */
-    public function buckaroo3extended_response_custom_processing(Varien_Event_Observer $observer)
-    {
-        if ($this->_isChosenMethod($observer) === false) {
-            return $this;
-        }
-
-        /** @var Mage_Sales_Model_Order $order */
-        $order = $observer->getOrder();
-
-        if ($order->isCanceled()) {
-            return $this;
-        }
-
-        /** @var TIG_Buckaroo3Extended_Model_Response_Abstract $responseModel */
-        $responseModel = $observer->getModel();
-
-        //Order can't be paid when it's been canceled.
-        if (get_class($responseModel) == 'TIG_Buckaroo3Extended_Model_Response_CancelAuthorize') {
-            return $this;
-        }
-
-        $responseModel->sendDebugEmail();
-
-        $returnUrl = Mage::getUrl('buckaroo3extended/payconiq/pay', array('_secure' => true));
-        Mage::app()->getFrontController()->getResponse()->setRedirect($returnUrl)->sendResponse();
-
-        exit;
-    }
-
     public function buckaroo3extended_cancelauthorize_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -145,21 +112,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_Observer extends TIG_B
         /** @var Mage_Sales_Model_Order $order */
         $order = $observer->getOrder();
 
-        $array = array(
-            'Transaction' => array(
-                'value' => '',
-                'key' => $order->getTransactionKey()
-            )
-        );
-
         $vars['request_type'] = 'CancelTransaction';
-        $vars['services'] = array();
-
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
-        } else {
-            $vars['customVars'][$this->_method] = $array;
-        }
+        $vars['TransactionKey'] = $order->getTransactionKey();
 
         $request->setVars($vars);
 
@@ -201,7 +155,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_Observer extends TIG_B
         $vars = $refundRequest->getVars();
 
         $array = array(
-            'action' => 'Refund',
+            'action'  => 'Refund',
+            'version' => 1,
         );
 
         if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
