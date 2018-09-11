@@ -7389,7 +7389,7 @@
                     </fields>
                 </buckaroo3extended_capayablepostpay>
                 <buckaroo3extended_capayableinstallments translate="label">
-                    <label>Capayable: Gespreid Betalen</label>
+                    <label>Capayable: In3</label>
                     <sort_order>20400</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -7424,6 +7424,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
+                        <version translate="label comment">
+                            <label>In3 version</label>
+                            <comment>The In3 version can be found in your Capayable contract.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_capayable_installmentsVersion</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </version>
                         <sort_order translate="label comment">
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
