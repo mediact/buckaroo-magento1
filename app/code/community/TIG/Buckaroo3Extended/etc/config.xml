@@ -2297,7 +2297,8 @@
             <buckaroo3extended_capayableinstallments>
                 <active>0</active>
                 <mode>0</mode>
-                <title>Capayable: Gespreid Betalen</title>
+                <title>In3</title>
+                <version>0</version>
                 <sort_order>240</sort_order>
                 <order_email>1</order_email>
                 <payment_fee_label>Fee</payment_fee_label>
