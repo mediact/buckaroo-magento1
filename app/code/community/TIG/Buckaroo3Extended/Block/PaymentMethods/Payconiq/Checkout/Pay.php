@@ -61,4 +61,18 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay extends M
     {
         return $this->getUrl('buckaroo3extended/payconiq/cancel', array('_secure'=>true));
     }
+
+    /**
+     * @return string
+     */
+    public function getCancelMessage()
+    {
+        $helper = Mage::helper('buckaroo3extended');
+        $message = 'You have canceled the order. '
+            . 'We kindly ask you to not complete the payment in the Payconiq app - Your order will not be processed. '
+            . 'Place the order again if you still want to make the payment.';
+        $translatedMessage = $helper->__($message);
+
+        return $translatedMessage;
+    }
 }

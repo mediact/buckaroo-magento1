@@ -47,11 +47,17 @@
     z-index: 150;
 }
 
-#tig_buckaroo_payconiq_items {
+#tig_buckaroo_payconiq_container #tig_buckaroo_payconiq_items {
     display: inline-block;
+    max-width: 300px;
+    min-height: 260px;
     text-align: right;
 }
 
-#tig_buckaroo_payconiq_qr img {
+#tig_buckaroo_payconiq_container #tig_buckaroo_payconiq_qr {
+    text-align: center;
+}
+
+#tig_buckaroo_payconiq_container #tig_buckaroo_payconiq_qr img {
     display: inline-block;
 }
