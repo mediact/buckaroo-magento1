@@ -8,6 +8,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends TIG_
         'CAD',
         'CHF',
         'CNY',
+        'CZK',
         'DKK',
         'EUR',
         'GBP',

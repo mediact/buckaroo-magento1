@@ -4,6 +4,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
     public $allowedCurrencies = array(
         'CHF',
         'CNY',
+        'CZK',
         'DKK',
         'EUR',
         'GBP',
