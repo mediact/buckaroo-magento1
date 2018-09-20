@@ -83,6 +83,8 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
             ->withConsecutive(array('getLastSuccessQuoteId'), array('getLastRealOrderId'))
             ->willReturnOnConsecutiveCalls(12, 34);
 
+        Mage::app()->getFrontController()->setNoRender(true);
+
         $instance->payAction();
     }
 
