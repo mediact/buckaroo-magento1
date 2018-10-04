@@ -381,3 +381,5 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "TIG_Buckaroo3Extended::Private","Particulier"
 "TIG_Buckaroo3Extended::Company","Bedrijf"
 "TIG_Buckaroo3Extended::One-man business","Eenmanszaak"
+"KBC / CBC","KBC / CBC"
+"Przelewy24","Przelewy24"

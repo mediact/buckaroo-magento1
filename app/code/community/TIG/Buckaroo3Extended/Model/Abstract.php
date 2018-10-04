@@ -444,6 +444,14 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_maestro_paymentMethod');
                 $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_maestro/allowed_currencies', $this->getStoreId());
                 break;
+            case 'buckaroo3extended_kbc':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_kbc_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_kbc/allowed_currencies', $this->getStoreId());
+                break;
+            case 'buckaroo3extended_p24':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_p24_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_p24/allowed_currencies', $this->getStoreId());
+                break;
             default:
                 $paymentMethod = null;
                 $currenciesAllowedConfig = 'EUR';
