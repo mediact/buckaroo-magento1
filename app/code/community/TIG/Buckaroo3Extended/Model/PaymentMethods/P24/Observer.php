@@ -54,9 +54,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer extends TIG_Buckar
     }
 
     /**
+     * @param Varien_Event_Observer $observer
+     *
      * @return $this
      */
-    public function buckaroo3extended_request_addcustomvars()
+    public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
         return $this;
     }

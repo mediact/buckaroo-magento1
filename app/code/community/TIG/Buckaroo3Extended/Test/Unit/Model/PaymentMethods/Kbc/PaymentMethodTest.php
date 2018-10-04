@@ -63,7 +63,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Kbc_PaymentMethodTest
 
         $this->assertEquals('buckaroo3extended_kbc', $result);
     }
-    
+
     public function testIsAvailable()
     {
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended_kbc/active', 1);
