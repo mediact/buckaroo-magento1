@@ -8209,7 +8209,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_kbc_advanced</validate>
+                            <validate>buckaroo3extended_p24_advanced</validate>
                             <depends>
                                 <show_advanced>1</show_advanced>
                                 <active_status>1</active_status>
@@ -8225,7 +8225,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_kbc_advanced</validate>
+                            <validate>buckaroo3extended_p24_advanced</validate>
                             <depends>
                                 <show_advanced>1</show_advanced>
                                 <active_status>1</active_status>
@@ -8236,12 +8236,12 @@
                             <comment>Select payment method specific currencies.</comment>
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>buckaroo3extended/sources_kbc_availableCurrencies</source_model>
+                            <source_model>buckaroo3extended/sources_p24_availableCurrencies</source_model>
                             <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <validate>buckaroo3extended_kbc_advanced</validate>
+                            <validate>buckaroo3extended_p24_advanced</validate>
                             <depends>
                                 <show_advanced>1</show_advanced>
                             </depends>

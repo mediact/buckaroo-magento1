@@ -30,7 +30,7 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_Sources_Kbc_AvailableCurrencies
+class TIG_Buckaroo3Extended_Model_Sources_P24_AvailableCurrencies
 {
     /**
      * @return array

@@ -51,10 +51,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer extends TIG_Buckar
         $vars               = $request->getVars();
         $this->_billingInfo = $request->getBillingInfo();
 
+        $lastname = $this->_billingInfo['lastname'];
+        if (isset($this->_billingInfo['middlename'])) {
+            $lastname = $this->_billingInfo['middlename'] . " " . $lastname;
+        }
+
         $array = array(
             'CustomerEmail'     => $this->_billingInfo['email'],
             'CustomerFirstName' => $this->_billingInfo['firstname'],
-            'CustomerLastName'  => $this->_billingInfo['lastname']
+            'CustomerLastName'  => $lastname
         );
 
         if (array_key_exists('customVars', $vars)
