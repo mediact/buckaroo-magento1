@@ -704,7 +704,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         //turn into string and add the secret key to the end
         $signatureString = '';
         foreach($sortableArray as $key => $value) {
-            $value = $this->decodePuhValue($key, $value);
+            $value = $this->decodePushValue($key, $value);
             $signatureString .= $key . '=' . $value;
         }
         $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId());
@@ -725,7 +725,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      *
      * @return string
      */
-    private function decodePuhValue($brqKey, $brqValue)
+    private function decodePushValue($brqKey, $brqValue)
     {
         //Only pushes need to be decoded, not responses
         if (get_class($this) == 'TIG_Buckaroo3Extended_Model_Response_Return') {
