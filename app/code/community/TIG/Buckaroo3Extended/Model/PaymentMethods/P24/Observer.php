@@ -16,10 +16,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer extends TIG_Buckar
         }
 
         $request = $observer->getRequest();
-
         $vars = $request->getVars();
-
-        $this->_billingInfo = $request->getBillingInfo();
 
         $array = array(
             $this->_method => array(
@@ -33,6 +30,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer extends TIG_Buckar
         } else {
             $vars['services'] = $array;
         }
+
+        $request->setVars($vars);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
+    {
+        if ($this->_isChosenMethod($observer) === false) {
+            return $this;
+        }
+
+        $request            = $observer->getRequest();
+        $vars               = $request->getVars();
+        $this->_billingInfo = $request->getBillingInfo();
 
         $array = array(
             'CustomerEmail'     => $this->_billingInfo['email'],
@@ -50,16 +65,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer extends TIG_Buckar
 
         $request->setVars($vars);
 
-        return $this;
-    }
-
-    /**
-     * @param Varien_Event_Observer $observer
-     *
-     * @return $this
-     */
-    public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
-    {
         return $this;
     }
 
