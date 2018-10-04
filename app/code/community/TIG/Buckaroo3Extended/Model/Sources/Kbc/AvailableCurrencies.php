@@ -32,6 +32,9 @@
  */
 class TIG_Buckaroo3Extended_Model_Sources_Kbc_AvailableCurrencies
 {
+    /**
+     * @return array
+     */
     public function toOptionArray()
     {
         $paymentModel = Mage::getModel('buckaroo3extended/paymentMethods_kbc_paymentMethod');

@@ -4,6 +4,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
     protected $_code = 'buckaroo3extended_kbc';
     protected $_method = 'KBCPaymentButton';
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -32,11 +37,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
-    public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
+    public function buckaroo3extended_request_addcustomvars()
     {
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -52,6 +67,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -67,6 +87,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -93,6 +118,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {

@@ -35,6 +35,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Kbc_ObserverTest exte
     /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer */
     protected $_instance = null;
 
+    /**
+     * @return null|TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer
+     */
     protected function _getInstance()
     {
         if ($this->_instance === null) {
