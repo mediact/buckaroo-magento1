@@ -263,6 +263,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $billingAddress = $this->_order->getBillingAddress();
 
         $firstname          = $billingAddress->getFirstname();
+        $middlename         = $billingAddress->getMiddlename();
         $lastname           = $billingAddress->getLastname();
         $city                 = $billingAddress->getCity();
         $state                 = $billingAddress->getState();
@@ -275,6 +276,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
         $billingInfo = array(
             'firstname'     => $firstname,
+            'middlename'    => $middlename,
             'lastname'        => $lastname,
             'city'             => $city,
             'state'         => $state,

@@ -71,18 +71,17 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_P24_PaymentMethodTest
         Mage::app()->getStore()->setConfig('payment/buckaroo3extended_p24/active', 1);
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/key', 1);
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/thumbprint', 1);
-        Mage::app()->getConfig()->setNode('default/' . Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE, 'PLN');
 
         $quoteMock = $this->getMockBuilder('Mage_Sales_Model_Quote')
-            ->setMethods(array('getBaseGrandTotal'))
+            ->setMethods(array('getBaseGrandTotal', 'getQuoteCurrencyCode'))
             ->getMock();
         $quoteMock->expects($this->any())->method('getBaseGrandTotal')->willReturn(1);
+        $quoteMock->expects($this->once())->method('getQuoteCurrencyCode')->willReturn('PLN');
 
         $instance = $this->_getInstance();
         $result   = $instance->isAvailable($quoteMock);
 
         $this->assertEquals(true, $result);
 
-        Mage::app()->getConfig()->setNode('default/' . Mage_Directory_Model_Currency::XML_PATH_CURRENCY_BASE, 'EUR');
     }
 }

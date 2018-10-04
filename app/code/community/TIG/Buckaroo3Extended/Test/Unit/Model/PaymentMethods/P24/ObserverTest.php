@@ -175,7 +175,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_P24_ObserverTest exte
 
         $instance = $this->_getInstance();
         $result = $instance->buckaroo3extended_refund_request_addcustomvars($mockObserver);
-        $requestVarsResult = $mockObserver->getRequest()->getVars();
 
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer', $result);
     }
