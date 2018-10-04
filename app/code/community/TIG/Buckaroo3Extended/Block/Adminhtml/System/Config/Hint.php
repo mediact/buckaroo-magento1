@@ -37,6 +37,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'capayablepostpay',
         'capayableinstallments',
         'kbc',
+        'p24',
     );
 
     public $services = array(

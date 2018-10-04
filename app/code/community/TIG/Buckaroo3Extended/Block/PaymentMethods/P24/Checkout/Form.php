@@ -30,13 +30,11 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Block_PaymentMethods_P24_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
-    public $allowedCurrencies = array(
-        'PLN',
-    );
-
-    protected $_code = 'buckaroo3extended_p24';
-
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_p24_checkout_form';
+    public function __construct()
+    {
+        $this->setTemplate('buckaroo3extended/p24/checkout/form.phtml');
+        parent::_construct();
+    }
 }

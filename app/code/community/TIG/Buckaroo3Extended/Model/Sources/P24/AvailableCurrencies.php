@@ -30,13 +30,18 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_Sources_Kbc_AvailableCurrencies
 {
-    public $allowedCurrencies = array(
-        'PLN',
-    );
+    public function toOptionArray()
+    {
+        $paymentModel = Mage::getModel('buckaroo3extended/paymentMethods_p24_paymentMethod');
+        $allowedCurrencies = $paymentModel->getAllowedCurrencies();
 
-    protected $_code = 'buckaroo3extended_p24';
+        $array = array();
+        foreach ($allowedCurrencies as $allowedCurrency) {
+            $array[] = array('value' => $allowedCurrency, 'label' => $allowedCurrency);
+        }
 
-    protected $_formBlockType = 'buckaroo3extended/paymentMethods_p24_checkout_form';
+        return $array;
+    }
 }
