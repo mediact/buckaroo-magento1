@@ -349,6 +349,11 @@
                         <class>buckaroo3extended/paymentMethods_paypal_observer</class>
                         <method>buckaroo3extended_refund_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_refund_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                     <buckaroo3extended_paymentmethod_observer_sofortueberweisung>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
@@ -478,6 +483,11 @@
                         <class>buckaroo3extended/paymentMethods_paypal_observer</class>
                         <method>buckaroo3extended_refund_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_refund_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                     <buckaroo3extended_paymentmethod_observer_sofortueberweisung>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
@@ -607,6 +617,11 @@
                         <class>buckaroo3extended/paymentMethods_paypal_observer</class>
                         <method>buckaroo3extended_refund_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_refund_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                     <buckaroo3extended_paymentmethod_observer_sofortueberweisung>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
@@ -744,6 +759,11 @@
                         <class>buckaroo3extended/paymentMethods_paypal_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                     <buckaroo3extended_paymentmethod_observer_paysafecard>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_paysafecard_observer</class>
@@ -893,6 +913,11 @@
                         <class>buckaroo3extended/paymentMethods_paypal_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                     <buckaroo3extended_paymentmethod_observer_sofortueberweisung>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
@@ -1052,6 +1077,11 @@
                         <class>buckaroo3extended/paymentMethods_paypal_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_paypal>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                     <buckaroo3extended_paymentmethod_observer_sofortueberweisung>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_sofortueberweisung_observer</class>
@@ -1375,6 +1405,11 @@
                         <class>buckaroo3extended/paymentMethods_klarna_observer</class>
                         <method>buckaroo3extended_cancelauthorize_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_klarna>
+                    <buckaroo3extended_paymentmethod_observer_payconiq>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_payconiq_observer</class>
+                        <method>buckaroo3extended_cancelauthorize_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_payconiq>
                 </observers>
             </buckaroo3extended_cancelauthorize_request_addservices>
             <buckaroo3extended_cancelauthorize_request_addcustomvars>
@@ -1488,6 +1523,13 @@
                 <sort_order>90</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_paypal>
+            <buckaroo3extended_payconiq>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_payconiq_paymentMethod</model>
+                <title>Payconiq</title>
+                <sort_order>95</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_payconiq>
             <buckaroo3extended_transfer>
                 <active>1</active>
                 <model>buckaroo3extended/paymentMethods_transfer_paymentMethod</model>
@@ -1882,6 +1924,21 @@
                 <order_email>1</order_email>
             </buckaroo3extended_paypal>
 
+            <buckaroo3extended_payconiq>
+                <active>0</active>
+                <mode>0</mode>
+                <title>Payconiq</title>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <sort_order>95</sort_order>
+                <limit_by_ip>0</limit_by_ip>
+                <allowed_currencies>EUR</allowed_currencies>
+                <payment_fee_label>Fee</payment_fee_label>
+                <order_email>1</order_email>
+            </buckaroo3extended_payconiq>
+
             <buckaroo3extended_sofortueberweisung>
                 <active>0</active>
                 <mode>0</mode>
@@ -2240,7 +2297,8 @@
             <buckaroo3extended_capayableinstallments>
                 <active>0</active>
                 <mode>0</mode>
-                <title>Capayable: Gespreid Betalen</title>
+                <title>In3</title>
+                <version>0</version>
                 <sort_order>240</sort_order>
                 <order_email>1</order_email>
                 <payment_fee_label>Fee</payment_fee_label>
