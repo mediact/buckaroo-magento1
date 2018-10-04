@@ -1,12 +1,17 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+class TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
-    protected $_code = 'buckaroo3extended_kbc';
-    protected $_method = 'KBCPaymentButton';
+    protected $_code = 'buckaroo3extended_p24';
+    protected $_method = 'Przelewy24';
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -14,10 +19,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
 
         $vars = $request->getVars();
 
+        $this->_billingInfo = $request->getBillingInfo();
+
         $array = array(
-            $this->_method     => array(
-                'action'    => 'Pay',
-                'version'   => 1,
+            $this->_method => array(
+                'action'  => 'Pay',
+                'version' => 1,
             ),
         );
 
@@ -27,16 +34,40 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
             $vars['services'] = $array;
         }
 
+        $array = array(
+            'CustomerEmail'     => $this->_billingInfo['email'],
+            'CustomerFirstName' => $this->_billingInfo['firstname'],
+            'CustomerLastName'  => $this->_billingInfo['lastname']
+        );
+
+        if (array_key_exists('customVars', $vars)
+            && array_key_exists($this->_method, $vars['customVars'])
+            && is_array($vars['customVars'][$this->_method])) {
+            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+        } else {
+            $vars['customVars'][$this->_method] = $array;
+        }
+
         $request->setVars($vars);
 
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -52,6 +83,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -67,6 +103,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
         if($this->_isChosenMethod($observer) === false) {
@@ -93,6 +134,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Kbc_Observer extends TIG_Buckar
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {
