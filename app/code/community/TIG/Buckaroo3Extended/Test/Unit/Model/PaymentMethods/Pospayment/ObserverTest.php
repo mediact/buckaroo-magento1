@@ -58,7 +58,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $mockPayment->expects($this->any())->method('getMethod')->willReturn('buckaroo3extended_pospayment');
 
         $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
-            ->setMethods(array('getPayment','getPaymentMethodUsedForTransaction'))->getMock();
+            ->setMethods(array('getPayment','getPaymentMethodUsedForTransaction', 'getInvoiceCollection'))->getMock();
         $mockOrder->expects($this->any())->method('getPayment')->will($this->returnValue($mockPayment));
         $mockOrder->expects($this->any())->method('getPaymentMethodUsedForTransaction')->willReturn(false);
 
