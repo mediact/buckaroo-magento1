@@ -61,3 +61,9 @@
 #tig_buckaroo_payconiq_container #tig_buckaroo_payconiq_qr img {
     display: inline-block;
 }
+
+#tig_buckaroo_payconiq_container #tig_buckaroo_payconiq_qr .cross:before,
+#tig_buckaroo_payconiq_container #tig_buckaroo_payconiq_qr .cross:after {
+    top: 60px;
+    margin-left: -6px;
+}
