@@ -29,17 +29,31 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn extends Mage_Adminhtml_Block_Abstract
-    implements Varien_Data_Form_Element_Renderer_Interface
+class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Dankort_Adminhtml_System_Config_AdvancedbtnTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
+    /** @var null|TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn */
+    protected $_instance = null;
+
     /**
-     * Render fieldset html
-     *
-     * @param Varien_Data_Form_Element_Abstract $element
-     * @return string
+     * @return TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn
      */
-    public function render(Varien_Data_Form_Element_Abstract $element)
+    protected function _getInstance()
     {
-        return $this->toHtml();
+        if ($this->_instance === null) {
+            $this->_instance = new TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn();
+        }
+
+        return $this->_instance;
+    }
+
+    public function testRender()
+    {
+        $elementMock = $this->getMockBuilder('Varien_Data_Form_Element_Abstract')->getMock();
+
+        $instance = $this->_getInstance();
+        $result = $instance->render($elementMock);
+
+        $this->assertInternalType('string', $result);
     }
 }
