@@ -733,6 +733,10 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         }
 
         switch ($brqKey) {
+            case 'brq_SERVICE_payconiq_PayconiqAndroidUrl':
+            case 'brq_SERVICE_payconiq_PayconiqIosUrl':
+            case 'brq_SERVICE_payconiq_PayconiqUrl':
+            case 'brq_SERVICE_payconiq_QrUrl':
             case 'brq_SERVICE_masterpass_CustomerPhoneNumber':
             case 'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber':
             case 'brq_InvoiceDate':
