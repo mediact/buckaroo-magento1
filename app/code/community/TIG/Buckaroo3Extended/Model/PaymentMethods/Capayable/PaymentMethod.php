@@ -105,15 +105,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
             'email'      => $address->getEmail(),
         );
 
-        if (!empty($address->getStreet2())) {
+        if ($address->getStreet2()) {
             $data['street2'] = $address->getStreet2();
         }
 
-        if (!empty($address->getFax())) {
+        if ($address->getFax()) {
             $data['fax'] = $address->getFax();
         }
 
-        if (!empty($address->getCompany())) {
+        if ($address->getCompany()) {
             $data['company'] = $address->getCompany();
         }
 
