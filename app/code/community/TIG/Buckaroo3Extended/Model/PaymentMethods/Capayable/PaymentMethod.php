@@ -70,28 +70,54 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
      */
     protected function isShippingDifferent($quote)
     {
-        // exclude certain keys that are always different
-        $excludeKeys = array(
-            'entity_id', 'entity_type_id', 'parent_id', 'created_at', 'updated_at', 'customer_address_id',
-            'quote_address_id', 'address_id', 'region_id', 'customer_id', 'address_type', 'applied_taxes'
-        );
-
         //get both the order-addresses
-        $billingAddress = $quote->getBillingAddress()->getData();
-        $shippingAddress = $quote->getShippingAddress()->getData();
-
-        //remove the keys with corresponding values from both the addressess
-        $billingAddressFiltered = array_diff_key($billingAddress, array_flip($excludeKeys));
-        $shippingAddressFiltered = array_diff_key($shippingAddress, array_flip($excludeKeys));
+        $billingAddress = $this->getAddressData($quote->getBillingAddress());
+        $shippingAddress = $this->getAddressData($quote->getShippingAddress());
 
         //differentiate the addresses, when some data is different an array with changes will be returned
-        $addressDiff = array_diff($billingAddressFiltered, $shippingAddressFiltered);
+        $addressDiff = array_diff($billingAddress, $shippingAddress);
 
         if (!empty($addressDiff)) {
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Address $address
+     *
+     * @return array
+     */
+    private function getAddressData($address)
+    {
+        $data = array(
+            'firstname'  => $address->getFirstname(),
+            'lastname'   => $address->getLastname(),
+            'name'       => $address->getName(),
+            'street'     => implode(" ", $address->getStreet()),
+            'street1'    => $address->getStreet1(),
+            'streetfull' => $address->getStreetFull(),
+            'postcode'   => $address->getPostcode(),
+            'city'       => $address->getCity(),
+            'country'    => $address->getCountry(),
+            'phone'      => $address->getTelephone(),
+            'email'      => $address->getEmail(),
+        );
+
+        if (!empty($address->getStreet2())) {
+            $data['street2'] = $address->getStreet2();
+        }
+
+        if (!empty($address->getFax())) {
+            $data['fax'] = $address->getFax();
+        }
+
+        if (!empty($address->getCompany())) {
+            $data['company'] = $address->getCompany();
+        }
+
+        return $data;
     }
 
     /**
