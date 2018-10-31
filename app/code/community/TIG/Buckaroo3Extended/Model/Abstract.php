@@ -274,6 +274,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $fax              = $billingAddress->getFax();
         $countryCode      = $billingAddress->getCountry();
 
+        if (empty($email)) {
+            $email = $billingAddress->getEmail();
+        }
+
         $billingInfo = array(
             'firstname'     => $firstname,
             'middlename'    => $middlename,

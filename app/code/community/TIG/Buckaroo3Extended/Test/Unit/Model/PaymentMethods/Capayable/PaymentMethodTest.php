@@ -106,11 +106,21 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_PaymentMeth
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/key', 1);
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/thumbprint', 1);
 
-        $billingAddress = $this->getMockBuilder('Mage_Sales_Model_Quote_Address')->setMethods(['getData'])->getMock();
-        $billingAddress->expects($this->once())->method('getData')->willReturn($billingData);
+        $billingAddress = $this->getMockBuilder('Mage_Sales_Model_Quote_Address')
+            ->setMethods(['getName', 'getStreetFull', 'getPostcode', 'getCountry'])
+            ->getMock();
+        $billingAddress->expects($this->once())->method('getName')->willReturn($billingData['name']);
+        $billingAddress->expects($this->once())->method('getStreetFull')->willReturn($billingData['street']);
+        $billingAddress->expects($this->once())->method('getPostcode')->willReturn($billingData['zip']);
+        $billingAddress->expects($this->once())->method('getCountry')->willReturn($billingData['country']);
 
-        $shippingAddress = $this->getMockBuilder('Mage_Sales_Model_Quote_Address')->setMethods(['getData'])->getMock();
-        $shippingAddress->expects($this->once())->method('getData')->willReturn($shippingData);
+        $shippingAddress = $this->getMockBuilder('Mage_Sales_Model_Quote_Address')
+            ->setMethods(['getName', 'getStreetFull', 'getPostcode', 'getCountry'])
+            ->getMock();
+        $shippingAddress->expects($this->once())->method('getName')->willReturn($shippingData['name']);
+        $shippingAddress->expects($this->once())->method('getStreetFull')->willReturn($shippingData['street']);
+        $shippingAddress->expects($this->once())->method('getPostcode')->willReturn($shippingData['zip']);
+        $shippingAddress->expects($this->once())->method('getCountry')->willReturn($shippingData['country']);
 
         $quoteMock = $this->getMockBuilder('Mage_Sales_Model_Quote')
             ->setMethods(array('getBaseGrandTotal', 'getBillingAddress', 'getShippingAddress'))
