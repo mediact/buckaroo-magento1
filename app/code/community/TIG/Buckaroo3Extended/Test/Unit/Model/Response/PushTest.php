@@ -172,4 +172,88 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_PushTest extends TIG_Buckar
 
         $this->assertEquals($expected, $result);
     }
+
+    /**
+     * @return array
+     */
+    public function decodePushValueProvider()
+    {
+        return array(
+            'normal value' => array(
+                'brq_key_data',
+                'some value',
+                'some value'
+            ),
+            'enccoded value' => array(
+                'brq_timestamp',
+                '14%3a19%3a53',
+                '14:19:53'
+            ),
+            'payconiq_PayconiqAndroidUrl' => array(
+                'brq_SERVICE_payconiq_PayconiqAndroidUrl',
+                'http://tig.nl',
+                'http://tig.nl'
+            ),
+            'payconiq_PayconiqIosUrl' => array(
+                'brq_SERVICE_payconiq_PayconiqIosUrl',
+                'http://tig.nl',
+                'http://tig.nl'
+            ),
+            'payconiq_PayconiqUrl' => array(
+                'brq_SERVICE_payconiq_PayconiqUrl',
+                'http://tig.nl',
+                'http://tig.nl'
+            ),
+            'payconiq_QrUrl' => array(
+                'brq_SERVICE_payconiq_QrUrl',
+                'http://tig.nl',
+                'http://tig.nl'
+            ),
+            'masterpass_CustomerPhoneNumber' => array(
+                'brq_SERVICE_masterpass_CustomerPhoneNumber',
+                '+31201122233',
+                '+31201122233'
+            ),
+            'masterpass_ShippingRecipientPhoneNumber' => array(
+                'brq_SERVICE_masterpass_ShippingRecipientPhoneNumber',
+                '+31644455566',
+                '+31644455566'
+            ),
+            'InvoiceDate' => array(
+                'brq_InvoiceDate',
+                '2017-12-11T00:00:00.0000000+01:00',
+                '2017-12-11T00:00:00.0000000+01:00'
+
+            ),
+            'DueDate' => array(
+                'brq_DueDate',
+                '2017-12-12T00:00:00.0000000+01:00',
+                '2017-12-12T00:00:00.0000000+01:00'
+            ),
+            'PreviousStepDateTime' => array(
+                'brq_PreviousStepDateTime',
+                '0001-01-01T00:00:00.0000000+01:00',
+                '0001-01-01T00:00:00.0000000+01:00'
+            ),
+            'EventDateTime' => array(
+                'brq_EventDateTime',
+                '2017-12-11T14:19:53.4688849+01:00',
+                '2017-12-11T14:19:53.4688849+01:00'
+            )
+        );
+    }
+
+    /**
+     * @param $brqKey
+     * @param $brqValue
+     * @param $expected
+     *
+     * @dataProvider decodePushValueProvider
+     */
+    public function testDecodePushValue($brqKey, $brqValue, $expected)
+    {
+        $instance = $this->_getInstance();
+        $result = $this->invokeMethod($instance, 'decodePushValue', array($brqKey, $brqValue));
+        $this->assertEquals($expected, $result);
+    }
 }
