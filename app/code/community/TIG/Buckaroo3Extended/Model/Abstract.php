@@ -457,6 +457,9 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             case 'buckaroo3extended_p24':
                 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_p24_paymentMethod');
                 $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_p24/allowed_currencies', $this->getStoreId());
+            case 'buckaroo3extended_dankort':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_dankort_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_dankort/allowed_currencies', $this->getStoreId());
                 break;
             default:
                 $paymentMethod = null;

@@ -39,6 +39,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'capayableinstallments',
         'kbc',
         'p24',
+        'dankort',
     );
 
     public $services = array(
