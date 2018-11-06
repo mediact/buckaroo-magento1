@@ -165,7 +165,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Creditmemo_Create_Fee ex
      */
     protected function _toHtml()
     {
-        if (!$this->_source->getBuckarooFee()) {
+        if (!array_key_exists('buckaroo_fee', $this->_source->getData())) {
             return '';
         }
 
