@@ -21,8 +21,11 @@
             "#tig_buckaroo_payconiq_qr",
             "<?php echo $this->getTransactionKey(); ?>",
             function(status, params) {
-                if (status === 'SUCCESS') {
-                    jQuery_1123('#tig_buckaroo_payconiq_cancel').hide();
+                switch (status) {
+                    case 'SUCCESS':
+                    case 'FAILED':
+                        jQuery_1123('#tig_buckaroo_payconiq_cancel').hide();
+                        break;
                 }
 
                 return true;
@@ -32,6 +35,7 @@
 
     var cancelPayment = function() {
         jQuery_1123('#tig_buckaroo_payconiq_qr').html('<?php echo $this->getCancelMessage(); ?>');
+        jQuery_1123('#tig_buckaroo_payconiq_cancel').hide();
 
         location.href = '<?php echo $this->getCancelUrl(); ?>';
     };
