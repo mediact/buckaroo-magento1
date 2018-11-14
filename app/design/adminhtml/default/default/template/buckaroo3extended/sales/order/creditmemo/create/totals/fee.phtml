@@ -56,12 +56,6 @@
     </tr>
     <script type="text/javascript">
         //<![CDATA[
-        var buckarooFeeAmountField = $('buckaroo_fee_amount');
-        if (buckarooFeeAmountField) {
-            buckarooFeeAmountField.advaiceContainer = $('buckaroo_fee_amount_advice'); //The typo is intentional
-            unblockSubmit('buckaroo_fee_amount');
-        }
-
         if (typeof unblockSubmit == 'undefined') {
             function unblockSubmit(id) {
                 $(id).observe('focus', function (event) {
@@ -70,6 +64,12 @@
                     }
                 });
             }
+        }
+
+        var buckarooFeeAmountField = $('buckaroo_fee_amount');
+        if (buckarooFeeAmountField) {
+            buckarooFeeAmountField.advaiceContainer = $('buckaroo_fee_amount_advice'); //The typo is intentional
+            unblockSubmit('buckaroo_fee_amount');
         }
         //]]>
     </script>
