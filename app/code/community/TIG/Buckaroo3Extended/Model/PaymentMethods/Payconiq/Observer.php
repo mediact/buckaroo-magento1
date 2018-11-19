@@ -112,6 +112,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payconiq_Observer extends TIG_B
         /** @var Mage_Sales_Model_Order $order */
         $order = $observer->getOrder();
 
+        /** @var Mage_Sales_Model_Order_Payment $payment */
+        $payment = $this->_order->getPayment();
+        $payment->setAdditionalInformation('skip_push', 1);
+        $payment->save();
+
         $vars['request_type'] = 'CancelTransaction';
         $vars['TransactionKey'] = $order->getTransactionKey();
 

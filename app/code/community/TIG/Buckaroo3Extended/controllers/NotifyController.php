@@ -159,6 +159,20 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return false;
         }
 
+        //check if push needs to skipped
+        $payment = $this->_order->getPayment();
+        if ($payment->getAdditionalInformation('skip_push') > 0) {
+            $this->_debugEmail .= "\n".'We skip the first push, because this will interfere with the flow.'."\n";
+            $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
+            $module->setDebugEmail($this->_debugEmail);
+            $module->sendDebugEmail();
+
+            $payment->unsAdditionalInformation('skip_push');
+
+            $this->getResponse()->setHttpResponseCode(503);
+            return false;
+        }
+
 
         //order exists, instantiate the lock-object for the push
         $this->setPushLock($this->_order->getId());
@@ -213,6 +227,12 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         //send debug email
         $module->setDebugEmail($this->_debugEmail);
         $module->sendDebugEmail();
+
+        if ($processedPush === false) {
+            throw new Exception('Push heeft een exception ondervonden. Bekijk de log voor meer informatie.');
+            $this->getResponse()->setHttpResponseCode(503);
+            return false;
+        }
     }
 
     public function returnAction()
