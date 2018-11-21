@@ -44,7 +44,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
 
         $isZeroPayment   = self::_checkGrandTotalNotZero($quote);
 
-        $isEnterprise    = @mage::getModel('Enterprise_Reward_Model_Reward');
+        $isEnterprise    = self::isEnterprise();
 
         if (
             $configValues        === true
@@ -58,6 +58,16 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
             $return = true;
         }
         return $return;
+    }
+
+    /**
+     * If we are using enterprise version or not
+     *
+     * @return int
+     */
+    public function isEnterprise()
+    {
+        return (int) is_object(Mage::getConfig()->getNode('global/models/enterprise_enterprise'));
     }
 
     /**
