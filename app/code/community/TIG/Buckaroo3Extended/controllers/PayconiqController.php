@@ -111,6 +111,10 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     {
         $payment = $this->getOrder()->getPayment();
 
+        /** @var Mage_Sales_Model_Order_Payment $payment */
+        $payment->setAdditionalInformation('skip_push', 1);
+        $payment->save();
+
         /** @var TIG_Buckaroo3Extended_Model_Request_CancelAuthorize $cancelRequest */
         $cancelRequest = Mage::getModel('buckaroo3extended/request_cancelAuthorize', array('payment' => $payment));
 
