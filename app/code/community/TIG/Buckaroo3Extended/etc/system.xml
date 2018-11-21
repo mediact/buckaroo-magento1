@@ -8747,6 +8747,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </auto_invoice>
+                        <creditmemo_mail translate="label comment">
+                            <label>Send transactional credit memo email</label>
+                            <comment>Send a mail after credit memo is created.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </creditmemo_mail>
                         <success_redirect translate="label comment">
                             <label>Redirect url after 'Success'</label>
                             <frontend_type>text</frontend_type>

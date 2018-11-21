@@ -2,7 +2,7 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.19.0</version>
+            <version>4.20.0</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <tig>
@@ -1902,6 +1902,7 @@
                 <failure_redirect>checkout/onepage</failure_redirect>
                 <auto_invoice>1</auto_invoice>
                 <invoice_mail>1</invoice_mail>
+                <creditmemo_mail>1</creditmemo_mail>
                 <order_state_success>processing</order_state_success>
                 <order_state_failed>canceled</order_state_failed>
                 <order_state_pendingpayment>new</order_state_pendingpayment>
