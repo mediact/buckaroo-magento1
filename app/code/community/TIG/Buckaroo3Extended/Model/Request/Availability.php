@@ -65,7 +65,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
      *
      * @return int
      */
-    public function isEnterprise()
+    public static function isEnterprise()
     {
         return (int) is_object(Mage::getConfig()->getNode('global/models/enterprise_enterprise'));
     }

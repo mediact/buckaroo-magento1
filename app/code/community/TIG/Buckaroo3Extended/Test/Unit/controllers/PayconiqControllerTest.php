@@ -99,6 +99,16 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
 
         $existingOrderMock = $this->getMockBuilder('Mage_Sales_Model_Order')->disableOriginalConstructor()->getMock();
         $existingOrderMock->method('cancel')->willReturnSelf();
+
+        $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('setAdditionalInformation','save'))
+            ->getMock();
+        $paymentMock->expects($this->once())->method('setAdditionalInformation');
+        $paymentMock->expects($this->once())->method('save');
+
+        $existingOrderMock->method('getPayment')
+            ->will($this->returnValue($paymentMock));
+
         $this->setProperty('order', $existingOrderMock, $instance);
 
         $cancelAuthorizeMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_CancelAuthorize')
@@ -203,7 +213,17 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
             ->disableOriginalConstructor()
             ->setMethods(array('getPayment'))
             ->getMock();
-        $orderMock->expects($this->once())->method('getPayment');
+
+        $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('setAdditionalInformation','save'))
+            ->getMock();
+        $paymentMock->expects($this->once())->method('setAdditionalInformation');
+        $paymentMock->expects($this->once())->method('save');
+
+        $orderMock->expects($this->any())
+            ->method('getPayment')
+            ->will($this->returnValue($paymentMock));
+
 
         $cancelAuthorizeMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_CancelAuthorize')
             ->disableOriginalConstructor()
@@ -224,6 +244,16 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $orderMock = $this->getMockBuilder('Mage_Sales_Model_Order')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('setAdditionalInformation','save'))
+            ->getMock();
+        $paymentMock->expects($this->once())->method('setAdditionalInformation');
+        $paymentMock->expects($this->once())->method('save');
+
+        $orderMock->expects($this->any())
+            ->method('getPayment')
+            ->will($this->returnValue($paymentMock));
 
         $cancelAuthorizeMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_CancelAuthorize')
             ->disableOriginalConstructor()
