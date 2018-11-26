@@ -76,11 +76,32 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Installments_Observer
 
         $request = $observer->getRequest();
         $vars    = $request->getVars();
+        $vars    = $this->_addGuaranteeVersion($vars);
 
         // PayInInstallments doesn't support orderId, but does require an invoiceId
         $vars['invoiceId'] = $vars['orderId'];
         unset($vars['orderId']);
 
         $request->setVars($vars);
+    }
+
+    /**
+     * Added type of Installment, setting by config
+     * @param $vars
+     * @return array
+     */
+    private function _addGuaranteeVersion($vars)
+    {
+        $storeId = Mage::app()->getStore()->getStoreId();
+        $versionSetting = Mage::getStoreConfig('buckaroo/' . $this->_code . '/version', $storeId);
+
+        $array = array(
+            'IsInThreeGuarantee' => ($versionSetting) ? 'true' : 'false',
+        );
+
+        $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
+
+        return array_merge($vars, $array);
+
     }
 }

@@ -170,6 +170,10 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             'comment_text'    => '',
         );
 
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/creditmemo_mail', $this->_order->getStoreId())) {
+            $data['send_email'] = true;
+        }
+
         $totalToRefund = $totalAmount + $this->_order->getBaseTotalRefunded();
         if ($totalToRefund == $this->_order->getBaseGrandTotal()) {
 

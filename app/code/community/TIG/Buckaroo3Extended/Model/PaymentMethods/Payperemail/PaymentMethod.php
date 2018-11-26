@@ -8,6 +8,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
         'CAD',
         'CHF',
         'CNY',
+        'CZK',
         'DKK',
         'EUR',
         'GBP',

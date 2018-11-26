@@ -159,6 +159,22 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             return false;
         }
 
+        //check if push needs to skipped
+        $payment = $this->_order->getPayment();
+        if ($payment->getAdditionalInformation('skip_push') > 0) {
+
+            $payment->unsAdditionalInformation('skip_push');
+            $payment->save();
+
+            $this->_debugEmail .= "\n".'We skip the first push, because this will interfere with the flow.'."\n";
+            $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
+            $module->setDebugEmail($this->_debugEmail);
+            $module->sendDebugEmail();
+
+            $this->getResponse()->setHttpResponseCode(503);
+            return false;
+        }
+
 
         //order exists, instantiate the lock-object for the push
         $this->setPushLock($this->_order->getId());
@@ -183,6 +199,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         $this->_debugEmail .= 'Payment code: ' . $this->_paymentCode . "\n\n";
         $this->_debugEmail .= 'POST variables received: ' . var_export($this->_postArray, true) . "\n\n";
 
+        $exceptionThrown = false;
         try {
             list($module, $processedPush) = $this->_processPushAccordingToType();
 
@@ -197,6 +214,7 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             Mage::helper('buckaroo3extended')->logException($e);
             //this will allow the script to continue unhindered
             $processedPush = false;
+            $exceptionThrown = true;
             $module = Mage::getModel('buckaroo3extended/abstract', $this->_debugEmail);
         }
         $this->_debugEmail = $module->getDebugEmail();
@@ -213,6 +231,12 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
         //send debug email
         $module->setDebugEmail($this->_debugEmail);
         $module->sendDebugEmail();
+
+        if ($exceptionThrown === true) {
+            throw new Exception('Push heeft een exception ondervonden. Bekijk de log voor meer informatie.');
+            $this->getResponse()->setHttpResponseCode(503);
+            return false;
+        }
     }
 
     public function returnAction()
