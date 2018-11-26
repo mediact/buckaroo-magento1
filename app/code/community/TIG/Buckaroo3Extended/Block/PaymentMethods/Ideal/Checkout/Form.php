@@ -44,7 +44,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                     'name' => 'Van Lanschot',
                     'logo' => 'logo_lanschot_s.gif',
                 ),
-                '9998' => array(
+                '0801' => array(
                     'name' => 'Knab',
                     'logo' => 'logo_knab_s.gif',
                 ),
@@ -93,6 +93,10 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
                 'FVLBNL22' => array(
                     'name' => 'Van Lanschot',
                     'logo' => 'logo_lanschot_s.gif',
+                ),
+                'HANDNL2A' => array(
+                    'name' => 'Handelsbanken',
+                    'logo' => 'logo_handelsbanken_s.gif',
                 ),
             ),
         );

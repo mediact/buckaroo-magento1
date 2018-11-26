@@ -182,6 +182,15 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             $TransactionRequest->OriginalTransactionKey = $this->_vars['OriginalTransactionKey'];
         }
 
+        if (!empty($this->_vars['request_type'])
+            && $this->_vars['request_type'] == 'CancelTransaction'
+            && !empty($this->_vars['TransactionKey'])
+        ) {
+            $transactionParameter = new RequestParameter();
+            $transactionParameter->Key = $this->_vars['TransactionKey'];
+            $TransactionRequest->Transaction = $transactionParameter;
+        }
+
         if (isset($this->_vars['customParameters'])) {
             $TransactionRequest = $this->_addCustomParameters($TransactionRequest);
         }
@@ -332,6 +341,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
      */
     protected function _addServices(&$TransactionRequest)
     {
+        if (!is_array($this->_vars['services']) || empty($this->_vars['services'])) {
+            return;
+        }
+
         $services = array();
         foreach($this->_vars['services'] as $fieldName => $value) {
             if (empty($value)) {
@@ -757,6 +770,7 @@ class Body
     public $OriginalTransactionKey;
     public $StartRecurrent;
     public $Services;
+    public $Transaction;
 }
 
 class Services
@@ -775,6 +789,7 @@ class Service
 
 /**
  * @property int|string GroupID
+ * @property int|string Key
  */
 class RequestParameter
 {
