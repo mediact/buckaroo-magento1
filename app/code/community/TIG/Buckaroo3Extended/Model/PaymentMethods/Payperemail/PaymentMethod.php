@@ -37,11 +37,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_PaymentMethod exten
             $session = Mage::getSingleton('core/session');
         }
 
+        $postData = Mage::app()->getRequest()->getPost();
+
         $session->setData('additionalFields', array(
-            'gender'    => $_POST['buckaroo3extended_payperemail_BPE_Customergender'],
-            'firstname' => $_POST['buckaroo3extended_payperemail_BPE_Customerfirstname'],
-            'lastname'  => $_POST['buckaroo3extended_payperemail_BPE_Customerlastname'],
-            'mail'      => $_POST['buckaroo3extended_payperemail_BPE_Customermail'],
+            'gender'    => $postData['buckaroo3extended_payperemail_BPE_Customergender'],
+            'firstname' => $postData['buckaroo3extended_payperemail_BPE_Customerfirstname'],
+            'lastname'  => $postData['buckaroo3extended_payperemail_BPE_Customerlastname'],
+            'mail'      => $postData['buckaroo3extended_payperemail_BPE_Customermail'],
         ));
 
         return parent::assignData($data);

@@ -193,8 +193,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->sendDebugEmail();
 
-        header('Location:' . $redirectUrl);
-        exit;
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($redirectUrl)->sendResponse();
+
+        return;
     }
 
     /**
@@ -247,8 +249,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->sendDebugEmail();
 
-        header('Location:' . $returnUrl);
-        exit;
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _failed($message = '')
@@ -288,8 +292,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _error($message = '')
@@ -321,8 +328,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _rejected($message = '')
@@ -355,8 +365,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _neutral()
@@ -382,8 +395,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     /**
@@ -576,8 +592,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _verifyResponse()
