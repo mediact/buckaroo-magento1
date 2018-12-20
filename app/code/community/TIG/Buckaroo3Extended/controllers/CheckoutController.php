@@ -107,8 +107,12 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
                 break;
         }
 
-        echo json_encode($response);
-        exit;
+        $jsonResponse = Mage::helper('core')->jsonEncode($response);
+
+        $this->getResponse()->clearHeaders()->setHeader('Content-type', 'application/json');;
+        $this->getResponse()->setBody($jsonResponse);
+
+        return;
     }
 
     /**
