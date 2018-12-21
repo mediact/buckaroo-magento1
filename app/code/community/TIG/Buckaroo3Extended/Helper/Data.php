@@ -64,11 +64,11 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function isAdmin()
     {
-        if(Mage::app()->getStore()->isAdmin()) {
+        if (Mage::app()->getStore()->isAdmin()) {
             return true;
         }
 
-        if(Mage::getDesign()->getArea() == 'adminhtml') {
+        if (Mage::getDesign()->getArea() == 'adminhtml') {
             return true;
         }
 
@@ -97,6 +97,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         if ($moduleName == 'onestepcheckout') {
             return true;
         }
+
         return false;
     }
 
@@ -104,9 +105,11 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
     {
         if ($paymentMethodCode) {
             $feeLabel = Mage::helper('buckaroo3extended')->__(
-                Mage::getStoreConfig('buckaroo/' . $paymentMethodCode . '/payment_fee_label', Mage::app()->getStore()->getId())
-            )
-            ;
+                Mage::getStoreConfig(
+                    'buckaroo/' . $paymentMethodCode . '/payment_fee_label', Mage::app()->getStore()->getId()
+                )
+            );
+
             if (empty($feeLabel)) {
                 $feeLabel = Mage::helper('buckaroo3extended')->__('Fee');
             }
@@ -199,26 +202,28 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         );
 
         if ($allowSpecific) {
-            $allowedCountries = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', $storeId));
+            $allowedCountries = explode(
+                ',', Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/specificcountry', $storeId)
+            );
         } else {
             $allowedCountriesOptions = Mage::getModel('directory/country')->getResourceCollection()
                 ->loadByStore($storeId)
                 ->toOptionArray(true);
 
             $allowedCountries = array();
-            foreach($allowedCountriesOptions as $options){
+            foreach ($allowedCountriesOptions as $options) {
                 $allowedCountries[] = $options['value'];
             }
-
         }
 
         //if one of the allowed countries in the required-region array exists
         //then the region must be required, if none exists then the message cannot be shown
-        foreach($regionRequiredCountries as $country){
-            if(in_array($country,$allowedCountries)){
+        foreach ($regionRequiredCountries as $country) {
+            if (in_array($country, $allowedCountries)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -235,6 +240,7 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         if ($order->getIsVirtual()) {
             return false;
         }
+
         return true;
     }
 
@@ -247,11 +253,11 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getBuckarooFeeLabel($store = null, $paymentMethod = false)
     {
-        if (is_null($store)) {
+        if ($store === null) {
             $store = Mage::app()->getStore();
         }
 
-        if(!$paymentMethod){
+        if (!$paymentMethod) {
             return Mage::helper('buckaroo3extended')->__('Buckaroo Fee');
         }
 
@@ -304,8 +310,8 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
     protected function _addBuckarooFeeTaxInfoFromCollection($taxCollection, $fullInfo, $source)
     {
         /**
-         * Go through all tax records and add the Buckaroo fee tax to the entry that has the right title. If no entry exists
-         * with that title, add it.
+         * Go through all tax records and add the Buckaroo fee tax to the entry that has the right title. If no entry
+         * exists with that title, add it.
          */
         foreach ($taxCollection as $tax) {
             foreach ($fullInfo as $key => $taxInfo) {
@@ -453,36 +459,15 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
     public function getNewStates($code = null, $order = null, $method = null)
     {
         $return = array(null, null);
-        $states = array();
-
-        // All three parameters need to be available
-        if (!$code || !$order || !$method) {
-            return $return;
-        }
 
         // Get the store Id
         $storeId = $order->getStoreId();
 
-        // Get the states
-        $states['success']['state']       = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_success', $storeId);
-        $states['failure']['state']       = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_failed', $storeId);
-        $states['pending']['state']       = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', $storeId);
-        $states['incorrect']['state']     = 'holded';
+        $states = $this->setCurrentStates($storeId);
 
-        // Get the default status values
-        $states['success']['status']      = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', $storeId);
-        $states['failure']['status']      = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId);
-        $states['pending']['status']      = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', $storeId);
-        $states['incorrect']['status']    = 'buckaroo_incorrect_payment';
-
-        // Magento 1.4 compatibility
-        $version15 = '1.5.0.0';
-        $version14 = '1.4.0.0';
-        if (
-            version_compare(Mage::getVersion(), $version15, '<')
-            && version_compare(Mage::getVersion(), $version14, '>')
-        ) {
-            $states['incorrect']['status'] = 'payment_review';
+        // All three parameters need to be available
+        if (!$code || !$order || !$method) {
+            return $return;
         }
 
         // See if we even need to use custom statuses
@@ -490,24 +475,12 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
 
         // Only look up custom statuses if we need to
         if ($useStatus) {
-            $customSuccess  = Mage::getStoreConfig('buckaroo/' . $method . '/order_status_success', $storeId);
-            $customFailure  = Mage::getStoreConfig('buckaroo/' . $method . '/order_status_failed', $storeId);
-            $customPending  = Mage::getStoreConfig('buckaroo/' . $method . '/order_status_pendingpayment', $storeId);
-
-            if (!empty($customSuccess)) {
-                $states['success']['status'] = $customSuccess;
-            }
-            if (!empty($customFailure)) {
-                $states['failure']['status'] = $customFailure;
-            }
-            if (!empty($customPending)) {
-                $states['pending']['status'] = $customPending;
-            }
+            $this->lookupCustomStates($states, $storeId, $method);
         }
 
-        // Now see what code we've been given and return the relevant bits
+        // Now see what
+        // code we've been given and return the relevant bits
         switch ($code) {
-
             case self::BUCKAROO_SUCCESS:
                 $return = array(
                     $states['success']['state'],
@@ -539,5 +512,76 @@ class TIG_Buckaroo3Extended_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $return;
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return array
+     */
+    protected function setCurrentStates($storeId)
+    {
+        $states = array();
+
+        // Get the states
+        $states['success']['state']   = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/order_state_success', $storeId
+        );
+        $states['failure']['state']   = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/order_state_failed', $storeId
+        );
+        $states['pending']['state']   = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/order_state_pendingpayment', $storeId
+        );
+        $states['incorrect']['state'] = 'holded';
+
+        // Get the default status values
+        $states['success']['status']   = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/order_status_success', $storeId
+        );
+        $states['failure']['status']   = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId
+        );
+        $states['pending']['status']   = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/order_status_pendingpayment', $storeId
+        );
+        $states['incorrect']['status'] = 'buckaroo_incorrect_payment';
+
+        // Magento 1.4 compatibility
+        if (version_compare(Mage::getVersion(), '1.5.0.0', '<')
+            && version_compare(Mage::getVersion(), '1.4.0.0', '>')
+        ) {
+            $states['incorrect']['status'] = 'payment_review';
+        }
+
+        return $states;
+    }
+
+    /**
+     * @param array $states
+     * @param int   $storeId
+     * @param       $method
+     *
+     * @return array
+     */
+    protected function lookupCustomStates($states, $storeId, $method)
+    {
+        $customSuccess = Mage::getStoreConfig('buckaroo/' . $method . '/order_status_success', $storeId);
+        $customFailure = Mage::getStoreConfig('buckaroo/' . $method . '/order_status_failed', $storeId);
+        $customPending = Mage::getStoreConfig('buckaroo/' . $method . '/order_status_pendingpayment', $storeId);
+
+        if (!empty($customSuccess)) {
+            $states['success']['status'] = $customSuccess;
+        }
+
+        if (!empty($customFailure)) {
+            $states['failure']['status'] = $customFailure;
+        }
+
+        if (!empty($customPending)) {
+            $states['pending']['status'] = $customPending;
+        }
+
+        return $states;
     }
 }
