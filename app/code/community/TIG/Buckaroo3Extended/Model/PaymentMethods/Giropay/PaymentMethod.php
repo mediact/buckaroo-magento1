@@ -13,10 +13,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_PaymentMethod extends T
     {
         $session = Mage::getSingleton('checkout/session');
 
-        if(isset($_POST[$this->_code.'_BPE_Bic']))
+        $postData = Mage::app()->getRequest()->getPost();
+
+        if(isset($postData[$this->_code.'_BPE_Bic']))
         {
             $session->setData('additionalFields', array(
-                'bic' => $_POST[$this->_code.'_BPE_Bic'],
+                'bic' => $postData[$this->_code.'_BPE_Bic'],
             ));
         }
 

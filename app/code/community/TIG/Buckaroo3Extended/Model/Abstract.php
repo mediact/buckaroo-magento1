@@ -242,8 +242,9 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     {
         if (empty($this->_order)) {
             $returnUrl = Mage::getUrl(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->getStoreId()));
-            header('location:' . $returnUrl);
-            exit;
+
+            Mage::app()->getResponse()->clearHeaders();
+            Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
         }
     }
 

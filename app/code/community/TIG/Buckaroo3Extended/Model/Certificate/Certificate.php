@@ -15,9 +15,11 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
             && file_exists($_FILES['groups']['tmp_name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value'])
         ) {
             try {
+                $postData = Mage::app()->getRequest()->getPost();
+
                 //check if a certificate name is defined
-                if (!isset($_POST['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'])
-                    || empty($_POST['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'])
+                if (!isset($postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'])
+                    || empty($postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'])
                 ) {
                     Mage::throwException('please enter a name for this certificate');
                 }
@@ -31,17 +33,17 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
                 $names = $collection->getColumnValues('certificate_name');
 
                 //check if chosen certificate name is already in use
-                if (in_array($_POST['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'], $names)) {
+                if (in_array($postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'], $names)) {
                     Mage::throwException(
                         'The certificate name \''
-                        . $_POST['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value']
+                        . $postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value']
                         . '\' is already in use.'
                     );
                 }
 
                 $data = array(
                     'certificate' => file_get_contents($_FILES['groups']['tmp_name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value']),
-                    'certificate_name' => $_POST['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'],
+                    'certificate_name' => $postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'],
                     'upload_date' => date('Y:m:d H:i:s'),
                 );
                 $model->setData($data);

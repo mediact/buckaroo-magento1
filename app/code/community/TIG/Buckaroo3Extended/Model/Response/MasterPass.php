@@ -200,7 +200,10 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 }
