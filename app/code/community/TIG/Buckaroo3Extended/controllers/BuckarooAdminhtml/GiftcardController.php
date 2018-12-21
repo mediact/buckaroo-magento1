@@ -116,7 +116,7 @@ class TIG_Buckaroo3Extended_BuckarooAdminhtml_GiftcardController extends Mage_Ad
         }
 
         $data = $this->getRequest()->getParam('giftcard');
-        if (!is_array($data)){
+        if (!is_array($data)) {
             Mage::getSingleton('adminhtml/session')->addError(
                 $this->__('There was an error saving your giftcard. please check all fields and try again.')
             );
