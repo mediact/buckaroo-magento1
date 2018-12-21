@@ -32,7 +32,7 @@
 class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay extends Mage_Core_Block_Template
 {
     /** @var string */
-    private $transactionKey;
+    protected $_transactionKey;
 
     public function _construct()
     {
@@ -42,8 +42,8 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay extends M
         $orderId = $session->getLastRealOrderId();
 
         /** @var Mage_Sales_Model_Order $order */
-        $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-        $this->transactionKey = $order->getTransactionKey();
+        $order                 = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $this->_transactionKey = $order->getTransactionKey();
     }
 
     /**
@@ -51,7 +51,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay extends M
      */
     public function getTransactionKey()
     {
-        return $this->transactionKey;
+        return $this->_transactionKey;
     }
 
     /**

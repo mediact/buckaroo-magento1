@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form
+    extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
     public function __construct()
     {
@@ -42,14 +43,15 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form extends TI
      *
      * @return float|mixed
      */
-    public function getPlainPaymentFee() {
+    public function getPlainPaymentFee()
+    {
         $paymentFeeWithMarkUp = $this->getMethodLabelAfterHtml(false);
 
         if (!$paymentFeeWithMarkUp) {
             return 0.00;
         }
 
-        $plainPaymentFee = preg_replace('/[^0-9.,]/','',$paymentFeeWithMarkUp);
+        $plainPaymentFee = preg_replace('/[^0-9.,]/', '', $paymentFeeWithMarkUp);
 
         return $plainPaymentFee;
     }
@@ -59,7 +61,8 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Klarna_Checkout_Form extends TI
      *
      * @return bool
      */
-    public function billingIsSameAsShipping() {
+    public function billingIsSameAsShipping()
+    {
         $quote = $this->getQuote();
 
         $oBillingAddress = $quote->getBillingAddress()->getData();

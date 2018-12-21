@@ -1,5 +1,6 @@
 <?php
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Directdebit_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Directdebit_Checkout_Form
+    extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
     public function __construct()
     {
@@ -14,6 +15,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Directdebit_Checkout_Form exten
         if (!$accountHolder) {
             $accountHolder = $this->getName();
         }
+
         return $accountHolder;
     }
 

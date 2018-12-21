@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreLine
 class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay2_Adminhtml_System_Config_Advancedbtn
       extends TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Adminhtml_System_Config_Advancedbtn
 {

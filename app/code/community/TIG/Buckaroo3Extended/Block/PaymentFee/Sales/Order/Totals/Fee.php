@@ -70,7 +70,7 @@ class TIG_Buckaroo3Extended_Block_PaymentFee_Sales_Order_Totals_Fee extends Mage
         $paymentMethod = $order->getPayment()->getMethod();
 
         $displayMode = $this->getDisplayMode();
-        $baseLabel = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($order->getStoreId(),$paymentMethod);
+        $baseLabel = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($order->getStoreId(), $paymentMethod);
 
         if ($displayMode === self::DISPLAY_MODE_EXCL || $displayMode === self::DISPLAY_MODE_BOTH) {
             $label = $baseLabel;

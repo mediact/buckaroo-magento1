@@ -25,6 +25,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_SupportTab
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         return $this->toHtml();
