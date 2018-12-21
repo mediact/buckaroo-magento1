@@ -40,12 +40,15 @@ $installer = $this;
 
 $installer->startSetup();
 
-$installer->run("CREATE TABLE IF NOT EXISTS `{$installer->getTable('buckaroo3extended/giftcard')}` (
-  `entity_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Entity Id',
-  `servicecode` varchar(255) NOT NULL COMMENT 'Servicecode',
-  `label` varchar(255) NOT NULL COMMENT 'Label',
-  PRIMARY KEY (`entity_id`),
-  UNIQUE KEY `UNQ_TIG_BUCKAROO_GIFTCARD_SERVICECODE` (`servicecode`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='TIG Buckaroo Giftcard';");
+$installer->run(
+    "CREATE TABLE IF NOT EXISTS `{$installer->getTable('buckaroo3extended/giftcard')}` (
+      `entity_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Entity Id',
+      `servicecode` varchar(255) NOT NULL COMMENT 'Servicecode',
+      `label` varchar(255) NOT NULL COMMENT 'Label',
+      PRIMARY KEY (`entity_id`),
+      UNIQUE KEY `UNQ_TIG_BUCKAROO_GIFTCARD_SERVICECODE` (`servicecode`)
+    ) 
+    ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='TIG Buckaroo Giftcard';"
+);
 
 $installer->endSetup();

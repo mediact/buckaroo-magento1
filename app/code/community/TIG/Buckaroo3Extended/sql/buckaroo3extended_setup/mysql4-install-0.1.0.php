@@ -3,14 +3,14 @@ $installer = $this;
 
 $installer->startSetup();
 
-$version15 = '1.5.0.0';
-$version19 = '1.9.0.0';
-$version110 = '1.10.0.0';
-$isVersion15 = version_compare(Mage::getVersion(), $version15, '<') ? false : true;
-$isVersion19 = version_compare(Mage::getVersion(), $version19, '<') ? false : true;
-$isVersion110 = version_compare(Mage::getVersion(), $version110, '<') ? false : true;
+$versionFive = '1.5.0.0';
+$versionNine = '1.9.0.0';
+$versionTen = '1.10.0.0';
+$isVersionFive = version_compare(Mage::getVersion(), $versionFive, '<') ? false : true;
+$isVersionNine = version_compare(Mage::getVersion(), $versionNine, '<') ? false : true;
+$isVersionTen = version_compare(Mage::getVersion(), $versionTen, '<') ? false : true;
 
-if (!$isVersion15 || ($isVersion19 && !$isVersion110)) {
+if (!$isVersionFive || ($isVersionNine && !$isVersionTen)) {
     return;
 }
 
@@ -36,25 +36,34 @@ $statusArray = array(
 
 //add the statusses and link them to their defined states
 foreach ($statusArray as $status) {
-    $_stat = Mage::getModel('sales/order_status')->load($status['status']);
+    // @codingStandardsIgnoreLine
+    $stat = Mage::getModel('sales/order_status')->load($status['status']);
 
     /* Add Status */
-    if ($status['is_new'] && $_stat->getStatus()) {
+    if ($status['is_new'] && $stat->getStatus()) {
         return;
     }
 
-    $_stat->setData($status)->setStatus($status['status']);
+    $stat->setData($status)->setStatus($status['status']);
 
     try {
-        $_stat->save();
-    } catch (Mage_Core_Exception $e) {  }
+        // @codingStandardsIgnoreLine
+        $stat->save();
+    } catch (Mage_Core_Exception $e) {
+        throw $e;
+    }
 
     /* Assign Status to State */
-    if ($_stat && $_stat->getStatus()) {
+    if ($stat && $stat->getStatus()) {
         try {
-            $_stat->assignState($status['state'], false);
-        } catch (Mage_Core_Exception $e) {  }
-        catch (Exception $e) {  }
+            $stat->assignState($status['state'], false);
+        } catch (Mage_Core_Exception $e) {
+            throw $e;
+        }
+        catch (Exception $e) {
+            throw $e;
+        }
     }
 }
+
 $installer->endSetup();
