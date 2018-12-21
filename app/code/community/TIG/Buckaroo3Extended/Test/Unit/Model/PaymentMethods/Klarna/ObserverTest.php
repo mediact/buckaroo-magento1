@@ -55,7 +55,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Mage_Sales_Model_Order
      */
-    private function getMockOrder()
+    protected function getMockOrder()
     {
         $mockOrderAddress = $this->getMockBuilder('Mage_Sales_Model_Order_Address')
             ->setMethods(array('getCountryId'))
@@ -70,12 +70,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
         $mockPayment->expects($this->any())->method('getMethod')->willReturn('buckaroo3extended_klarna');
 
         $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
-            ->setMethods(array(
-                'getPayment',
-                'getPaymentMethodUsedForTransaction',
-                'getBillingAddress',
-                'getShippingAddress'
-            ))
+            ->setMethods(
+                array('getPayment', 'getPaymentMethodUsedForTransaction', 'getBillingAddress', 'getShippingAddress')
+            )
             ->getMock();
         $mockOrder->expects($this->any())->method('getPayment')->will($this->returnValue($mockPayment));
         $mockOrder->expects($this->any())->method('getPaymentMethodUsedForTransaction')->willReturn(false);
@@ -88,7 +85,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Varien_Event_Observer
      */
-    private function getMockObserver()
+    protected function getMockObserver()
     {
         $mockOrder = $this->getMockOrder();
 
@@ -481,6 +478,8 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
      */
     public function getPaymentFeeLineProvider()
     {
+        $articleType = TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::KLARNA_ARTICLE_TYPE_HANDLINGFEE;
+
         return array(
             'excl fee' => array(
                 0,
@@ -494,7 +493,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
                     'ArticleQuantity' => array('value' => 1),
                     'ArticleTitle' => array('value' => 'Servicekosten'),
                     'ArticleVat' => array('value' => 0.00),
-                    'ArticleType' => array('value' => TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::KLARNA_ARTICLE_TYPE_HANDLINGFEE),
+                    'ArticleType' => array('value' => $articleType),
                 )
             )
         );
@@ -527,6 +526,8 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
      */
     public function getShipmentCostsLineProvider()
     {
+        $articleType = TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::KLARNA_ARTICLE_TYPE_SHIPMENTFEE;
+
         return array(
             'excl shipment costs' => array(
                 0,
@@ -540,7 +541,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
                     'ArticleQuantity' => array('value' => 1),
                     'ArticleTitle' => array('value' => 'Verzendkosten'),
                     'ArticleVat' => array('value' => 0.00),
-                    'ArticleType' => array('value' => TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer::KLARNA_ARTICLE_TYPE_SHIPMENTFEE),
+                    'ArticleType' => array('value' => $articleType),
                 )
             )
         );

@@ -107,7 +107,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_PaymentMet
      */
     public function testIsAvailable($terminalid, $userAgent, $configuredUserAgent, $expected)
     {
+        // @codingStandardsIgnoreLine
         $_COOKIE['Pos-Terminal-Id'] = $terminalid;
+        // @codingStandardsIgnoreLine
         $_SERVER['HTTP_USER_AGENT'] = $userAgent;
 
         $pospaymentPath = 'buckaroo/buckaroo3extended_pospayment/';

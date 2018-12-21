@@ -33,18 +33,18 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Sources_Payconiq_AvailableCurrencies
     extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_Sources_Payconiq_AvailableCurrencies */
-    protected $instance = null;
+    protected $_instance = null;
 
     /**
      * @return null|TIG_Buckaroo3Extended_Model_Sources_Payconiq_AvailableCurrencies
      */
     protected function _getInstance()
     {
-        if ($this->instance === null) {
-            $this->instance = new TIG_Buckaroo3Extended_Model_Sources_Payconiq_AvailableCurrencies();
+        if ($this->_instance === null) {
+            $this->_instance = new TIG_Buckaroo3Extended_Model_Sources_Payconiq_AvailableCurrencies();
         }
 
-        return $this->instance;
+        return $this->_instance;
     }
 
     public function testToOptionArray()

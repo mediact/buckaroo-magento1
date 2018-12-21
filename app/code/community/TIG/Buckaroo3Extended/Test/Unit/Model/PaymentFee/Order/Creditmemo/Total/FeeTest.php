@@ -66,12 +66,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
     {
         if ($this->_order === null) {
             $this->_order = $this->getMockBuilder('Mage_Sales_Model_Order')
-                ->setMethods(array(
-                    'getBuckarooFee',
-                    'getBaseBuckarooFee',
-                    'getBuckarooFeeRefunded',
-                    'getBaseBuckarooFeeRefunded'
-                ))
+                ->setMethods(
+                    array(
+                        'getBuckarooFee', 'getBaseBuckarooFee', 'getBuckarooFeeRefunded', 'getBaseBuckarooFeeRefunded'
+                    )
+                )
                 ->getMock();
         }
 
@@ -123,8 +122,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
                     'orderRefundFee' => 0,
                     'paramsFee' => 0
                 ),
-                'never',
-                'never'
             ),
             array(
                 false,
@@ -136,8 +133,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
                     'orderRefundFee' => 0,
                     'paramsFee' => 0
                 ),
-                'once',
-                'never'
             ),
             array(
                 true,
@@ -149,8 +144,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
                     'orderRefundFee' => 0,
                     'paramsFee' => 4.56
                 ),
-                'never',
-                'once'
             ),
             array(
                 false,
@@ -162,8 +155,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
                     'orderRefundFee' => 6.78,
                     'paramsFee' => 0
                 ),
-                'once',
-                'never'
             ),
             array(
                 false,
@@ -175,8 +166,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
                     'orderRefundFee' => 0,
                     'paramsFee' => 0
                 ),
-                'never',
-                'never'
             )
         );
     }
@@ -185,12 +174,10 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentFee_Order_Creditmemo_Total_Fe
      * @param $isAdmin
      * @param $isAdminExpects
      * @param $fee
-     * @param $updateTotalsExpects
-     * @param $updateTotalsParamsExpects
      *
      * @dataProvider testCollectProvider
      */
-    public function testCollect($isAdmin, $isAdminExpects, $fee, $updateTotalsExpects, $updateTotalsParamsExpects)
+    public function testCollect($isAdmin, $isAdminExpects, $fee)
     {
         $adminSession = Mage::getSingleton('admin/session');
         $adminSession->expects($this->$isAdminExpects())

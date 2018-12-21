@@ -29,10 +29,11 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_PayTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_PayTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay */
-    private $instance = null;
+    protected $_instance = null;
 
     public function setUp()
     {
@@ -44,11 +45,11 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_PayTest exten
      */
     protected function _getInstance()
     {
-        if ($this->instance === null) {
-            $this->instance = new TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay();
+        if ($this->_instance === null) {
+            $this->_instance = new TIG_Buckaroo3Extended_Block_PaymentMethods_Payconiq_Checkout_Pay();
         }
 
-        return $this->instance;
+        return $this->_instance;
     }
 
     public function testGetTransactionKey()

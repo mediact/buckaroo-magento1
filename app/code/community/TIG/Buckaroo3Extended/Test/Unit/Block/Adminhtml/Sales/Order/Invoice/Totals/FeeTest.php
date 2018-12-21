@@ -75,13 +75,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
             $mockOrder = $this->_getMockOrder();
 
             $this->_invoice = $this->getMockBuilder('Mage_Sales_Model_Order_Invoice')
-                ->setMethods(array(
-                    'getOrder',
-                    'getBuckarooFee',
-                    'getBaseBuckarooFee',
-                    'getBuckarooFeeTax',
-                    'getBaseBuckarooFeeTax'
-                ))
+                ->setMethods(
+                    array(
+                        'getOrder', 'getBuckarooFee', 'getBaseBuckarooFee', 'getBuckarooFeeTax', 'getBaseBuckarooFeeTax'
+                    )
+                )
                 ->getMock();
         }
 

@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Response_AbstractTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Response_AbstractTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_Response_Abstract */
     protected $_instance = null;
