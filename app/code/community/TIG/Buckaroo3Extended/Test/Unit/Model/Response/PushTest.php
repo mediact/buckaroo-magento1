@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Response_PushTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Response_PushTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_Response_Push */
     protected $_instance = null;
@@ -100,9 +101,13 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_PushTest extends TIG_Buckar
         $mockInvoiceCollection = $this->getMockBuilder('Mage_Sales_Model_Resource_Order_Invoice_Collection')
             ->setMethods(array('addFieldToFilter', 'setOrder', 'getFirstItem'))
             ->getMock();
-        $mockInvoiceCollection->expects($this->exactly($expectHasTransaction))->method('addFieldToFilter')->willReturnSelf();
+        $mockInvoiceCollection->expects($this->exactly($expectHasTransaction))
+            ->method('addFieldToFilter')
+            ->willReturnSelf();
         $mockInvoiceCollection->expects($this->exactly($expectHasTransaction))->method('setOrder')->willReturnSelf();
-        $mockInvoiceCollection->expects($this->exactly($expectHasTransaction))->method('getFirstItem')->willReturn($mockInvoice);
+        $mockInvoiceCollection->expects($this->exactly($expectHasTransaction))
+            ->method('getFirstItem')
+            ->willReturn($mockInvoice);
 
         $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
             ->setMethods(array('getInvoiceCollection'))

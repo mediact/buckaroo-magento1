@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer */
     protected $_instance = null;
@@ -64,12 +65,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
             ->will($this->returnValue('buckaroo3extended_afterpay'));
 
         $mockOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
-            ->setMethods(array(
-                'getPayment',
-                'getPaymentMethodUsedForTransaction',
-                'getBillingAddress',
-                'getShippingAddress'
-            ))
+            ->setMethods(
+                array('getPayment', 'getPaymentMethodUsedForTransaction', 'getBillingAddress', 'getShippingAddress')
+            )
             ->getMock();
         $mockOrder->expects($this->any())
             ->method('getPayment')
@@ -180,7 +178,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
 
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
 
-        // TODO: Let the request fill actual data instead of empty/null values to test against
         $this->assertArrayHasKey('customVars', $resultVars);
         $this->assertArrayHasKey('Articles', $resultVars['customVars'][0]);
     }
@@ -252,7 +249,6 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay_ObserverTest
 
         $this->assertInstanceOf('TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer', $resultInstance);
 
-        // TODO: Let the request fill actual data instead of empty/null values to test against
         $this->assertArrayHasKey('customVars', $resultVars);
         $this->assertArrayHasKey('Articles', $resultVars['customVars'][0]);
     }

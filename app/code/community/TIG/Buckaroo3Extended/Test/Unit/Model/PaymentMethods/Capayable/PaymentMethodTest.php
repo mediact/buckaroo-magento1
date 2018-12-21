@@ -107,7 +107,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_PaymentMeth
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/thumbprint', 1);
 
         $billingAddress = $this->getMockBuilder('Mage_Sales_Model_Quote_Address')
-            ->setMethods(['getName', 'getStreetFull', 'getPostcode', 'getCountry'])
+            ->setMethods(array('getName', 'getStreetFull', 'getPostcode', 'getCountry'))
             ->getMock();
         $billingAddress->expects($this->once())->method('getName')->willReturn($billingData['name']);
         $billingAddress->expects($this->once())->method('getStreetFull')->willReturn($billingData['street']);
@@ -115,7 +115,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_PaymentMeth
         $billingAddress->expects($this->once())->method('getCountry')->willReturn($billingData['country']);
 
         $shippingAddress = $this->getMockBuilder('Mage_Sales_Model_Quote_Address')
-            ->setMethods(['getName', 'getStreetFull', 'getPostcode', 'getCountry'])
+            ->setMethods(array('getName', 'getStreetFull', 'getPostcode', 'getCountry'))
             ->getMock();
         $shippingAddress->expects($this->once())->method('getName')->willReturn($shippingData['name']);
         $shippingAddress->expects($this->once())->method('getStreetFull')->willReturn($shippingData['street']);

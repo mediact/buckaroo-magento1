@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Observer_CancelAuthorizeTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Observer_CancelAuthorizeTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_Observer_CancelAuthorize */
     protected $_instance = null;
@@ -134,6 +135,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Observer_CancelAuthorizeTest extends
      */
     public function testSales_order_payment_cancel_authorize($paymentAction, $paymentMethod, $sendRequestExpects)
     {
+        // @codingStandardsIgnoreLine
         $_SERVER['PATH_INFO'] = 'sales_order/cancel';
 
         $mockPayment = $this->_getMockPayment($paymentAction, $paymentMethod);

@@ -61,11 +61,13 @@ $statusArray = array(
 
 foreach ($statusArray as $data) {
     // Get the entity from the database
+    // @codingStandardsIgnoreLine
     $statusDb = Mage::getModel('sales/order_status')->load($data['status']);
 
     // Check if it already has a status - if it doesn't, we're going to add it
     if (!$statusDb->getStatus()) {
         $statusDb->setData($data)->setStatus($data['status']);
+        // @codingStandardsIgnoreLine
         $statusDb->save();
         $statusDb->assignState($data['state'], false);
     }

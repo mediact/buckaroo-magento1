@@ -43,30 +43,38 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
      */
     public static function resetMagento()
     {
+        // @codingStandardsIgnoreLine
         Mage::reset();
 
         Mage::setIsDeveloperMode(true);
         Mage::app(
             'admin',
-                'store',
-                array(
-                    'config_model' => 'TIG_Buckaroo3Extended_Test_Framework_TIG_Test_Config'
-                )
+            'store',
+            array(
+                'config_model' => 'TIG_Buckaroo3Extended_Test_Framework_TIG_Test_Config'
+            )
         )->setResponse(new TIG_Buckaroo3Extended_Test_Framework_TIG_Test_Http_Response());
 
-        $handler = set_error_handler(function() {});
-
-        set_error_handler(function($errno, $errstr, $errfile, $errline) use ($handler) {
-            if (E_WARNING === $errno
-                && 0 === strpos($errstr, 'include(')
-                && substr($errfile, -19) == 'Varien/Autoload.php'
-            ) {
-                return null;
+        $handler = set_error_handler(
+            function() {
             }
-            return call_user_func(
-                $handler, $errno, $errstr, $errfile, $errline
-            );
-        });
+        );
+
+        set_error_handler(
+            function($errno, $errstr, $errfile, $errline) use ($handler) {
+                if (E_WARNING === $errno
+                    && 0 === strpos($errstr, 'include(')
+                    && substr($errfile, -19) == 'Varien/Autoload.php'
+                ) {
+                    return null;
+                }
+
+                // @codingStandardsIgnoreLine
+                return call_user_func(
+                    $handler, $errno, $errstr, $errfile, $errline
+                );
+            }
+        );
     }
 
     public function prepareFrontendDispatch()
@@ -93,10 +101,9 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
 
         foreach ($modules as $module) {
             $class = "$module/session";
-            $sessionMock = $this->getMockBuilder(
-                               Mage::getConfig()->getModelClassName($class)
-                           )->disableOriginalConstructor()
-                            ->getMock();
+            $sessionMock = $this->getMockBuilder(Mage::getConfig()->getModelClassName($class))
+                ->disableOriginalConstructor()
+                ->getMock();
             $sessionMock->expects($this->any())
                         ->method('start')
                         ->will($this->returnSelf());
@@ -105,17 +112,10 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
                         ->will($this->returnSelf());
             $sessionMock->expects($this->any())
                         ->method('getMessages')
-                        ->will($this->returnValue(
-                            Mage::getModel('core/message_collection')
-                        ));
+                        ->will($this->returnValue(Mage::getModel('core/message_collection')));
             $sessionMock->expects($this->any())
                         ->method('getSessionIdQueryParam')
-                        ->will($this->returnValue(
-                            Mage_Core_Model_Session_Abstract::SESSION_ID_QUERY_PARAM
-                        ));
-//            $sessionMock->expects($this->any())
-//                        ->method('getCookieShouldBeReceived')
-//                        ->will($this->returnValue(false));
+                        ->will($this->returnValue(Mage_Core_Model_Session_Abstract::SESSION_ID_QUERY_PARAM));
             $this->setSingletonMock($class, $sessionMock);
             $this->setModelMock($class, $sessionMock);
         }

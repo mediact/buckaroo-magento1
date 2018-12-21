@@ -50,7 +50,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Mage_Sales_Model_Order
      */
-    private function getMockOrder()
+    protected function getMockOrder()
     {
         $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
             ->setMethods(array('getMethod'))
@@ -68,7 +68,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Varien_Event_Observer
      */
-    private function getMockObserver()
+    protected function getMockObserver()
     {
         $mockOrder = $this->getMockOrder();
 
@@ -157,6 +157,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
      */
     public function testBuckaroo3extended_request_addcustomvars($terminalid, $expected)
     {
+        // @codingStandardsIgnoreLine
         $_COOKIE['Pos-Terminal-Id'] = $terminalid;
         $mockObserver = $this->getMockObserver();
 
@@ -298,7 +299,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Pospayment_ObserverTe
         $mockInvoiceCollection->expects($this->exactly($hasInvoices))->method('getFirstItem')->willReturn($mockInvoice);
 
         $mockOrder = $this->getMockOrder();
-        $mockOrder->expects($this->exactly($hasTicket))->method('getInvoiceCollection')->willReturn($mockInvoiceCollection);
+        $mockOrder->expects($this->exactly($hasTicket))
+            ->method('getInvoiceCollection')
+            ->willReturn($mockInvoiceCollection);
 
         $instance = $this->_getInstance();
         $this->invokeMethod($instance, 'saveTicketToInvoice', array($mockOrder, $push));
