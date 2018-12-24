@@ -381,12 +381,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         // Authorize is successful
         if ($response['status'] == TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_SUCCESS ||
             $paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
-
-
             $newStates = $observer->getPush()->getNewStates($response['status']);
             $order->setState($newStates[0])
                   ->save();
-
         }
 
         return $this;
@@ -921,7 +918,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         if (Mage::helper('buckaroo3extended')->isEnterprise()) {
             $discount += (double)$discountData->getGiftCardsAmount();
             $discount += (double)$discountData->getCustomerBalanceAmount();
-
         }
 
         if ($discount <= 0) {

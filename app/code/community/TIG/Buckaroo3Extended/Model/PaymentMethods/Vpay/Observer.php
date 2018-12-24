@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Vpay_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Vpay_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
+    
     protected $_code = 'buckaroo3extended_vpay';
     protected $_method = 'vpay';
     

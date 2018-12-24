@@ -28,6 +28,7 @@ class TIG_Buckaroo3Extended_Model_Response_Quote extends TIG_Buckaroo3Extended_M
             $this->_debugEmail .= "The authenticity of the response could NOT be verified. \n";
             return $this->_verifyError();
         }
+
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
         if (isset($this->_response->Key))

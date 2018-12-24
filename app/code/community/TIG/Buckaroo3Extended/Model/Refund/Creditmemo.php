@@ -55,6 +55,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
                 if (isset($data['do_refund'])) {
                     $creditmemo->setRefundRequested(true);
                 }
+
                 if (isset($data['do_offline'])) {
                     $creditmemo->setOfflineRequested((bool)(int)$data['do_offline']);
                 }
@@ -83,6 +84,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             $this->logException($e->getMessage());
             return false;
         }
+
         return true;
     }
 
@@ -107,6 +109,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
                 $qtys[$orderItemId] = $itemData['qty'];
             }
         }
+
         $data['qtys'] = $qtys;
         $creditmemo = $service->prepareCreditmemo($data);
 
@@ -136,6 +139,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         if ($creditmemo->getInvoice()) {
             $transactionSave->addObject($creditmemo->getInvoice());
         }
+
         $transactionSave->save();
 
         return $this;
@@ -151,6 +155,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         } else {
             $qtys = array();
         }
+
         return $qtys;
     }
 
@@ -176,7 +181,6 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
 
         $totalToRefund = $totalAmount + $this->_order->getBaseTotalRefunded();
         if ($totalToRefund == $this->_order->getBaseGrandTotal()) {
-
             //calculates the total adjustments made by previous creditmemos
             $creditmemos = $this->_order->getCreditmemosCollection();
             $totalAdjustment = 0;
@@ -196,6 +200,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
             if($totalAmount == $this->_order->getBaseGrandTotal()){
                 $remainder = 0;
             }
+
             $data['adjustment_positive'] = $remainder;
         } else {
             //If this is the first adjustment refund on the order, than the fee must be count off.
@@ -280,8 +285,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
         $items = array();
         foreach ($this->_order->getAllItems() as $orderItem)
         {
-            if (!array_key_exists($orderItem->getId(),$items)) {
-
+            if (!array_key_exists($orderItem->getId(), $items)) {
                 $creditAmount = 0;
                 if (isset($this->_postArray['brq_amount_credit'])) {
                     $creditAmount = $this->_postArray['brq_amount_credit'];
@@ -294,6 +298,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Creditmemo extends TIG_Buckaroo3Extende
                 } else {
                     $qty = 0;
                 }
+
                 $items[$orderItem->getId()] = array(
                     'qty' => $qty,
                 );

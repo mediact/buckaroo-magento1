@@ -57,11 +57,13 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
             return $this->_sendRequest();
         } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
-            $responseModel = Mage::getModel($this->_responseModelClass, array(
+            $responseModel = Mage::getModel(
+                $this->_responseModelClass, array(
                 'response'   => false,
                 'XML'        => false,
                 'debugEmail' => $this->_debugEmail,
-            ));
+                )
+            );
             return $responseModel->setOrder($this->_order)
                           ->processResponse();
         }
@@ -71,11 +73,13 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
     {
         if (empty($this->_order)) {
             $this->_debugEmail .= "No order was set! :( \n";
-            return Mage::getModel($this->_responseModelClass, array(
+            return Mage::getModel(
+                $this->_responseModelClass, array(
                 'response'   => false,
                 'XML'        => false,
                 'debugEmail' => $this->_debugEmail,
-            ))->processResponse();
+                )
+            )->processResponse();
         }
 
         if($this->_order->hasTransactionKey()){
@@ -99,11 +103,13 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         //if no method has been set (no payment method could identify the chosen method) process the order as if it had failed
         if (empty($this->_method)) {
             $this->_debugEmail .= "No method was set! :( \n";
-            $responseModel = Mage::getModel($this->_responseModelClass, array(
+            $responseModel = Mage::getModel(
+                $this->_responseModelClass, array(
                 'response'   => false,
                 'XML'        => false,
                 'debugEmail' => $this->_debugEmail,
-            ));
+                )
+            );
             if (!$responseModel->getOrder()) {
                 $responseModel->setOrder($this->_order);
             }
@@ -159,15 +165,18 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
         $this->_debugEmail .= "Processing response... \n";
 
         //process the response
-        $responseModel = Mage::getModel($this->_responseModelClass, array(
+        $responseModel = Mage::getModel(
+            $this->_responseModelClass, array(
             'response'   => $response,
             'XML'        => $responseXML,
             'debugEmail' => $this->_debugEmail,
-        ));
+            )
+        );
 
         if (!$responseModel->getOrder()) {
             $responseModel->setOrder($this->_order);
         }
+
         return $responseModel->processResponse();
     }
 
@@ -201,10 +210,12 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
 
     protected function _addShopVariables()
     {
-        $returnUrl = Mage::getUrl('buckaroo3extended/notify/return', array(
+        $returnUrl = Mage::getUrl(
+            'buckaroo3extended/notify/return', array(
             '_secure' => true,
             '_store' => $this->_order->getStoreId(),
-        ));
+            )
+        );
 
         $merchantKey = Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $this->_order->getStoreId());
         $description = Mage::getStoreConfig('buckaroo/buckaroo3extended/payment_description', $this->_order->getStoreId());
@@ -254,6 +265,7 @@ class TIG_Buckaroo3Extended_Model_Request_Abstract extends TIG_Buckaroo3Extended
             if ($correctAmount == 0) {
                 $correctAmount = $this->_order->getBillingAddress()->getBaseGrandTotal();
             }
+
             if ($correctAmount > 0) {
                 $totalAmount = $correctAmount;
             }

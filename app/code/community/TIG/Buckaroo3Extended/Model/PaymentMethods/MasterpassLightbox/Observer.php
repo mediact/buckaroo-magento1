@@ -67,7 +67,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
         $serviceVersion = $this->_getServiceVersion();
         $array = array(
             $this->_method     => array(
-                'action'	=> 'PaymentInvitation',
+                'action'    => 'PaymentInvitation',
                 'version'   => $serviceVersion,
             ),
         );
@@ -81,7 +81,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
 
         if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
             $array['creditmanagement'] = array(
-                'action'	=> 'Invoice',
+                'action'    => 'Invoice',
                 'version'   => 1,
             );
         }
@@ -153,7 +153,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
             $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
                 + $item->getBaseTaxAmount()
                 + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice,2);
+            $productPrice = round($productPrice, 2);
 
 
             $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
@@ -207,7 +207,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
             }
 
             // repair empty shipping costs
-            $array['ShippingCosts'] = (string) round($shippingCosts,2);
+            $array['ShippingCosts'] = (string) round($shippingCosts, 2);
         }
 
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
@@ -233,9 +233,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_MasterpassLightbox_Observer
         if($fee > 0){
             $article['ArticleDescription']['value'] = 'Servicekosten';
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = (string) round($feeTotal,2);
+            $article['ArticleUnitPrice']['value']   = (string) round($feeTotal, 2);
             return $article;
         }
+
         return false;
     }
 

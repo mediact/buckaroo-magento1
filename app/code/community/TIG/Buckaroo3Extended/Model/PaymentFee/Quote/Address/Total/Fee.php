@@ -98,14 +98,14 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
          */
         $paymentMethod = $quote->getPayment()->getMethod();
 
-        if(strpos($paymentMethod,'buckaroo') === false){
+        if(strpos($paymentMethod, 'buckaroo') === false){
             return $this;
         }
 
         /**
          * Get the fee amount.
          */
-        $baseFee = $this->_getPaymentFee($quote,$paymentMethod);
+        $baseFee = $this->_getPaymentFee($quote, $paymentMethod);
         if ($baseFee <= 0) {
             return $this;
         }
@@ -163,7 +163,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
         $address->addTotal(
             array(
                 'code'  => $this->getCode(),
-                'title' => Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($storeId,$paymentMethod,$amount),
+                'title' => Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($storeId, $paymentMethod, $amount),
                 'value' => $amount,
             )
         );

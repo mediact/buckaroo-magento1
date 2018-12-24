@@ -122,9 +122,11 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
         if (empty($masterPassData['order']['addresses']['billing']['telephone'])) {
             $masterPassData['order']['addresses']['billing']['telephone'] = '-';
         }
+
         if (empty($masterPassData['order']['addresses']['shipping']['telephone'])) {
             $masterPassData['order']['addresses']['shipping']['telephone'] = '-';
         }
+
         return $masterPassData;
     }
 
@@ -154,8 +156,10 @@ class TIG_Buckaroo3Extended_Model_Response_MasterPass extends TIG_Buckaroo3Exten
             ) {
                 $value = urldecode($value);
             }
+
             $signatureString .= $key . '=' . $value;
         }
+
         $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', Mage::app()->getStore()->getId());
 
         $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";

@@ -139,7 +139,8 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
      *
      * @return bool
      */
-    protected function _lockIsExpired(){
+    protected function _lockIsExpired()
+    {
         $varDir     = Mage::getConfig()->getVarDir('locks');
         $file       = $varDir . DS . 'buckaroo_process_'.$this->getId().'.lock';
 
@@ -159,10 +160,11 @@ class TIG_Buckaroo3Extended_Model_Process extends Mage_Index_Model_Process
                     . '5 minutes ago in timestamp: '.$fiveMinAgo;
 
         if($time <= $fiveMinAgo){
-            $fp = fopen($file,'w');
+            $fp = fopen($file, 'w');
             flock($fp, LOCK_UN);
             return true;
         }
+
         return false;
     }
 }

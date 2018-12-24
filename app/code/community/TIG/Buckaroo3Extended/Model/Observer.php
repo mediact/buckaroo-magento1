@@ -44,7 +44,6 @@ class TIG_Buckaroo3Extended_Model_Observer extends Mage_Core_Model_Abstract
         //get all activated payment methods
         $payments = Mage::getSingleton('payment/config')->getActiveMethods();
         foreach ($payments as $payment) {
-
             //get the code and check if its a buckaroo2012 payment method
             $code = $payment->getCode();
             $isBuckaroo = strpos($code, 'buckaroo3extended');
@@ -59,12 +58,12 @@ class TIG_Buckaroo3Extended_Model_Observer extends Mage_Core_Model_Abstract
                         //set the title as the new path
                         Mage::getModel('core/config')->saveConfig('payment/' . $code . '/title', $title, 'stores', Mage::app()->getStore($eachStore)->getId());
                     }
+
                     if (!is_null($sort_order) && $title !== '') {
                         //set the sort_order as the new path
                         Mage::getModel('core/config')->saveConfig('payment/' . $code . '/sort_order', $sort_order, 'stores', Mage::app()->getStore($eachStore)->getId());
                     }
                 }
-
             }
         }
     }

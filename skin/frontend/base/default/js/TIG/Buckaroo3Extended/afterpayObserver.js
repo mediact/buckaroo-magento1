@@ -38,7 +38,8 @@
 
 var phoneNumber = false;
 
-document.observe('change', function(e) {
+document.observe(
+    'change', function (e) {
     if (e.findElement('#p_method_buckaroo3extended_afterpay')) {
        phoneNumber = jQuery_1123("#billing\\:telephone").val();
 
@@ -60,9 +61,12 @@ document.observe('change', function(e) {
         }
     }
 
-    jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').change(function(e) {
+    jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').change(
+        function (e) {
         jQuery_1123("#billing\\:telephone").val(jQuery_1123('#buckaroo3extended_afterpay_BPE_Customerphone').val());
-    });
+        }
+    );
 
-});
+    }
+);
 

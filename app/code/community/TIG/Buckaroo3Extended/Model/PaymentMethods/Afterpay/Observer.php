@@ -101,12 +101,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         // Authorize is successful
         if ($response['status'] == TIG_Buckaroo3Extended_Helper_Data::BUCKAROO_SUCCESS ||
             $paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
-
-
             $newStates = $observer->getPush()->getNewStates($response['status']);
             $order->setState($newStates[0])
                   ->save();
-
         }
 
         return $this;
@@ -374,7 +371,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $billingInfo = array(
             'BillingTitle'             => $billingAddress->getFirstname(),
             'BillingGender'            => $additionalFields['BPE_Customergender'],
-            'BillingInitials'          => strtoupper(substr($billingAddress->getFirstname(),0,1)),
+            'BillingInitials'          => strtoupper(substr($billingAddress->getFirstname(), 0, 1)),
             'BillingLastName'          => $billingAddress->getLastname(),
             'BillingBirthDate'         => $additionalFields['BPE_customerbirthdate'],
             'BillingStreet'            => $streetFull['street'],
@@ -388,7 +385,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             'BillingPhoneNumber'       => $billingPhonenumber['clean'],
             'BillingLanguage'          => $billingAddress->getCountryId(),
         );
-        $requestArray = array_merge($requestArray,$billingInfo);
+        $requestArray = array_merge($requestArray, $billingInfo);
 
         // Compatible with postnl pakjegemak
         $pakjeGemakAddress = false;
@@ -413,7 +410,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'AddressesDiffer'           => 'true',
                 'ShippingTitle'             => $shippingAddress->getFirstname(),
                 'ShippingGender'            => $additionalFields['BPE_Customergender'],
-                'ShippingInitials'          => strtoupper(substr($shippingAddress->getFirstname(),0,1)),
+                'ShippingInitials'          => strtoupper(substr($shippingAddress->getFirstname(), 0, 1)),
                 'ShippingLastName'          => $shippingAddress->getLastname(),
                 'ShippingBirthDate'         => $additionalFields['BPE_customerbirthdate'],
                 'ShippingStreet'            => $streetFull['street'],
@@ -443,7 +440,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 $shippingInfo['ShippingPhoneNumber']       = $pakjeGemakAddress->getTelephone();
             }
 
-            $requestArray = array_merge($requestArray,$shippingInfo);
+            $requestArray = array_merge($requestArray, $shippingInfo);
         }
 
         //customer info
@@ -479,15 +476,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $discount += abs((double)$discountData->getCustomerBalanceAmount());
         }
 
-        $discount = round($discount,2);
+        $discount = round($discount, 2);
 
         //add order Info
         $orderInfo = array(
             'Discount'      => $discount,
         );
 
-        $requestArray = array_merge($requestArray,$customerInfo);
-        $requestArray = array_merge($requestArray,$orderInfo);
+        $requestArray = array_merge($requestArray, $customerInfo);
+        $requestArray = array_merge($requestArray, $orderInfo);
         //is B2B
         if($additionalFields['BPE_B2B'] == 2){
             $b2bInfo = array(
@@ -495,7 +492,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 'CompanyCOCRegistration' => $additionalFields['BPE_CompanyCOCRegistration'],
                 'CompanyName'            => $additionalFields['BPE_CompanyName'],
             );
-            $requestArray = array_merge($requestArray,$b2bInfo);
+            $requestArray = array_merge($requestArray, $b2bInfo);
         }
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
@@ -547,7 +544,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
                 + $item->getBaseTaxAmount()
                 + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice,2);
+            $productPrice = round($productPrice, 2);
 
 
             $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
@@ -643,7 +640,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $productPrice = ($item->getBasePrice() * $item->getQty())
                 + $item->getBaseTaxAmount()
                 + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice,2);
+            $productPrice = round($productPrice, 2);
 
             $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
             $article['ArticleId']['value']          = $item->getOrderItemId();
@@ -658,6 +655,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
                 $i++;
                 continue;
             }
+
             break;
         }
 
@@ -828,10 +826,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             $article['ArticleDescription']['value'] = 'Servicekosten';
             $article['ArticleId']['value']          = 1;
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = round($fee+$feeTax,2);
+            $article['ArticleUnitPrice']['value']   = round($fee+$feeTax, 2);
             $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
             return $article;
         }
+
         return false;
     }
 
@@ -902,7 +901,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             if(strlen((string)$return['clean']) == 13) {
                 $return['valid'] = true;
             }
-
         } elseif (strlen((string)$number) == 12 or strlen((string)$number) == 11) {
             //if the number is equal to 11 or 12, it means that they used a + in their number instead of 00
             $return['mobile'] = $this->_isMobileNumber($number);
@@ -910,11 +908,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
             if(strlen((string)$return['clean']) == 13) {
                 $return['valid'] = true;
             }
-
         } elseif (strlen((string)$number) == 10) {
             //this means that the user has no trailing "0031" and therfore only
             $return['mobile'] = $this->_isMobileNumber($number);
-            $return['clean'] = '0031'.substr($number,1);
+            $return['clean'] = '0031'.substr($number, 1);
             if (strlen((string) $return['clean']) == 13) {
                 $return['valid'] = true;
             }
@@ -1014,9 +1011,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_Observer extends TIG_B
         $addressDiff = array_diff($oBillingAddressFiltered, $oShippingAddressFiltered);
 
         //if
-        if( !empty($addressDiff) ) { // billing and shipping addresses are different
+        if(!empty($addressDiff)) { // billing and shipping addresses are different
             return true;
         }
+
         return false;
     }
 }

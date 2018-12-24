@@ -230,7 +230,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
             if(strlen((string)$return['clean']) == 13) {
                 $return['valid'] = true;
             }
-
         } elseif (strlen((string)$number) == 12 or strlen((string)$number) == 11) {
             //if the number is equal to 11 or 12, it means that they used a + in their number instead of 00
             $return['mobile'] = $this->_isMobileNumber($number);
@@ -238,11 +237,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
             if(strlen((string)$return['clean']) == 13) {
                 $return['valid'] = true;
             }
-
         } elseif (strlen((string)$number) == 10) {
             //this means that the user has no trailing "0031" and therfore only
             $return['mobile'] = $this->_isMobileNumber($number);
-            $return['clean'] = '0031'.substr($number,1);
+            $return['clean'] = '0031'.substr($number, 1);
             if (strlen((string) $return['clean']) == 13) {
                 $return['valid'] = true;
             }

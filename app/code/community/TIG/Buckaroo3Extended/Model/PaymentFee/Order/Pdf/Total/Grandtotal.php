@@ -111,6 +111,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Grandtotal extends 
                     }
                 }
             }
+
             $taxClassAmount = $tax_info;
         }
 

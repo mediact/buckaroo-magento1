@@ -81,12 +81,14 @@ class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_
             return $this->_sendRequest();
         } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
-            $responseModel = Mage::getModel($this->_responseModelClass, array(
+            $responseModel = Mage::getModel(
+                $this->_responseModelClass, array(
                 'response'   => false,
                 'XML'        => false,
                 'debugEmail' => $this->_debugEmail,
                 'payment'    => $this->_payment
-            ));
+                )
+            );
             return $responseModel->setOrder($this->_order)
                 ->processResponse();
         }
@@ -142,16 +144,19 @@ class TIG_Buckaroo3Extended_Model_Request_Capture extends TIG_Buckaroo3Extended_
         $this->_debugEmail .= "Processing response... \n";
 
         //process the response
-        $responseModel = Mage::getModel($this->_responseModelClass, array(
+        $responseModel = Mage::getModel(
+            $this->_responseModelClass, array(
             'response'   => $response,
             'XML'        => $responseXML,
             'debugEmail' => $this->_debugEmail,
             'payment'    => $this->_payment,
-        ));
+            )
+        );
 
         if (!$responseModel->getOrder()) {
             $responseModel->setOrder($this->_order);
         }
+
         return $responseModel->processResponse();
     }
 }

@@ -17,9 +17,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giropay_PaymentMethod extends T
 
         if(isset($postData[$this->_code.'_BPE_Bic']))
         {
-            $session->setData('additionalFields', array(
+            $session->setData(
+                'additionalFields', array(
                 'bic' => $postData[$this->_code.'_BPE_Bic'],
-            ));
+                )
+            );
         }
 
         return Mage::getUrl('buckaroo3extended/checkout/checkout', array('_secure' => true, 'method' => $this->_code));

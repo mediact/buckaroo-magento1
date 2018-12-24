@@ -88,7 +88,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Service
 
             $taxCollection = Mage::getResourceModel('sales/order_tax_collection')
                                  ->addFieldToFilter('order_id', array('eq'  => $order->getId()))
-                                 ->addFieldToFilter('tax_id',   array('nin' => $taxItemIds));
+                                 ->addFieldToFilter('tax_id', array('nin' => $taxItemIds));
 
             /**
              * If we have found a missing record, we need to add it with the COD fee tax info. Otherwise we need to

@@ -100,6 +100,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
         if ($chosenMethod === $this->_code) {
             $ret = true;
         }
+
         return $ret;
     }
 

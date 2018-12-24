@@ -86,8 +86,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         } else {
             $array = array();
         }
-        $array['MerchantSendsEmail'] = Mage::getStoreConfig('buckaroo/buckaroo3extended_payperemail/send_mail'
-                                       , $this->_order->getStoreId()) ? 'false' : 'true';
+
+        $array['MerchantSendsEmail'] = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_payperemail/send_mail', $this->_order->getStoreId()
+        ) ? 'false' : 'true';
         $array['PaymentMethodsAllowed'] = $this->_getPaymentMethodsAllowed();
 
         if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
@@ -95,6 +97,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         } else {
             $vars['customVars'][$this->_method] = $array;
         }
+
         $request->setVars($vars);
 
         return $this;
@@ -156,6 +159,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Payperemail_Observer extends TI
         ) {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
         }
+
         $order->save();
 
         return $this;

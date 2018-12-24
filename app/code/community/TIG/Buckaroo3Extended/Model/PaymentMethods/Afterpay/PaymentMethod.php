@@ -83,9 +83,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         $accountNumber = isset($post[$this->_code . '_bpe_customer_account_number']) ? $post[$this->_code . '_bpe_customer_account_number'] : '';
 
         $customerBirthDate = date(
-            'Y-m-d', strtotime($post['payment'][$this->_code]['year']
+            'Y-m-d', strtotime(
+                $post['payment'][$this->_code]['year']
                 . '-' . $post['payment'][$this->_code]['month']
-                . '-' . $post['payment'][$this->_code]['day'])
+                . '-' . $post['payment'][$this->_code]['day']
+            )
         );
 
         $array = array(
@@ -103,7 +105,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
                 'BPE_CompanyName'            => $post[$this->_code . '_BPE_CompanyName'],
             );
 
-            $array = array_merge($array,$additionalArray);
+            $array = array_merge($array, $additionalArray);
         }
 
         return $array;
@@ -117,7 +119,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
         $array = $this->_getBPEPostData($post);
 
-        $session->setData('additionalFields',$array);
+        $session->setData('additionalFields', $array);
 
         return parent::getOrderPlaceRedirectUrl();
     }
@@ -125,8 +127,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
     public function validate()
     {
         $postData = Mage::app()->getRequest()->getPost();
-        if (
-            !array_key_exists($this->_code . '_bpe_accept', $postData)
+        if (!array_key_exists($this->_code . '_bpe_accept', $postData)
             || $postData[$this->_code . '_bpe_accept'] != 'checked'
         ) {
             Mage::throwException(
@@ -181,12 +182,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         }
 
         // Check if the country specified in the billing address is allowed to use this payment method
-        if (
-            $quote
+        if ($quote
             && Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $storeId) == 1
             && $quote->getBillingAddress()->getCountry())
         {
-            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', $storeId));
+            $allowedCountries = explode(',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', $storeId));
             $country = $quote->getBillingAddress()->getCountry();
 
             if (!in_array($country, $allowedCountries)) {
@@ -200,13 +200,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         }
 
         // Check if the paymentmethod is available in the current shop area (frontend or backend)
-        if (
-            $areaAllowed == 'backend'
+        if ($areaAllowed == 'backend'
             && !Mage::helper('buckaroo3extended')->isAdmin()
         ) {
             return false;
-        } elseif (
-            $areaAllowed == 'frontend'
+        } elseif ($areaAllowed == 'frontend'
             && Mage::helper('buckaroo3extended')->isAdmin()
         ) {
             return false;
@@ -214,8 +212,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
         // Check if max amount for the issued PaymentMethod is set and if the quote basegrandtotal exceeds that
         $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', $storeId);
-        if (
-            $quote
+        if ($quote
             && !empty($maxAmount)
             && $quote->getBaseGrandTotal() > $maxAmount
         ) {
@@ -224,8 +221,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
         // check if min amount for the issued PaymentMethod is set and if the quote basegrandtotal is less than that
         $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', $storeId);
-        if (
-            $quote
+        if ($quote
             && !empty($minAmount)
             && $quote->getBaseGrandTotal() < $minAmount
         ) {

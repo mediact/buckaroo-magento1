@@ -43,15 +43,18 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
                 return $invoice;
             }
         }
+
         return false;
     }
 
-    public function __construct($data) {
+    public function __construct($data) 
+    {
         if (strpos(__DIR__, '/Model') !== false) {
             $dir = str_replace('/Model/Refund/Request', '/certificate', __DIR__);
         } else {
             $dir = str_replace('/includes/src', '/app/code/community/TIG/Buckaroo3Extended/certificate', __DIR__);
         }
+
         define('CERTIFICATE_DIR', $dir);
 
         $this->setAmount($data['amount']);
@@ -64,6 +67,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         if ($invoice === false) {
             Mage::throwException($this->_getHelper()->__('Refund action is not available.'));
         }
+
         $this->setInvoice($invoice->getId());
 
         $this->_setOrderBillingInfo();
@@ -91,7 +95,8 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
     /**
      * @return string
      */
-    protected function _getTransactionId() {
+    protected function _getTransactionId() 
+    {
         if ($this->_payment->getParentTransactionId()) {
             return $this->_payment->getParentTransactionId();
         } elseif ($this->_payment->getLastTransId()) {
@@ -179,7 +184,8 @@ class TIG_Buckaroo3Extended_Model_Refund_Request_Abstract extends TIG_Buckaroo3E
         {
             $tax += $taxRecord['amount'];
         }
-        $tax = round($tax,2);
+
+        $tax = round($tax, 2);
 
         $this->_vars['currency']     = $currency;
         $this->_vars['amountCredit'] = $totalAmount;
