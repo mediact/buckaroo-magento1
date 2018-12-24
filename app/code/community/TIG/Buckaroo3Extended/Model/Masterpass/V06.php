@@ -9,7 +9,7 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
         try {
             // get quote from session
             $session = Mage::getSingleton('checkout/session');
-            $quote = $session->getQuote();
+            $quote   = $session->getQuote();
 
             // set Masterpass as chosen payment method
             $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_masterpassLightbox_paymentMethod');
@@ -26,11 +26,15 @@ class TIG_Buckaroo3Extended_Model_Masterpass_v06
         } catch (Exception $e) {
             Mage::helper('buckaroo3extended')->logException($e);
 
-            return Mage::getModel('buckaroo3extended/response_abstract', array(
-                'response'   => false,
-                'XML'        => false,
-                'debugEmail' => isset($quoteRequest) ? $quoteRequest->getDebugEmail() : '',
-            ))->processResponse();
+            $responseAbstract = Mage::getModel(
+                'buckaroo3extended/response_abstract', array(
+                    'response'   => false,
+                    'XML'        => false,
+                    'debugEmail' => isset($quoteRequest) ? $quoteRequest->getDebugEmail() : '',
+                )
+            );
+
+            return $responseAbstract->processResponse();
         }
     }
 
