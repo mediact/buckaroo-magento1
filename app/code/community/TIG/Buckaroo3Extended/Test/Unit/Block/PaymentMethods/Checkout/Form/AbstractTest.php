@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Checkout_Form_AbstractTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Checkout_Form_AbstractTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract */
     protected $_instance = null;
@@ -51,7 +52,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Checkout_Form_Abstrac
         return $this->_instance;
     }
 
-    private function setMethodCode()
+    protected function setMethodCode()
     {
         $methodMock = $this->getMockForAbstractClass(
             'Mage_Payment_Model_Method_Abstract',
@@ -128,7 +129,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Checkout_Form_Abstrac
 
         $this->setMethodCode();
 
-        $customerMock = $this->getMockBuilder('Mage_Customer_Model_Customer')->setMethods(array('getGender'))->getMock();
+        $customerMock = $this->getMockBuilder('Mage_Customer_Model_Customer')
+            ->setMethods(array('getGender'))
+            ->getMock();
         $customerMock->expects($this->exactly((int)!$sessionGender))
             ->method('getGender')
             ->willReturn($customerGender);
@@ -196,11 +199,13 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Checkout_Form_Abstrac
         $checkoutSession->method('getQuote')->willReturn($quoteMock);
         $checkoutSession->expects($this->exactly(3))
             ->method('getData')
-            ->withConsecutive($this->onConsecutiveCalls(
-                'tig_method_customerbirthdate[day]',
-                'tig_method_customerbirthdate[month]',
-                'tig_method_customerbirthdate[year]'
-            ))
+            ->withConsecutive(
+                $this->onConsecutiveCalls(
+                    'tig_method_customerbirthdate[day]',
+                    'tig_method_customerbirthdate[month]',
+                    'tig_method_customerbirthdate[year]'
+                )
+            )
             ->willReturnOnConsecutiveCalls(
                 $sessionDob['day'],
                 $sessionDob['month'],

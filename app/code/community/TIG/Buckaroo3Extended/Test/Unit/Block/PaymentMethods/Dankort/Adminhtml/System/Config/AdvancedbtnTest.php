@@ -41,7 +41,8 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_PaymentMethods_Dankort_Adminhtml_Sys
     protected function _getInstance()
     {
         if ($this->_instance === null) {
-            $this->_instance = new TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn();
+            $className = 'TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn';
+            $this->_instance = new $className();
         }
 
         return $this->_instance;

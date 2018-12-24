@@ -9,7 +9,7 @@ $conn->changeColumn(
     'certificate_name',
     'certificate_name',
     'varchar(255) NOT NULL'
-    );
+);
     
 $conn->addColumn($installer->getTable('sales/order'), 'buckaroo_secure_enrolled', 'smallint(5) null');
     

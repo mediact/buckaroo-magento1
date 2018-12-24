@@ -3,6 +3,7 @@
 function sendData(element)
 {
     jQuery_1123.post(
+        <?php // @codingStandardsIgnoreLine ?>
          '<?php echo Mage::getUrl('buckaroo3extended/checkout/saveData', array('_secure'=>true)); ?>',
          {
              name: element.attr('name'),
@@ -11,7 +12,9 @@ function sendData(element)
      );
 }
 </script>
-<script type="text/javascript" src="<?php echo $this->getSkinUrl('js/TIG/Buckaroo3Extended/saveData.js', array('_secure' => true)); ?>"></script>
+<?php $skinUrl = $this->getSkinUrl('js/TIG/Buckaroo3Extended/saveData.js', array('_secure' => true)); ?>
+<?php // @codingStandardsIgnoreLine ?>
+<script type="text/javascript" src="<?php echo $skinUrl; ?>"></script>
 <![endif]>
 
 <script type="text/javascript">
@@ -29,10 +32,15 @@ document.observe('dom:loaded', function(){
         return $sum % 97 == 1;
     }
 
-    Validation.add('validate-buckaroo-iban','<?php echo Mage::helper('buckaroo3extended')->__('Please enter a valid IBAN.'); ?>', function(value){
-        var pattern = new RegExp('^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$');
-        return (pattern.test(value) && isValidIBAN(value));
-    });
+    Validation.add(
+        'validate-buckaroo-iban',
+        <?php // @codingStandardsIgnoreLine ?>
+        '<?php echo Mage::helper('buckaroo3extended')->__('Please enter a valid IBAN.'); ?>',
+        function(value){
+            var pattern = new RegExp('^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}$');
+            return (pattern.test(value) && isValidIBAN(value));
+        }
+    );
 
 });
 </script>
