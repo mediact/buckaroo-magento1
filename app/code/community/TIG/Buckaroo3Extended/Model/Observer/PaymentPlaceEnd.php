@@ -77,7 +77,7 @@ class TIG_Buckaroo3Extended_Model_Observer_PaymentPlaceEnd extends Mage_Core_Mod
      *
      * @return array
      */
-    private function getAvailableStates($order, $orderStatus)
+    protected function getAvailableStates($order, $orderStatus)
     {
         if (version_compare(Mage::getVersion(), "1.8") != -1) {
             return $order->getConfig()->getStatusStates($orderStatus);

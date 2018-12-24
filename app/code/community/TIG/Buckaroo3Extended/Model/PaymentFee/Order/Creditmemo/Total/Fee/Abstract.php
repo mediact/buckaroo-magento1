@@ -91,7 +91,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
      */
     public function getFeeIsInclTax($store = null)
     {
-        if (is_null($store)) {
+        if (!$store) {
             $storeId = Mage::app()->getStore()->getId();
         } elseif ($store instanceof Mage_Core_Model_Store) {
             $storeId = $store->getId();
@@ -164,7 +164,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
      */
     protected function _getBuckarooFeeTax($address, $taxRate, $fee = null, $isInclTax = false)
     {
-        if (is_null($fee)) {
+        if ($fee === null) {
             $fee = (float) $address->getBuckarooFee();
         }
 
@@ -192,7 +192,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
      */
     protected function _getBaseBuckarooFeeTax($address, $taxRate, $fee = null, $isInclTax = false)
     {
-        if (is_null($fee)) {
+        if ($fee === null) {
             $fee = (float) $address->getBaseBuckarooFee();
         }
 

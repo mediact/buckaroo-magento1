@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod
+    extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
         'EUR',
@@ -89,7 +90,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
      *
      * @return array
      */
-    private function getAddressData($address)
+    protected function getAddressData($address)
     {
         $data = array(
             'firstname'  => $address->getFirstname(),
@@ -136,7 +137,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
     /**
      * @return array
      */
-    private function getBPEPostData()
+    protected function getBPEPostData()
     {
         $post = Mage::app()->getRequest()->getPost();
 
@@ -161,7 +162,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
      *
      * @return false|string
      */
-    private function getBirthdate($birthdateData)
+    protected function getBirthdate($birthdateData)
     {
         $customerBirthDate = date(
             'Y-m-d',
@@ -176,6 +177,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod extends
      *
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function getRejectedMessage($responseData)
     {
         $rejectedMessage = "Your request to pay with Capayable has been rejected. "

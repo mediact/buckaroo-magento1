@@ -90,7 +90,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Tax extends Mage_Ta
             }
         } else {
             $fullInfo = $this->_getFullRateInfo();
-            $tax_info = array();
+            $taxInfo = array();
 
             if ($fullInfo) {
                 foreach ($fullInfo as $info) {
@@ -103,7 +103,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Tax extends Mage_Ta
                     foreach ($info['rates'] as $rate) {
                         $percent = $rate['percent'] ? ' (' . $rate['percent']. '%)' : '';
 
-                        $tax_info[] = array(
+                        $taxInfo[] = array(
                             'amount'    => $this->getAmountPrefix() . $this->getOrder()->formatPriceTxt($_amount),
                             'label'     => $this->_getTaxHelper()->__($rate['title']) . $percent . ':',
                             'font_size' => $fontSize
@@ -112,7 +112,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Tax extends Mage_Ta
                 }
             }
 
-            $taxClassAmount = $tax_info;
+            $taxClassAmount = $taxInfo;
         }
 
         return $taxClassAmount;

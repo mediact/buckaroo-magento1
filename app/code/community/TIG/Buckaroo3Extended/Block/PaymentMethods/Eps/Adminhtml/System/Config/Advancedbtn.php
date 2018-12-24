@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Eps_Adminhtml_System_Config_Advancedbtn extends Mage_Adminhtml_Block_Abstract
-                                                                                 implements Varien_Data_Form_Element_Renderer_Interface
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Eps_Adminhtml_System_Config_Advancedbtn
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface
 {
     protected $_template = 'buckaroo3extended/eps_system/config/advancedbtn.phtml';
 
