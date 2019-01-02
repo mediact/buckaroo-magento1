@@ -154,7 +154,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         }
 
         if ($dob) {
-            $dob = Mage::getSingleton('core/date')->gmtDate('Y-m-d', $dob);
+            $dob = Mage::getSingleton('core/date')->date('Y-m-d', $dob);
         }
 
         return $dob;
