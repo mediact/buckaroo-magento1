@@ -32,8 +32,9 @@
 
 $ajaxUrl = $this->getAjaxUrl();
 ?>
-
+<?php // @codingStandardsIgnoreLine ?>
 <?php echo $this->__('You can pay at the cash register now.'); ?><br>
+<?php // @codingStandardsIgnoreLine ?>
 <?php echo $this->__('You will be redirected to the next page once the payment has been fullfilled.'); ?>
 
 <script type="text/javascript">
@@ -43,6 +44,7 @@ $ajaxUrl = $this->getAjaxUrl();
 
     function checkOrderState()
     {
+        <?php // @codingStandardsIgnoreLine ?>
         new Ajax.Request('<?php echo $ajaxUrl; ?>',{
             method: 'post',
             parameters: null,

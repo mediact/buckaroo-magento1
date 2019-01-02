@@ -55,24 +55,28 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Dankort_ObserverTest
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Varien_Event_Observer
      */
-    private function getObserverMock()
+    protected function getObserverMock()
     {
-        $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')->setMethods(['getMethod'])->getMock();
+        $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
+            ->setMethods(array('getMethod'))
+            ->getMock();
         $paymentMock->expects($this->once())->method('getMethod')->willReturn('buckaroo3extended_dankort');
 
         $orderMock = $this->getMockBuilder('Mage_Sales_Model_Order')
-            ->setMethods([
-                'getPayment', 'getTransactionKey', 'getBuckarooSecureEnrolled', 'getBuckarooSecureAuthenticated',
-                'setBuckarooSecureEnrolled', 'setBuckarooSecureAuthenticated', 'save'
-            ])->getMock();
+            ->setMethods(
+                array(
+                    'getPayment', 'getTransactionKey', 'getBuckarooSecureEnrolled', 'getBuckarooSecureAuthenticated',
+                    'setBuckarooSecureEnrolled', 'setBuckarooSecureAuthenticated', 'save'
+                )
+            )->getMock();
         $orderMock->expects($this->once())->method('getPayment')->willReturn($paymentMock);
 
         $requestMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_Abstract')
-            ->setMethods(['getOrder', 'getBillingInfo'])
+            ->setMethods(array('getOrder', 'getBillingInfo'))
             ->getMock();
 
         $observerMock = $this->getMockBuilder('Varien_Event_Observer')
-            ->setMethods(['getOrder', 'getRequest'])
+            ->setMethods(array('getOrder', 'getRequest'))
             ->getMock();
         $observerMock->method('getOrder')->willReturn($orderMock);
         $observerMock->method('getRequest')->willReturn($requestMock);

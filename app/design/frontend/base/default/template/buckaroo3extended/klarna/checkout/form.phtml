@@ -30,24 +30,26 @@
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 ?>
+<?php // @codingStandardsIgnoreFile ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
-<?php $_code = $this->getMethodCode() ?>
+<?php $code = $this->getMethodCode() ?>
 <fieldset class="form-list buckaroo-method">
-    <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
+    <ul id="payment_form_<?php echo $code ?>" style="display:none" class="buckaroo3extended_input">
         <li>
-            <label for="<?php echo $_code;?>_BPE_Customergender" class="required">
+            <label for="<?php echo $code;?>_BPE_Customergender" class="required">
                 <?php echo $this->__('Salutation');?>: <em>*</em>
             </label>
             <div class="input-box">
-                <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" title="<?php echo $this->__('Salutation');?>" id="<?php echo $_code;?>_BPE_Customergender">
+                <select name="<?php echo $code;?>_BPE_Customergender" class="validate-select validate-number"
+                        title="<?php echo $this->__('Salutation');?>" id="<?php echo $code;?>_BPE_Customergender">
                     <option value=''>
                         <?php echo $this->__('Select'); ?>
                     </option>
-                    <option value="1" <?php echo (in_array($this->getGender(),array(1,123)))?'selected':'';?>>
+                    <option value="1" <?php echo (in_array($this->getGender(), array(1, 123))) ? 'selected' : '';?>>
                         <?php echo $this->__('Mr.'); ?>
                     </option>
-                    <option value="2" <?php echo (in_array($this->getGender(),array(2,124)))?'selected':'';?>>
+                    <option value="2" <?php echo (in_array($this->getGender(), array(2, 124))) ? 'selected' : '';?>>
                         <?php echo $this->__('Mrs.'); ?>
                     </option>
                 </select>
@@ -57,7 +59,8 @@
         <li>
             <label><?php echo $this->__('Billing name');?>:</label>
             <div class="input-box">
-                <span class="disabled stylefix" id="<?php echo $_code;?>_BPE_Customername" title="<?php echo $this->__('Name');?>">
+                <span class="disabled stylefix" id="<?php echo $code;?>_BPE_Customername"
+                      title="<?php echo $this->__('Name');?>">
                     <?php echo $this->escapeHtml($this->getName()); ?>
                 </span>
             </div>
@@ -65,26 +68,26 @@
 
         <?php $hasTelephone = ($this->getAddress()->getTelephone() && $this->getAddress()->getTelephone() != '-'); ?>
         <li<?php echo ($hasTelephone ? ' style="display:none;"' : ''); ?>>
-            <label class="required" for="<?php echo $_code;?>_BPE_Customerphone">
+            <label class="required" for="<?php echo $code;?>_BPE_Customerphone">
                 <?php echo $this->__('Telephone') ?>: <em>*</em>
             </label>
             <div class="input-box">
                 <input class="input-text required-entry"
                        type="text"
                        title="<?php echo $this->__('Telephone') ?>"
-                       name="<?php echo $_code;?>_bpe_customer_phone_number"
+                       name="<?php echo $code;?>_bpe_customer_phone_number"
                        value="<?php echo $this->escapeHtml($this->getPhoneNumber()); ?>"
-                       id="<?php echo $_code;?>_BPE_Customerphone"/>
+                       id="<?php echo $code;?>_BPE_Customerphone"/>
             </div>
         </li>
 
         <li>
             <?php
             echo $this->getLayout()->createBlock('buckaroo3extended/customer_widget_dob')
-                ->setFieldIdFormat($_code . ':billing:%s')
-                ->setFieldNameFormat('payment[' . $_code . '][%s]')
+                ->setFieldIdFormat($code . ':billing:%s')
+                ->setFieldNameFormat('payment[' . $code . '][%s]')
                 ->setIsRequired(true)
-                ->setPaymentMethodCode($_code)
+                ->setPaymentMethodCode($code)
                 ->setDate($this->getDob())
                 ->toHtml();
             ?>
@@ -120,32 +123,43 @@
         <?php if (in_array($countryFormatKlarna, array('de_de','de_at'))) :?>
             <li class="tac-accept">
                 <div class="input-box">
-                    <input class="input-checkbox required-entry" type="checkbox" title="<?php echo $this->__('Terms and Conditions') ?>" name="<?php echo $_code;?>_bpe_accept" value="checked" id="<?php echo $_code;?>_BPE_terms_and_conditions" />
+                    <input class="input-checkbox required-entry" type="checkbox"
+                           title="<?php echo $this->__('Terms and Conditions') ?>"
+                           name="<?php echo $code;?>_bpe_accept" value="checked"
+                           id="<?php echo $code;?>_BPE_terms_and_conditions" />
                 </div>
-                <label for="<?php echo $_code;?>_BPE_terms_and_conditions" class="required">
-                    <?php echo $this->__('Mit der Übermittlung der für die Abwicklung der gewählten Klarna Zahlungsmethode und einer Identitäts- und Bonitätsprüfung erforderlichen Daten an Klarna bin ich einverstanden. Meine %sEinwilligung%s kann ich jederzeit mit Wirkung für die Zukunft widerrufen. Es gelten die AGB des Händlers',
-                        '<a style="float:none;margin:0;" target="_blank" 
-                    href="https://cdn.klarna.com/1.0/shared/content/legal/terms/0/' .
-                        $countryFormatKlarna . '/consent">', '</a>'); ?> <em>*</em>
+                <label for="<?php echo $code;?>_BPE_terms_and_conditions" class="required">
+                    <?php echo $this->__(
+                        'Mit der Übermittlung der für die Abwicklung der gewählten Klarna Zahlungsmethode und einer ' .
+                        'Identitäts- und Bonitätsprüfung erforderlichen Daten an Klarna bin ich einverstanden. ' .
+                        'Meine %sEinwilligung%s kann ich jederzeit mit Wirkung für die Zukunft widerrufen. ' .
+                        'Es gelten die AGB des Händlers',
+                        '<a style="float:none;margin:0;" target="_blank" '
+                        . 'href="https://cdn.klarna.com/1.0/shared/content/legal/terms/0/' . $countryFormatKlarna
+                        . '/consent">',
+                        '</a>'
+                    ); ?> <em>*</em>
                 </label>
             </li>
         <?php endif;?>
 
 
         <li>
-            <?php echo $this->__('%sInvoice payment terms%s',
-                '<a style="float:none;margin:0;" target="_blank" 
-            href="https://cdn.klarna.com/1.0/shared/content/legal/terms/0/' .
-                $countryFormatKlarna . '/invoice?fee=' .
-                $this->getPlainPaymentFee() .
-                '">'
-                , '</a>')
-            ; ?>
+            <?php echo $this->__(
+                '%sInvoice payment terms%s',
+                '<a style="float:none;margin:0;" target="_blank" ' .
+                'href="https://cdn.klarna.com/1.0/shared/content/legal/terms/0/' .
+                $countryFormatKlarna . '/invoice?fee=' . $this->getPlainPaymentFee() . '">',
+                '</a>'
+            ); ?>
         </li>
 
         <?php if (!$this->billingIsSameAsShipping()): ?>
             <li>
-                <?php echo Mage::helper('buckaroo3extended')->__('Please note: when choosing a different billing and shipping address, the first name, the last name and country have to be the same for both addresses when paying with Klarna.')?>
+                <?php echo Mage::helper('buckaroo3extended')->__(
+                    'Please note: when choosing a different billing and shipping address, the first name, ' .
+                    'the last name and country have to be the same for both addresses when paying with Klarna.'
+                )?>
             </li>
         <?php endif;?>
 

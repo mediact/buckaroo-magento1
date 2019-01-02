@@ -11,25 +11,31 @@ $status = array(
         'state' => 'new'
 );
 
-$_stat = Mage::getModel('sales/order_status')->load('buckaroo_giftcard');
+$stat = Mage::getModel('sales/order_status')->load('buckaroo_giftcard');
 
 /* Add Status */
-if ($_stat->getStatus()) {
+if ($stat->getStatus()) {
     return;
 }
 
-$_stat->setData($status)->setStatus('buckaroo_giftcard');
+$stat->setData($status)->setStatus('buckaroo_giftcard');
 
 try {
-    $_stat->save();
-} catch (Mage_Core_Exception $e) {  }
+    $stat->save();
+} catch (Mage_Core_Exception $e) {
+    throw $e;
+}
 
 /* Assign Status to State */
-if ($_stat && $_stat->getStatus()) {
+if ($stat && $stat->getStatus()) {
     try {
-        $_stat->assignState($status['state'], false);
-    } catch (Mage_Core_Exception $e) {  }
-    catch (Exception $e) {  }
+        $stat->assignState($status['state'], false);
+    } catch (Mage_Core_Exception $e) {
+        throw $e;
+    }
+    catch (Exception $e) {
+        throw $e;
+    }
 }
 
 $installer->endSetup();

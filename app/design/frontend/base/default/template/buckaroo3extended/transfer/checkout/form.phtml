@@ -1,6 +1,13 @@
-<?php $_session = Mage::getSingleton('checkout/session'); ?>
-<?php $_code=$this->getMethodCode() ?>
-<?php if (Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/use_creditmanagement', Mage::app()->getStore()->getStoreId())): ?>
+<?php // @codingStandardsIgnoreFile ?>
+
+<?php $session = Mage::getSingleton('checkout/session');
+$code=$this->getMethodCode();
+$useCreditManagement = Mage::getStoreConfig(
+    'buckaroo/buckaroo3extended_transfer/use_creditmanagement',
+    Mage::app()->getStore()->getStoreId()
+);
+?>
+<?php if ($useCreditManagement): ?>
     <?php
     $name = $this->getName();
     $email = $this->getEmail();
@@ -11,43 +18,59 @@
     ?>
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
     <fieldset class="form-list buckaroo-method">
-        <ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input">
+        <ul id="payment_form_<?php echo $code ?>" style="display:none" class="buckaroo3extended_input">
             <li>
-                <label for="<?php echo $_code;?>_BPE_Customergender" class="required"><?php echo $this->__('Salutation');?>: <em>*</em></label>
+                <label for="<?php echo $code;?>_BPE_Customergender" class="required">
+                    <?php echo $this->__('Salutation');?>: <em>*</em>
+                </label>
                 <div class="input-box">
-                    <select name="<?php echo $_code;?>_BPE_Customergender" class="validate-select validate-number" id="<?php echo $_code;?>_BPE_Customergender" title="<?php echo $this->__('Salutation');?>">
-	                    <option value=''><?php echo $this->__('Select'); ?></option>
-	                    <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>><?php echo $this->__('Mr.'); ?></option>
-	                    <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>><?php echo $this->__('Mrs.'); ?></option>
-	                </select>
+                    <select name="<?php echo $code;?>_BPE_Customergender" class="validate-select validate-number"
+                            id="<?php echo $code;?>_BPE_Customergender" title="<?php echo $this->__('Salutation');?>">
+                        <option value=''><?php echo $this->__('Select'); ?></option>
+                        <option value="1" <?php echo ($this->getGender()===1)?'selected':'';?>>
+                            <?php echo $this->__('Mr.'); ?>
+                        </option>
+                        <option value="2" <?php echo ($this->getGender()===2)?'selected':'';?>>
+                            <?php echo $this->__('Mrs.'); ?>
+                        </option>
+                    </select>
                 </div>
             </li>
             <li>
-                <label for="<?php echo $_code;?>_BPE_Customername" class="required"><?php echo $this->__('Name');?>:</label>
+                <label for="<?php echo $code;?>_BPE_Customername" class="required">
+                    <?php echo $this->__('Name');?>:
+                </label>
                 <div class="input-box">
-                    <span class="disabled" id="<?php echo $_code;?>_BPE_Customername"><?php echo $this->escapeHtml($name); ?></span>
+                    <span class="disabled" id="<?php echo $code;?>_BPE_Customername">
+                        <?php echo $this->escapeHtml($name); ?>
+                    </span>
                 </div>
             </li>
             <li>
                 <?php
                 echo $this->getLayout()
                     ->createBlock('buckaroo3extended/customer_widget_dob')
-                    ->setFieldIdFormat($_code . ':billing:%s')
-                    ->setFieldNameFormat('payment[' . $_code . '][%s]')
+                    ->setFieldIdFormat($code . ':billing:%s')
+                    ->setFieldNameFormat('payment[' . $code . '][%s]')
                     ->setIsRequired(true)
-                    ->setPaymentMethodCode($_code)
+                    ->setPaymentMethodCode($code)
                     ->setDate($this->getDob())
                     ->toHtml();
                 ?>
             </li>
             <li>
-                <label for="<?php echo $_code ?>_BPE_Customermail" class="required"><?php echo $this->__('E-mail address') ?>: <em>*</em></label>
+                <label for="<?php echo $code ?>_BPE_Customermail" class="required">
+                    <?php echo $this->__('E-mail address') ?>: <em>*</em>
+                </label>
                 <div class="input-box">
-                    <input class="input-text validate-email required-entry" type="text" title="<?php echo $this->__('E-mail address') ?>" name="<?php echo $_code ?>_BPE_Customermail" id="<?php echo $_code ?>_BPE_Customermail" value="<?php echo $email ?>" />
+                    <input class="input-text validate-email required-entry" type="text"
+                           title="<?php echo $this->__('E-mail address') ?>" name="<?php echo $code ?>_BPE_Customermail"
+                           id="<?php echo $code ?>_BPE_Customermail" value="<?php echo $email ?>" />
                 </div>
             </li>
             <li>
-                <?php echo Mage::helper('buckaroo3extended')->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
+                <?php echo Mage::helper('buckaroo3extended')
+                    ->__('Please make sure all fields are filled in correctly before proceeding.'); ?>
             </li>
         </ul>
     </fieldset>
@@ -56,10 +79,11 @@
     <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
     <fieldset class="form-list">
-        <?php $_code = $this->getMethodCode() ?>
-        <ul id="payment_form_<?php echo $_code ?>" style="display:none;">
+        <?php $code = $this->getMethodCode() ?>
+        <ul id="payment_form_<?php echo $code ?>" style="display:none;">
             <li>
-                <?php echo $this->__('You will receive an email with further payment instructions when you place your order.'); ?>
+                <?php echo $this
+                    ->__('You will receive an email with further payment instructions when you place your order.'); ?>
             </li>
         </ul>
     </fieldset>
