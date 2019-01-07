@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Paypal_Adminhtml_System_Config_Advancedbtn extends Mage_Adminhtml_Block_Abstract
-                                                                           implements Varien_Data_Form_Element_Renderer_Interface
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Paypal_Adminhtml_System_Config_Advancedbtn
+    extends Mage_Adminhtml_Block_Abstract
+    implements Varien_Data_Form_Element_Renderer_Interface
 {
     protected $_template = 'buckaroo3extended/paypal_system/config/advancedbtn.phtml';
 
@@ -10,9 +11,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Paypal_Adminhtml_System_Config_
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-
         return $this->toHtml();
     }
 }

@@ -24,6 +24,8 @@ matrix:
       env: MAGENTO_VERSION=magento-mirror-1.8.1.0
     - php: 7.0
       env: MAGENTO_VERSION=magento-mirror-1.8.0.0
+    - php: 7.2
+      env: MAGENTO_VERSION=magento-mirror-1.9.4.0
 
   fast_finish: true
 

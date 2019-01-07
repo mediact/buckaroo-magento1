@@ -310,7 +310,8 @@ class TIG_Buckaroo3Extended_Helper_StateCodes extends Mage_Core_Helper_Abstract
      *
      * @return array|bool
      */
-    public function getCodes($countryCode = null) {
+    public function getCodes($countryCode = null)
+    {
         if (!$countryCode) {
             return $this->_codes;
         }

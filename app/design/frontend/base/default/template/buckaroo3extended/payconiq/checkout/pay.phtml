@@ -19,6 +19,7 @@
     jQuery_1123(function() {
         BuckarooSdk.Payconiq.initiate(
             "#tig_buckaroo_payconiq_qr",
+            <?php // @codingStandardsIgnoreLine ?>
             "<?php echo $this->getTransactionKey(); ?>",
             function(status, params) {
                 switch (status) {
@@ -34,9 +35,11 @@
     });
 
     var cancelPayment = function() {
+        <?php // @codingStandardsIgnoreLine ?>
         jQuery_1123('#tig_buckaroo_payconiq_qr').html('<?php echo $this->getCancelMessage(); ?>');
         jQuery_1123('#tig_buckaroo_payconiq_cancel').hide();
 
+        <?php // @codingStandardsIgnoreLine ?>
         location.href = '<?php echo $this->getCancelUrl(); ?>';
     };
 </script>

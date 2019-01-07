@@ -108,7 +108,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         return $this;
     }
 
-    public function setOrder($order) {
+    public function setOrder($order)
+    {
         $this->_order = $order;
 
         return $this;
@@ -181,8 +182,11 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
     public function __construct($debugEmail = false)
     {
-        if (strpos(dirname(__FILE__), DS .'Model') !== false) {
-            $dir = str_replace(DS .'Model', DS .'certificate', dirname(__FILE__));
+        $file = new Varien_Io_File();
+        $dirName = $file->getDestinationFolder(__FILE__);
+
+        if (strpos($dirName, DS .'Model') !== false) {
+            $dir = str_replace(DS .'Model', DS .'certificate', $dirName);
         } else {
             $dir = str_replace(
                 DS
@@ -201,7 +205,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 . 'Buckaroo3Extended'
                 . DS
                 . 'certificate',
-                dirname(__FILE__)
+                $dirName
             );
         }
 
@@ -216,6 +220,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         } else {
             $this->setSession(Mage::getSingleton('core/session'));
         }
+
         $this->_setOrderBillingInfo();
 
         if ($debugEmail) {
@@ -241,13 +246,17 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     protected function _checkExpired()
     {
         if (empty($this->_order)) {
-            $returnUrl = Mage::getUrl(Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->getStoreId()));
-            header('location:' . $returnUrl);
-            exit;
+            $returnUrl = Mage::getUrl(
+                Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $this->getStoreId())
+            );
+
+            Mage::app()->getResponse()->clearHeaders();
+            Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
         }
     }
 
-    public function setOrderBillingInfo() {
+    public function setOrderBillingInfo()
+    {
         return $this->_setOrderBillingInfo();
     }
 
@@ -260,6 +269,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         if (empty($this->_order)) {
             return false;
         }
+
         $billingAddress = $this->_order->getBillingAddress();
 
         $firstname          = $billingAddress->getFirstname();
@@ -328,8 +338,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
         foreach ($items as $item) {
             $itemId = $item->getItemId();
-            $cartHelper->getCart()->removeItem($itemId)->save();
+            $cartHelper->getCart()->removeItem($itemId);
         }
+
+        $cartHelper->getCart()->save();
     }
 
     /**
@@ -369,107 +381,22 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     {
         $code = $this->_order->getPayment()->getMethod();
 
+        $paymentMethod           = null;
+        $currenciesAllowedConfig = 'EUR';
         // availability currency codes for this Payment Module
-        switch ($code) {
-            case 'buckaroo3extended_ideal':
-            case 'buckaroogiftcard':
-            case 'buckaroo2012giftcard':
-            case 'buckarooideal':
-            case 'buckaroo':
-            case 'buckaroo2012ideal':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_ideal_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_ideal/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_visa':
-            case 'buckaroocc':
-            case 'buckaroo2012creditcard':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_visa_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_visa/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_amex':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_amex_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_amex/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_mastercard':
-            case 'mastercard':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_mastercard_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_mastercard/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_directdebit':
-            case 'buckaroocollect':
-            case 'buckaroo2012machtiging':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_directdebit_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_directdebit/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_paypal':
-            case 'buckaroopaypal':
-            case 'buckaroo2012paypal':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_paypal_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_payconiq':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_payconiq_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_payconiq/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_transfer':
-            case 'buckarootransfer':
-            case 'buckaroo2012overschrijving':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_transfer_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_transfer/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_paymentguarantee':
-            case 'buckarootransfergarant':
-            case 'buckaroo2012betaalgarant':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_paymentguarantee_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_giropay':
-            case 'buckaroogiropay':
-            case 'buckaroo2012giropay':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_giropay_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_giropay/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_paysafecard':
-            case 'buckaroocashticket':
-            case 'buckaroopaysafecard':
-            case 'buckaroo2012cashticketpaysafecard':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_paysafecard_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_paysafecard/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_payperemail':
-            case 'buckaroopayperemail':
-            case 'buckaroo2012payperemail':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_payperemail_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_payperemail/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_sofortueberweisung':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_sofortueberweisung_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_sofortueberweisung/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_maestro':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_maestro_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_maestro/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_kbc':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_kbc_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_kbc/allowed_currencies', $this->getStoreId());
-                break;
-            case 'buckaroo3extended_p24':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_p24_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_p24/allowed_currencies', $this->getStoreId());
-            case 'buckaroo3extended_dankort':
-                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_dankort_paymentMethod');
-                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_dankort/allowed_currencies', $this->getStoreId());
-                break;
-            default:
-                $paymentMethod = null;
-                $currenciesAllowedConfig = 'EUR';
+        $methodName = str_replace('buckaroo3extended_', '', $code);
+        if ($methodName) {
+            $paymentMethod           = Mage::getModel(
+                'buckaroo3extended/paymentMethods_' . $methodName . '_paymentMethod'
+            );
+            $currenciesAllowedConfig = Mage::getModel(
+                'buckaroo/buckaroo3extended_' . $methodName . '/allowed_currencies', $this->getStoreId()
+            );
         }
 
-        if (!is_null($paymentMethod)) {
+        $currenciesAllowed = array('EUR');
+        if ($paymentMethod !== null) {
             $currenciesAllowed = $paymentMethod->allowedCurrencies;
-        } else {
-            $currenciesAllowed = array('EUR');
         }
 
         $currenciesAllowedConfig = explode(',', $currenciesAllowedConfig);
@@ -515,7 +442,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     {
         $returnArray = array(
             'message' => 'Onbekende responsecode',
-            'status' => self::BUCKAROO_NEUTRAL
+            'status'  => self::BUCKAROO_NEUTRAL
         );
 
         if (!isset($this->_response->Status->Code->Code)) {
@@ -532,8 +459,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
         $returnArray = $this->responseCodes[$code];
         if (is_object($this->_response)
-            && isset($this->_response->Status->SubCode))
-        {
+            && isset($this->_response->Status->SubCode)) {
             //the subcode is additional information sometimes returned by Buckaroo. Currently not used,
             //but it may be of use when debugging.
             $returnArray['subCode'] = array(
@@ -564,8 +490,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             return $isCorrect;
         }
 
-        if (isset($this->responseCodes[$code]))
-        {
+        if (isset($this->responseCodes[$code])) {
             $returnArray = $this->responseCodes[$code];
 
             if ($this->_response) {
@@ -643,7 +568,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
     /**
      * function which converts special characters to html numeric equivalents
      */
-    public function htmlNumeric($string) {
+    public function htmlNumeric($string)
+    {
         preg_match_all('/[^\!-\~\s]/', $string, $specialChars);
         if ($specialChars) {
             foreach ($specialChars[0] as $char) {
@@ -651,10 +577,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 $numericChars[] = '&#'.$newChar.';';
                 $patterns[] = "/{$char}/";
             }
+
             if (isset($numericChars) && isset($patterns)) {
                 $string = preg_replace($patterns, $numericChars, $string);
             }
         }
+
         return $string;
     }
 
@@ -670,22 +598,30 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
 
     public function sendDebugEmail()
     {
-        $debugEmailConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId());
-        if (empty($debugEmailConfig))
-        {
+        $debugEmailConfig = Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()
+        );
+        if (empty($debugEmailConfig)) {
             return;
         }
 
         $mail = $this->_debugEmail;
 
-        $recipients = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()));
+        $recipients = explode(
+            ',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId())
+        );
 
-        foreach($recipients as $recipient) {
-            mail(
-                trim($recipient),
-                'Buckaroo 3 Extended Debug Email',
-                $mail
-            );
+        foreach ($recipients as $recipient) {
+            $mail = new Zend_Mail('utf-8');
+            $mail->addTo(trim($recipient));
+            $mail->setSubject('Buckaroo 3 Extended Debug Email');
+            $mail->setBodyText($mail);
+            try {
+                $mail->send();
+            }
+            catch (Exception $e) {
+                Mage::logException($e);
+            }
         }
     }
 
@@ -701,7 +637,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         ksort($arrayToSort);
 
         $sortedArray = array();
-        foreach($arrayToSort as $key => $value) {
+        foreach ($arrayToSort as $key => $value) {
             $key = $origArray[$key];
             $sortedArray[$key] = $value;
         }
@@ -715,6 +651,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         if (!is_object($this->_order)) {
             return $this;
         }
+
         $state = $this->_order->getState();
 
         if ($success) {
@@ -748,7 +685,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
           0     => array( '*'=>array(    "omschrijving" => "De credit card transactie is pending.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
-        001     => array( '*'=>array(    "omschrijving" => "De credit card transactie is pending. De MPI-status van de klant wordt gecheckt.",
+        001     => array( '*'=>array(    "omschrijving" => "De credit card transactie is pending. De MPI-status van " .
+            "de klant wordt gecheckt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
         070     => array( '*'=>array(    "omschrijving" => "De refund is nog niet verwerkt.",
@@ -769,10 +707,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         101     => array( '*'=>array(    "omschrijving" => "De transactie is door de credit-maatschappij afgekeurd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        102     => array( '*'=>array(    "omschrijving" => "De transactie is mislukt. Er is een fout opgetreden in de verwerking bij de creditmaatschappij.",
+        102     => array( '*'=>array(    "omschrijving" => "De transactie is mislukt. Er is een fout opgetreden in " .
+            "de verwerking bij de creditmaatschappij.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        103     => array( '*'=>array(    "omschrijving" => "Deze creditcardtransactie is niet binnen de maximale,  toegestane tijd uitgevoerd.",
+        103     => array( '*'=>array(    "omschrijving" => "Deze creditcardtransactie is niet binnen de maximale,  " .
+            "toegestane tijd uitgevoerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
         104     => array( '*'=>array(    "omschrijving" => "De kaart is verlopen.",
@@ -787,10 +727,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         122     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is door de consument geannuleerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
-        123     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+        123     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is niet binnen de maximale, " .
+            "toegestane tijd uitgevoerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
-        124     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is om onbekende reden bij PayPal mislukt.",
+        124     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is om onbekende reden bij PayPal " .
+            "mislukt.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
         125     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is niet geaccepteerd.",
@@ -802,7 +744,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         135     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
-        136     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij PayPal worden achterhaald. De transactie is mogelijk nog niet afgerond",
+        136     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie " .
+            "nog niet bij PayPal worden achterhaald. De transactie is mogelijk nog niet afgerond",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
         137     => array( '*'=>array(    "omschrijving" => "De afschrijvingscode is ongeldig.",
@@ -823,10 +766,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         151     => array( '*'=>array(    "omschrijving" => "Transactiestatus: authorisatie geslaagd.",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "paypal")),
-        152     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is door de consument geannuleerd.",
+        152     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is door de consument " .
+            "geannuleerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
-        153     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+        153     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is niet binnen de maximale, " .
+            "toegestane tijd uitgevoerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
         155     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is niet geaccepteerd.",
@@ -835,13 +780,16 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         156  => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
-        157     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij Paysafecard worden achterhaald. De transactie is mogelijk nog niet afgerond.",
+        157     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie " .
+            "nog niet bij Paysafecard worden achterhaald. De transactie is mogelijk nog niet afgerond.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
-        158     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden bij Paysafecard. Onze excuses voor het ongemak.",
+        158     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden bij Paysafecard. " .
+            "Onze excuses voor het ongemak.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
-        159     => array( '*'=>array(    "omschrijving" => "Het Paysafecard transactie-id is ongeldig of niet beschikbaar.",
+        159     => array( '*'=>array(    "omschrijving" => "Het Paysafecard transactie-id is ongeldig of niet " .
+            "beschikbaar.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
         170     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is nog niet volledig verwerkt.",
@@ -850,10 +798,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         171     => array( '*'=>array(    "omschrijving" => "Transactiestatus: authorisatie geslaagd",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "creditcard")),
-        172     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is door de consument geannuleerd.",
+        172     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is door de consument " .
+            "geannuleerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        173     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+        173     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is niet binnen de maximale, " .
+            "toegestane tijd uitgevoerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
         175     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is niet geaccepteerd.",
@@ -862,31 +812,39 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         176  => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
-        177  => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij Cash-Ticket worden achterhaald. De transactie is mogelijk nog niet afgerond.",
+        177  => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog " .
+            "niet bij Cash-Ticket worden achterhaald. De transactie is mogelijk nog niet afgerond.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
-        178  => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden bij Cash-Ticket. Onze excuses voor het ongemak.",
+        178  => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden bij Cash-Ticket. " .
+            "Onze excuses voor het ongemak.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        179  => array( '*'=>array(    "omschrijving" => "Het Cash-Ticket transactie-id is ongeldig of niet beschikbaar.",
+        179  => array( '*'=>array(    "omschrijving" => "Het Cash-Ticket transactie-id is ongeldig of niet " .
+            "beschikbaar.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        201     => array( '*'=>array(    "omschrijving" => "Er is timeout opgetreden bij het verwerken van de transactie.Gebruik de TransactionKey om de verwerkingsstatus nogmaals te controleren.",
+        201     => array( '*'=>array(    "omschrijving" => "Er is timeout opgetreden bij het verwerken van de " .
+            "transactie.Gebruik de TransactionKey om de verwerkingsstatus nogmaals te controleren.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
-        203     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het creditcardnummer is geblokkeerd.",
+        203     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het creditcardnummer is " .
+            "geblokkeerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
         204     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het ip-adres is geblokkeerd",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        205     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het land van uitgifte van deze creditcard is geblokkeerd",
+        205     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het land van uitgifte van " .
+            "deze creditcard is geblokkeerd",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        206     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. De faktuur [waarde] wordt momenteel of is reeds betaald.",
+        206     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. De faktuur [waarde] wordt " .
+            "momenteel of is reeds betaald.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        207     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het maximaal aantal betaalpogingen voor faktuur [waarde] is overschreden.",
+        207     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd. Het maximaal aantal " .
+            "betaalpogingen voor faktuur [waarde] is overschreden.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
         242  => array( '*'=>array(  "omschrijving" => "Provisie BetaalGarant succesvol verwerkt.",
@@ -916,10 +874,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         260     => array( '*'=>array(    "omschrijving" => "Kredietwaardigheidcontrole abonnement niet actief.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "garant")),
-        261     => array( '*'=>array(    "omschrijving" => "Technische fout opgetreden tijdens kredietwaardigheidcontrole.",
+        261     => array( '*'=>array(    "omschrijving" => "Technische fout opgetreden tijdens " .
+            "kredietwaardigheidcontrole.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "garant")),
-        262     => array( '*'=>array(    "omschrijving" => "Verplichte velden voor kredietwaardigheidcontrole ontbreken of zijn onjuist",
+        262     => array( '*'=>array(    "omschrijving" => "Verplichte velden voor kredietwaardigheidcontrole " .
+            "ontbreken of zijn onjuist",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "garant")),
         300     => array( '*'=>array("omschrijving" => "Betaling voor deze overschrijving wordt nog verwacht.",
@@ -934,16 +894,19 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         302     => array( '*'=>array(    "omschrijving" => "De transactie is geweigerd of afgewezen.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "transfer")),
-        303     => array( '*'=>array(    "omschrijving" => "De uiterste betaaldatum voor deze overschrijving is verstreken.",
+        303     => array( '*'=>array(    "omschrijving" => "De uiterste betaaldatum voor deze overschrijving is " .
+            "verstreken.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "transfer")),
         304     => array( '*'=>array(    "omschrijving" => "De datum voor ingebrekestelling is verstreken.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "transfer")),
-        305     => array( '*'=>array(    "omschrijving" => "Het ontvangen bedrag voor de overschrijving is lager dan het bedrag van de transactie.",
+        305     => array( '*'=>array(    "omschrijving" => "Het ontvangen bedrag voor de overschrijving is lager " .
+            "dan het bedrag van de transactie.",
                         "code"        => 'BUCKAROO_INCORRECT_AMOUNT',
                         "type"        => "transfer")),
-        306     => array( '*'=>array(    "omschrijving" => "Het ontvangen bedrag voor de overschrijving is groter dan het bedrag van de transactie.",
+        306     => array( '*'=>array(    "omschrijving" => "Het ontvangen bedrag voor de overschrijving is groter " .
+            "dan het bedrag van de transactie.",
                         "code"        => 'BUCKAROO_INCORRECT_AMOUNT',
                         "type"        => "transfer")),
         309     => array( '*'=>array(    "omschrijving" => "De overschrijving is geannuleerd.",
@@ -970,7 +933,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         383     => array( '*'=>array(    "omschrijving" => "De refund voor deze overschrijving is mislukt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "transfer")),
-        390     => array( '*'=>array(    "omschrijving" => "De transactie is buiten Buckaroo om met de klant afgehandeld.",
+        390     => array( '*'=>array(    "omschrijving" => "De transactie is buiten Buckaroo om met de klant " .
+            "afgehandeld.",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "transfer")),
         392     => array( '*'=>array(    "omschrijving" => "Anders betaald.",
@@ -988,10 +952,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         409     => array( '*'=>array(    "omschrijving" => "Betaling middels de kadokaart is geannuleerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "giftcard")),
-        403     => array( '*'=>array(    "omschrijving" => "Deze Giftcard transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+        403     => array( '*'=>array(    "omschrijving" => "Deze Giftcard transactie is niet binnen de maximale, " .
+            "toegestane tijd uitgevoerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "giftcard")),
-        404     => array( '*'=>array(    "omschrijving" => "Deze Giftcard transactie is om onbekende reden bij de kaartuitgever mislukt.",
+        404     => array( '*'=>array(    "omschrijving" => "Deze Giftcard transactie is om onbekende reden bij " .
+            "de kaartuitgever mislukt.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "giftcard")),
         409     => array( '*'=>array(    "omschrijving" => "Betaling middels de kadokaart is geannuleerd.",
@@ -1009,7 +975,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         421     => array( '*'=>array(    "omschrijving" => "Er is een onbekende Issuer voor de kado-kaart opgegeven.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "giftcard")),
-        422     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden bij de Issuer. De betaling is mislukt. [waarde].",
+        422     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden bij de Issuer. De betaling " .
+            "is mislukt. [waarde].",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "giftcard")),
         425     => array( '*'=>array(    "omschrijving" => "Niet genoeg saldo om deze transactie uit te voeren.",
@@ -1072,10 +1039,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         605     => array( '*'=>array(    "omschrijving" => "Eenmalige machtiging is gestorneerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "collect")),
-        609     => array( '*'=>array(    "omschrijving" => "Eenmalige machtiging is geannuleerd voordat incasso plaatsvond.",
+        609     => array( '*'=>array(    "omschrijving" => "Eenmalige machtiging is geannuleerd voordat incasso " .
+            "plaatsvond.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "collect")),
-        610     => array( '*'=>array(    "omschrijving" => "Eenmalige machtiging is door de bank afgewezen. Rekening ongeldig.",
+        610     => array( '*'=>array(    "omschrijving" => "Eenmalige machtiging is door de bank afgewezen. " .
+            "Rekening ongeldig.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "collect")),
         612     => array( '*'=>array(    "omschrijving" => "Terugboeking wegens Melding Onterechte Incasso",
@@ -1087,13 +1056,15 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         672     => array( '*'=>array(    "omschrijving" => "De refund voor deze machtiging is mislukt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "collect")),
-        700     => array( '*'=>array(    "omschrijving" => "De betaalopdracht is geaccepteerd en wordt in behandeling genomen.",
+        700     => array( '*'=>array(    "omschrijving" => "De betaalopdracht is geaccepteerd en wordt in " .
+            "behandeling genomen.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "batch")),
         701     => array( '*'=>array(    "omschrijving" => "De betaalopdracht is verwerkt.",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "batch")),
-        702     => array( '*'=>array(    "omschrijving" => "De betaalopdracht is door de bank teruggestort wegens incorrecte rekeninggegevens.",
+        702     => array( '*'=>array(    "omschrijving" => "De betaalopdracht is door de bank teruggestort wegens " .
+            "incorrecte rekeninggegevens.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "batch")),
         703  => array( '*'=>array(    "omschrijving" => "De betaalopdracht is afgewezen door Buckaroo.",
@@ -1126,19 +1097,23 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         801     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is met succes verwerkt.",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "ideal")),
-        802     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is door de consument geannuleerd. Trx: [waarde]",
+        802     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is door de consument geannuleerd. " .
+            "Trx: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        803     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is niet binnen de maximale toegestane tijd uitgevoerd. Trx: [waarde]",
+        803     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is niet binnen de maximale " .
+            "toegestane tijd uitgevoerd. Trx: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        804     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is om onbekende reden bij de bank mislukt. Trx: [waarde]",
+        804     => array( '*'=>array(    "omschrijving" => "Deze iDeal-transactie is om onbekende reden bij de bank " .
+            "mislukt. Trx: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
         810     => array( '*'=>array(    "omschrijving" => "Issuer (bank) is onbekend: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        811     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij de bank worden achterhaald. De transactie is nog niet afgerond.",
+        811     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie " .
+            "nog niet bij de bank worden achterhaald. De transactie is nog niet afgerond.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "ideal")),
         812     => array( '*'=>array(    "omschrijving" => "De entrance-code [waarde] is ongeldig.",
@@ -1147,10 +1122,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         813     => array( '*'=>array(    "omschrijving" => "Acquirer-code is onbekend: [waarde].",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        814     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden. We zullen deze zo snel mogelijk verhelpen. De status zal daarna worden herzien.",
+        814     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden. We zullen deze zo " .
+            "snel mogelijk verhelpen. De status zal daarna worden herzien.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "ideal")),
-        815     => array( '*'=>array(    "omschrijving" => "Op dit moment is de betaalmethode iDEAL niet beschikbaar wegens een storing bij de bank.",
+        815     => array( '*'=>array(    "omschrijving" => "Op dit moment is de betaalmethode iDEAL niet beschikbaar " .
+            "wegens een storing bij de bank.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
         816     => array( '*'=>array(    "omschrijving" => "Er kon geen transactie worden gevonden. Criteria: [waarde]",
@@ -1162,10 +1139,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         821     => array( '*'=>array(    "omschrijving" => "Deze Giropay-transactie is met succes verwerkt.",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "ideal")),
-        822     => array( '*'=>array(    "omschrijving" => "Deze Giropay-transactie is door de consument geannuleerd. Trx: [waarde]",
+        822     => array( '*'=>array(    "omschrijving" => "Deze Giropay-transactie is door de consument " .
+            "geannuleerd. Trx: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        823     => array( '*'=>array(    "omschrijving" => "Deze Giropay-transactie is niet binnen de maximale toegestane tijd uitgevoerd. Trx: [waarde]",
+        823     => array( '*'=>array(    "omschrijving" => "Deze Giropay-transactie is niet binnen de maximale " .
+            "toegestane tijd uitgevoerd. Trx: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
         824     => array( '*'=>array(    "omschrijving" => "Deze Giropay-transactie is door de bank afgewezen.",
@@ -1174,13 +1153,15 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         830     => array( '*'=>array(    "omschrijving" => "Issuer (bankleitzahl) is onbekend: [waarde]",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        831     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij de bank worden achterhaald. De transactie is nog niet afgerond.",
+        831     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie " .
+            "nog niet bij de bank worden achterhaald. De transactie is nog niet afgerond.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "ideal")),
         833     => array( '*'=>array(    "omschrijving" => "De entrance-code [waarde] is ongeldig.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
-        834     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden. We zullen deze zo snel mogelijk verhelpen. De status zal daarna worden herzien.",
+        834     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden. We zullen deze zo snel " .
+            "mogelijk verhelpen. De status zal daarna worden herzien.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "ideal")),
         835     => array( '*'=>array(    "omschrijving" => "Het Giropay transactie-id is ongeldig of niet beschikbaar.",
@@ -1219,10 +1200,12 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         933     => array( '*'=>array(    "omschrijving" => "Waarde [nodetype] [element] ontbreekt.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        934     => array( '*'=>array(    "omschrijving" => "Waarde [nodetype] [element] (occurance [occurance]) ontbreekt.",
+        934     => array( '*'=>array(    "omschrijving" => "Waarde [nodetype] [element] (occurance [occurance]) " .
+            "ontbreekt.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        935     => array( '*'=>array(    "omschrijving" => "Waarde attribuut [attribuut] ontbreekt in element [element].",
+        935     => array( '*'=>array(    "omschrijving" => "Waarde attribuut [attribuut] ontbreekt in element " .
+            "[element].",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
         940     => array( '*'=>array(    "omschrijving" => "Ongeldig request: [waarde].",
@@ -1273,7 +1256,8 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         955     => array( '*'=>array(    "omschrijving" => "Authenticatie voor deze creditcard betaling is afgewezen",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        956     => array( '*'=>array(    "omschrijving" => "De enrolled status van de creditcard kon niet achterhaald worden.",
+        956     => array( '*'=>array(    "omschrijving" => "De enrolled status van de creditcard kon niet " .
+            "achterhaald worden.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
         960     => array( '*'=>array(    "omschrijving" => "Klantnummer ongeldig: [waarde].",
@@ -1330,16 +1314,20 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         990     => array( '*'=>array(    "omschrijving" => "De digitale handtekening is incorrect: [waarde].",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        991     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden bij het verwerken van de transactie. De Merchant Account Code kon niet worden gelocaliseerd.",
+        991     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden bij het verwerken van de " .
+            "transactie. De Merchant Account Code kon niet worden gelocaliseerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        992     => array( '*'=>array(    "omschrijving" => "Er is fout opgetreden bij het verwerken van de response. We zullen de storing zo snel mogelijk verhelpen.",
+        992     => array( '*'=>array(    "omschrijving" => "Er is fout opgetreden bij het verwerken van de response. " .
+            "We zullen de storing zo snel mogelijk verhelpen.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        993     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden bij het verwerken van de transactie. We zullen de storing zo snel mogelijk verhelpen.",
+        993     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden bij het verwerken van de " .
+            "transactie. We zullen de storing zo snel mogelijk verhelpen.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "xml")),
-        999     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden waarvan de oorzaak vooralsnog onbekend is. We zullen de storing zo snel mogelijk verhelpen.",
+        999     => array( '*'=>array(    "omschrijving" => "Er is een fout opgetreden waarvan de oorzaak vooralsnog " .
+            "onbekend is. We zullen de storing zo snel mogelijk verhelpen.",
                         "code"        => self::BUCKAROO_FAILED))
     );
 }

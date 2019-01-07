@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentFee_Sales_Order_Creditmemo_Totals_Fee extends Mage_Sales_Block_Order_Creditmemo_Totals
+class TIG_Buckaroo3Extended_Block_PaymentFee_Sales_Order_Creditmemo_Totals_Fee
+    extends Mage_Sales_Block_Order_Creditmemo_Totals
 {
     /**
      * Display modes for the Buckaroo Payment fee.

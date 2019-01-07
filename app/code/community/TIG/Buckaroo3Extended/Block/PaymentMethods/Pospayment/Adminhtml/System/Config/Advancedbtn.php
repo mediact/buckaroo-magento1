@@ -38,6 +38,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Pospayment_Adminhtml_System_Con
      *
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         return $this->toHtml();

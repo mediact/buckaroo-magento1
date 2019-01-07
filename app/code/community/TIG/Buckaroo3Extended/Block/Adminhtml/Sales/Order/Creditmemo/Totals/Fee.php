@@ -73,9 +73,9 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Creditmemo_Totals_Fee
         }
 
         $paymentMethod = $creditmemo->getOrder()->getPayment()->getMethod();
-
         $displayMode   = $this->getDisplayMode();
-        $baseLabel     = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($creditmemo->getStoreId(), $paymentMethod);
+
+        $baseLabel = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($creditmemo->getStoreId(), $paymentMethod);
 
         if ($displayMode === self::DISPLAY_MODE_EXCL
             || $displayMode === self::DISPLAY_MODE_BOTH

@@ -24,15 +24,19 @@
  * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<?php $_session = Mage::getSingleton('checkout/session'); ?>
+<?php // @codingStandardsIgnoreFile ?>
+<?php $session = Mage::getSingleton('checkout/session'); ?>
 <div id="payment-errors" class="validation-advice" style="display:none;"></div>
 
-<?php $_code=$this->getMethodCode() ?>
-<ul id="payment_form_<?php echo $_code ?>" style="display:none" class="buckaroo3extended_input form-list buckaroo-method">
+<?php $code=$this->getMethodCode() ?>
+<ul id="payment_form_<?php echo $code ?>" style="display:none"
+    class="buckaroo3extended_input form-list buckaroo-method">
     <li>
-        <label for="<?php echo $_code;?>_BPE_Bic" class="required"><?php echo $this->__('BIC number'); ?>: </label>
+        <label for="<?php echo $code;?>_BPE_Bic" class="required"><?php echo $this->__('BIC number'); ?>: </label>
         <div class="input-box">
-            <input type="text" class="input-text required-entry" title="<?php echo $this->__('BIC number'); ?>" name="<?php echo $_code;?>_BPE_Bic" value="<?php echo $_session->getData($_code . '_BPE_Bic'); ?>" id="<?php echo $_code;?>_BPE_Bic" />
+            <input type="text" class="input-text required-entry" title="<?php echo $this->__('BIC number'); ?>"
+                   name="<?php echo $code;?>_BPE_Bic" value="<?php echo $session->getData($code . '_BPE_Bic'); ?>"
+                   id="<?php echo $code;?>_BPE_Bic" />
         </div>
     </li>
 </ul>

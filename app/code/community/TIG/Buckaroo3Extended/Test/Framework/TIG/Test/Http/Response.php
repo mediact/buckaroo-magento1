@@ -68,6 +68,7 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_Http_Response extends Mage_C
      *
      * @return bool
      */
+    // @codingStandardsIgnoreLine
     public function canSendHeaders($throw = false)
     {
         $canSendHeaders = !$this->getHeadersSent();

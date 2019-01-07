@@ -33,10 +33,12 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
     extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_PayconiqController */
-    protected $instance = null;
+    protected $_instance = null;
 
     public static function setUpBeforeClass()
     {
+        // Controller classes aren't loaded through autoload, so they need to be loaded manually
+        // @codingStandardsIgnoreLine
         require_once(__DIR__ . '/../../../controllers/PayconiqController.php');
     }
 
@@ -45,16 +47,16 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
      */
     protected function _getInstance()
     {
-        if ($this->instance !== null) {
-            return $this->instance;
+        if ($this->_instance !== null) {
+            return $this->_instance;
         }
 
         $this->prepareFrontendDispatch();
         $request = Mage::app()->getRequest();
         $response = Mage::app()->getResponse();
-        $this->instance = new TIG_Buckaroo3Extended_PayconiqController($request, $response);
+        $this->_instance = new TIG_Buckaroo3Extended_PayconiqController($request, $response);
 
-        return $this->instance;
+        return $this->_instance;
     }
 
     public function testCheckoutAction()
@@ -109,7 +111,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $existingOrderMock->method('getPayment')
             ->will($this->returnValue($paymentMock));
 
-        $this->setProperty('order', $existingOrderMock, $instance);
+        $this->setProperty('_order', $existingOrderMock, $instance);
 
         $cancelAuthorizeMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Request_CancelAuthorize')
             ->disableOriginalConstructor()
@@ -191,7 +193,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $existingOrderMock = $this->getMockBuilder('Mage_Sales_Model_Order')->disableOriginalConstructor()->getMock();
 
         $instance = $this->_getInstance();
-        $this->setProperty('order', $existingOrderMock, $instance);
+        $this->setProperty('_order', $existingOrderMock, $instance);
 
         $checkoutSession = Mage::getSingleton('checkout/session');
         $checkoutSession->expects($this->never())->method('__call');
@@ -234,7 +236,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $this->setModelMock('buckaroo3extended/request_cancelAuthorize', $cancelAuthorizeMock);
 
         $instance = $this->_getInstance();
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
 
         $this->invokeMethod($instance, 'sendCancelRequest');
     }
@@ -265,7 +267,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
 
         $instance = $this->_getInstance();
 
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
         $this->setExpectedException('Exception');
 
         $helperMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Helper_Data')
@@ -289,7 +291,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $orderMock->expects($this->once())->method('save');
 
         $instance = $this->_getInstance();
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
 
         $this->invokeMethod($instance, 'updateStatusHistory');
     }
@@ -304,7 +306,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
 
         $instance = $this->_getInstance();
 
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
         $this->setExpectedException('Exception');
 
         $helperMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Helper_Data')
@@ -342,7 +344,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $session = Mage::getSingleton('checkout/session');
         $session->expects($this->once())->method('replaceQuote')->with($quoteMock);
 
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
         $this->invokeMethod($instance, 'restoreQuote');
     }
 
@@ -355,7 +357,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
         $orderMock->expects($this->once())->method('getStoreId')->willReturn(1);
 
         $instance = $this->_getInstance();
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
 
         $session = Mage::getSingleton('core/session');
         $session->expects($this->once())
@@ -386,7 +388,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
 
         $instance = $this->_getInstance();
 
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
         $this->invokeMethod($instance, 'cancelOrder');
     }
 
@@ -402,7 +404,7 @@ class TIG_Buckaroo3Extended_Test_Unit_PayconiqControllerTest
 
         $instance = $this->_getInstance();
 
-        $this->setProperty('order', $orderMock, $instance);
+        $this->setProperty('_order', $orderMock, $instance);
         $this->setExpectedException('Exception');
 
         $helperMock = $this->getMockBuilder('TIG_Buckaroo3Extended_Helper_Data')
