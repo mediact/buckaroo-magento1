@@ -30,7 +30,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_P24_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_P24_Checkout_Form
+    extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
     public function __construct()
     {

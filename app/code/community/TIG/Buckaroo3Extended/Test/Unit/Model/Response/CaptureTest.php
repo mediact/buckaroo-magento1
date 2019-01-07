@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_Response_Capture */
     protected $_instance = null;
@@ -52,12 +53,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
             );
 
             $this->_instance = $this->getMockBuilder('TIG_Buckaroo3Extended_Model_Response_Capture')
-                ->setMethods(array(
-                    '_verifyResponse',
-                    '_parseResponse',
-                    '_addSubCodeComment',
-                    '_requiredAction'
-                ))
+                ->setMethods(array('_verifyResponse', '_parseResponse', '_addSubCodeComment', '_requiredAction'))
                 ->setConstructorArgs(array($params))
                 ->getMock();
         }
@@ -109,9 +105,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_Response_CaptureTest extends TIG_Buc
         $instance->expects($this->once())->method('_verifyResponse')->willReturn(true);
         $instance->expects($this->once())
             ->method('_parseResponse')
-            ->willReturn(array(
-                'status' => TIG_Buckaroo3Extended_Model_Response_Abstract::BUCKAROO_SUCCESS
-            ));
+            ->willReturn(array('status' => TIG_Buckaroo3Extended_Model_Response_Abstract::BUCKAROO_SUCCESS));
         $instance->expects($this->once())->method('_addSubCodeComment');
         $instance->expects($this->once())->method('_requiredAction');
 

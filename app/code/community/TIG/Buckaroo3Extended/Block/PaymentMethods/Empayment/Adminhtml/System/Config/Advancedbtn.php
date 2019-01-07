@@ -11,9 +11,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Empayment_Adminhtml_System_Conf
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
-
         return $this->toHtml();
     }
 }

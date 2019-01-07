@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_P24_ObserverTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_P24_ObserverTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_P24_Observer */
     protected $_instance = null;
@@ -49,7 +50,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_P24_ObserverTest exte
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Mage_Sales_Model_Order
      */
-    private function getMockOrder()
+    protected function getMockOrder()
     {
         $mockPayment = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
             ->setMethods(array('getMethod'))
@@ -67,7 +68,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_P24_ObserverTest exte
     /**
      * @return PHPUnit_Framework_MockObject_MockObject|Varien_Event_Observer
      */
-    private function getMockObserver()
+    protected function getMockObserver()
     {
         $mockOrder = $this->getMockOrder();
 

@@ -1,5 +1,6 @@
 <?php
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form
+    extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
     public function __construct()
     {
@@ -109,7 +110,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Ideal_Checkout_Form extends TIG
 
     public function getIssuerList()
     {
-        $version = (int) Mage::getStoreConfig('buckaroo/buckaroo3extended_ideal/service_version', Mage::app()->getStore()->getId());
+        $version = (int)Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_ideal/service_version', Mage::app()->getStore()->getId()
+        );
         $issuers = $this->getIssuers();
 
         if ($version === 2) {

@@ -18,13 +18,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Directdebit_PaymentMethod exten
     {
         $session = Mage::getSingleton('checkout/session');
 
-        if(isset($_POST['payment']))
+        $postData = Mage::app()->getRequest()->getPost();
+
+        if(isset($postData['payment']))
         {
-            $accountNumber = $_POST['payment']['account_number'];
+            $accountNumber = $postData['payment']['account_number'];
             $session->setData('additionalFields', array(
-                    'accountOwner'  => $_POST['payment']['account_owner'],
+                    'accountOwner'  => $postData['payment']['account_owner'],
                     'accountNumber' => $this->filterAccount($accountNumber),
-                    'bankNumber'    => $_POST['payment']['bank_number'],
+                    'bankNumber'    => $postData['payment']['bank_number'],
                 )
             );
         }

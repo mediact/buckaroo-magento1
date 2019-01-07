@@ -151,7 +151,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Creditmemo_Create_Fee ex
 
         $paymentMethod = $source->getOrder()->getPayment()->getMethod();
 
-        $label = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($source->getStoreId(),$paymentMethod);
+        $label = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($source->getStoreId(), $paymentMethod);
 
         $label .= ' ' . Mage::helper('tax')->getIncExcTaxLabel($this->getFeeIsInclTax());
 

@@ -38,7 +38,8 @@
  *
  * @method Varien_Object getTotal()
  */
-class TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Create_Totals_Fee extends Mage_Adminhtml_Block_Sales_Order_Create_Totals
+class TIG_Buckaroo3Extended_Block_Adminhtml_Sales_Order_Create_Totals_Fee
+    extends Mage_Adminhtml_Block_Sales_Order_Create_Totals
 {
     /**
      * Display modes for the Buckaroo Payment fee.

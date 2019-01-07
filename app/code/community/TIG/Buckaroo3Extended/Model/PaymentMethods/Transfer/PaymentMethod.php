@@ -35,10 +35,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
                 . '-' . $post['payment'][$this->_code]['day'])
         );
 
-        if (isset($_POST[$this->_code.'_BPE_Customergender'])) {
+        if (isset($post[$this->_code.'_BPE_Customergender'])) {
             $session->setData('additionalFields',array(
-                'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
-                'BPE_Customermail'      => $_POST[$this->_code.'_BPE_Customermail'],
+                'BPE_Customergender'    => $post[$this->_code.'_BPE_Customergender'],
+                'BPE_Customermail'      => $post[$this->_code.'_BPE_Customermail'],
                 'BPE_customerbirthdate' => $customerBirthDate
             ));
         }

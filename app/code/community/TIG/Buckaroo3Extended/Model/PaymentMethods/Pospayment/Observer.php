@@ -135,7 +135,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Pospayment_Observer extends TIG
         $responseModel->sendDebugEmail();
 
         Mage::app()->getFrontController()->getResponse()->setRedirect($returnUrl)->sendResponse();
-        exit;
+        return $this;
     }
 
     /**

@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn extends Mage_Adminhtml_Block_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config_Advancedbtn
+    extends Mage_Adminhtml_Block_Abstract
     implements Varien_Data_Form_Element_Renderer_Interface
 {
     /**
@@ -38,6 +39,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Dankort_Adminhtml_System_Config
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         return $this->toHtml();
