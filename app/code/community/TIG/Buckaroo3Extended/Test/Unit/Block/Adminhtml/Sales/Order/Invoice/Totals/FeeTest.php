@@ -154,18 +154,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Block_Adminhtml_Sales_Order_Invoice_Totals
         $buckarooFeeTaxExpects,
         $orderExpects,
         $displayMode
-    ) 
-{ 
-     
-     
-     
-     
-     
-     
-     
-     
-     
-    
+    ) {
         $mockOrder = $this->_getMockOrder();
         $mockInvoice = $this->_getMockInvoice();
 

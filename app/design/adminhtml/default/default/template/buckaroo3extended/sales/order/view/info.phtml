@@ -24,25 +24,33 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
-<?php $_order = $this->getOrder() ?>
+<?php // @codingStandardsIgnoreFile ?>
+<?php $order = $this->getOrder() ?>
 <?php
-$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
-$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+$orderAdminDate = $this->formatDate($order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($order->getCreatedAtStoreDate(), 'medium', true);
 ?>
 <div class="box-left">
     <!--Order Information-->
     <div class="entry-edit">
-        <?php if ($_order->getEmailSent()):
-            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        <?php if ($order->getEmailSent()):
+            $email = Mage::helper('sales')->__('the order confirmation email was sent');
         else:
-            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+            $email = Mage::helper('sales')->__('the order confirmation email is not sent');
         endif; ?>
         <div class="entry-edit-head">
             <?php if ($this->getNoUseOrderLink()): ?>
-                <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?> (<?php echo $_email ?>)</h4>
+                <h4 class="icon-head head-account">
+                    <?php echo Mage::helper('sales')->__(
+                        'Order # %s',
+                        $order->getRealOrderId()
+                    ) ?> (<?php echo $email ?>)
+                </h4>
             <?php else: ?>
-                <a href="<?php echo $this->getViewUrl($_order->getId()) ?>"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?></a>
-                <strong>(<?php echo $_email ?>)</strong>
+                <a href="<?php echo $this->getViewUrl($order->getId()) ?>">
+                    <?php echo Mage::helper('sales')->__('Order # %s', $order->getRealOrderId()) ?>
+                </a>
+                <strong>(<?php echo $email ?>)</strong>
             <?php endif; ?>
         </div>
         <div class="fieldset">
@@ -53,50 +61,91 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
                 </tr>
                 <?php if ($orderAdminDate != $orderStoreDate):?>
                     <tr>
-                        <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+                        <td class="label">
+                            <label>
+                                <?php echo Mage::helper('sales')->__(
+                                    'Order Date (%s)',
+                                    $order->getCreatedAtStoreDate()->getTimezone()
+                                ) ?>
+                            </label>
+                        </td>
                         <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
                     </tr>
                 <?php endif;?>
                 <tr>
                     <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
-                    <td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+                    <td class="value">
+                        <strong>
+                            <span id="order_status"><?php echo $order->getStatusLabel() ?></span>
+                        </strong>
+                    </td>
                 </tr>
                 <tr>
                     <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
                     <td class="value"><strong><?php echo $this->getOrderStoreName() ?></strong></td>
                 </tr>
-                <?php if($_order->getRelationChildId()): ?>
+                <?php if($order->getRelationChildId()): ?>
                     <tr>
-                        <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the New Order') ?></label></td>
-                        <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationChildId()) ?>">
-                                <?php echo $_order->getRelationChildRealId() ?>
+                        <td class="label">
+                            <label>
+                                <?php echo Mage::helper('sales')->__('Link to the New Order') ?>
+                            </label>
+                        </td>
+                        <td class="value"><a href="<?php echo $this->getViewUrl($order->getRelationChildId()) ?>">
+                                <?php echo $order->getRelationChildRealId() ?>
                             </a></td>
                     </tr>
                 <?php endif; ?>
-                <?php if($_order->getRelationParentId()): ?>
+                <?php if($order->getRelationParentId()): ?>
                     <tr>
-                        <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the Previous Order') ?></label></td>
-                        <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationParentId()) ?>">
-                                <?php echo $_order->getRelationParentRealId() ?>
-                            </a></td>
+                        <td class="label">
+                            <label>
+                                <?php echo Mage::helper('sales')->__('Link to the Previous Order') ?>
+                            </label>
+                        </td>
+                        <td class="value">
+                            <a href="<?php echo $this->getViewUrl($order->getRelationParentId()) ?>">
+                                <?php echo $order->getRelationParentRealId() ?>
+                            </a>
+                        </td>
                     </tr>
                 <?php endif; ?>
-                <?php if($_order->getRemoteIp() && $this->shouldDisplayCustomerIp()): ?>
+                <?php if($order->getRemoteIp() && $this->shouldDisplayCustomerIp()): ?>
                     <tr>
                         <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
-                        <td class="value"><strong><?php echo $this->escapeHtml($_order->getRemoteIp()); echo ($_order->getXForwardedFor())?' (' . $this->escapeHtml($_order->getXForwardedFor()) . ')':''; ?></strong></td>
+                        <td class="value">
+                            <strong>
+                                <?php echo $this->escapeHtml($order->getRemoteIp());
+                                echo ($order->getXForwardedFor())?' (' . $this->escapeHtml($order->getXForwardedFor()) . ')':''; ?>
+                            </strong>
+                        </td>
                     </tr>
                 <?php endif; ?>
-                <?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+                <?php if($order->getGlobalCurrencyCode() != $order->getBaseCurrencyCode()): ?>
                     <tr>
-                        <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
-                        <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+                        <td class="label">
+                            <label>
+                                <?php echo Mage::helper('sales')->__(
+                                    '%s / %s rate:', $order->getGlobalCurrencyCode(),
+                                    $order->getBaseCurrencyCode()
+                                ) ?>
+                            </label>
+                        </td>
+                        <td class="value"><strong><?php echo $order->getBaseToGlobalRate() ?></strong></td>
                     </tr>
                 <?php endif; ?>
-                <?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+                <?php if($order->getBaseCurrencyCode() != $order->getOrderCurrencyCode()): ?>
                     <tr>
-                        <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
-                        <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+                        <td class="label">
+                            <label>
+                                <?php echo Mage::helper('sales')->__(
+                                    '%s / %s rate:',
+                                    $order->getOrderCurrencyCode(),
+                                    $order->getBaseCurrencyCode()
+                                ) ?>
+                            </label>
+                        </td>
+                        <td class="value"><strong><?php echo $order->getBaseToOrderRate() ?></strong></td>
                     </tr>
                 <?php endif; ?>
             </table>
@@ -116,21 +165,33 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
                     <tr>
                         <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
                         <td class="value">
-                            <?php if ($_customerUrl=$this->getCustomerViewUrl()) : ?>
-                                <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->escapeHtml($_order->getCustomerName()) ?></strong></a>
+                            <?php if ($customerUrl=$this->getCustomerViewUrl()) : ?>
+                                <a href="<?php echo $customerUrl ?>" target="_blank">
+                                    <strong>
+                                        <?php echo $this->escapeHtml($order->getCustomerName()) ?>
+                                    </strong>
+                                </a>
                             <?php else: ?>
-                                <strong><?php echo $this->escapeHtml($_order->getCustomerName()) ?></strong>
+                                <strong><?php echo $this->escapeHtml($order->getCustomerName()) ?></strong>
                             <?php endif; ?>
                         </td>
                     </tr>
                     <tr>
                         <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
-                        <td class="value"><a href="mailto:<?php echo $this->escapeHtml($_order->getCustomerEmail()) ?>"><strong><?php echo $this->escapeHtml($_order->getCustomerEmail()) ?></strong></a></td>
+                        <td class="value">
+                            <a href="mailto:<?php echo $this->escapeHtml($order->getCustomerEmail()) ?>">
+                                <strong>
+                                    <?php echo $this->escapeHtml($order->getCustomerEmail()) ?>
+                                </strong>
+                            </a>
+                        </td>
                     </tr>
-                    <?php if ($_groupName = $this->getCustomerGroupName()) : ?>
+                    <?php if ($groupName = $this->getCustomerGroupName()) : ?>
                         <tr>
-                            <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label></td>
-                            <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                            <td class="label">
+                                <label><?php echo Mage::helper('sales')->__('Customer Group') ?></label>
+                            </td>
+                            <td class="value"><strong><?php echo $groupName ?></strong></td>
                         </tr>
                     <?php endif; ?>
                     <?php foreach ($this->getCustomerAccountData() as $data):?>
@@ -153,14 +214,14 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
             <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Billing Address') ?></h4>
             <div class="tools">
                 <?php
-                if ($_order->getPayment()->getMethodInstance()->getCode() != 'buckaroo3extended_klarna') {
-                    echo $this->getAddressEditLink($_order->getBillingAddress());
+                if ($order->getPayment()->getMethodInstance()->getCode() != 'buckaroo3extended_klarna') {
+                    echo $this->getAddressEditLink($order->getBillingAddress());
                 }
                 ?>
             </div>
         </div>
         <fieldset>
-            <address><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+            <address><?php echo $order->getBillingAddress()->getFormated(true) ?></address>
         </fieldset>
     </div>
 </div>
@@ -169,17 +230,19 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
         <!--Shipping Address-->
         <div class="entry-edit">
             <div class="entry-edit-head">
-                <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+                <h4 class="icon-head head-shipping-address">
+                    <?php echo Mage::helper('sales')->__('Shipping Address') ?>
+                </h4>
                 <div class="tools">
                     <?php
-                    if ($_order->getPayment()->getMethodInstance()->getCode() != 'buckaroo3extended_klarna') {
-                        echo $this->getAddressEditLink($_order->getShippingAddress());
+                    if ($order->getPayment()->getMethodInstance()->getCode() != 'buckaroo3extended_klarna') {
+                        echo $this->getAddressEditLink($order->getShippingAddress());
                     }
                     ?>
                 </div>
             </div>
             <fieldset>
-                <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+                <address><?php echo $order->getShippingAddress()->getFormated(true) ?></address>
             </fieldset>
         </div>
     </div>
