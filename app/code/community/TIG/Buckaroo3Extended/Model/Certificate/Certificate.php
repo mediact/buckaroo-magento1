@@ -7,11 +7,12 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
      *
      * @param Varien_Object $object
      */
+    // @codingStandardsIgnoreStart
     public function uploadAndImport(Varien_Object $object)
     {
         if (isset($_FILES['groups']['name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value'])
             && !empty(
-                $_FILES['groups']['name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value']
+            $_FILES['groups']['name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value']
             )
             && file_exists(
                 $_FILES['groups']['tmp_name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value']
@@ -22,15 +23,17 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
 
                 //check if a certificate name is defined
                 if (!isset($postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'])
-                    || empty($postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'])
+                    || empty(
+                        $postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value']
+                    )
                 ) {
                     Mage::throwException('please enter a name for this certificate');
                 }
 
                 if (strpos(
-                        $_FILES['groups']['name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value'],
-                        '.pem'
-                    ) === false) {
+                    $_FILES['groups']['name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value'],
+                    '.pem'
+                ) === false) {
                     Mage::throwException('invalid certificate file uploaded');
                 }
 
@@ -51,9 +54,11 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
 
                 $data = array(
                     'certificate'      => file_get_contents(
-                        $_FILES['groups']['tmp_name']['buckaroo3extended_certificate']['fields']['certificate_upload']['value']
+                        $_FILES['groups']['tmp_name']['buckaroo3extended_certificate']['fields']['certificate_upload']
+                        ['value']
                     ),
-                    'certificate_name' => $postData['groups']['buckaroo3extended_certificate']['fields']['certificate_name']['value'],
+                    'certificate_name' => $postData['groups']['buckaroo3extended_certificate']['fields']
+                                          ['certificate_name']['value'],
                     'upload_date'      => date('Y:m:d H:i:s'),
                 );
                 $model->setData($data);
@@ -67,4 +72,5 @@ class TIG_Buckaroo3Extended_Model_Certificate_Certificate extends Mage_Core_Mode
 
         return $object;
     }
+    // @codingStandardsIgnoreEnd
 }

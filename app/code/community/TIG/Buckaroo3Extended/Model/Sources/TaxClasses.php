@@ -21,6 +21,7 @@ class TIG_Buckaroo3Extended_Model_Sources_TaxClasses
             if (empty($class)) {
                 continue;
             }
+
             $optionArray[$class] = array('value' => $class, 'label' => Mage::getModel('tax/class')->load($class)->getClassName());
         }
        

@@ -21,12 +21,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_PaymentMethod extend
 
         $postData = Mage::app()->getRequest()->getPost();
 
-        $session->setData('additionalFields', array(
+        $session->setData(
+            'additionalFields', array(
             'gender'    => $postData['buckaroo3extended_onlinegiro_BPE_Customergender'],
             'firstname' => $postData['buckaroo3extended_onlinegiro_BPE_Customerfirstname'],
             'lastname'  => $postData['buckaroo3extended_onlinegiro_BPE_Customerlastname'],
             'mail'      => $postData['buckaroo3extended_onlinegiro_BPE_Customermail'],
-        ));
+            )
+        );
 
         return parent::assignData($data);
     }

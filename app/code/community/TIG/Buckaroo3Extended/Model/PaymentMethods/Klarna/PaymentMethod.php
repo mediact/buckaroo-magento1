@@ -114,8 +114,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
             $invoiceDiscount += (double)abs($invoice->getGiftCardsAmount());
         }
 
-	// fix for rounding problems less than one cent
-	$differenceOrderAndInvoiceTotal = abs($orderTotal - $invoiceTotal);
+    // fix for rounding problems less than one cent
+    $differenceOrderAndInvoiceTotal = abs($orderTotal - $invoiceTotal);
 
         if (($orderDiscount > 0 || $invoiceDiscount > 0) && $differenceOrderAndInvoiceTotal > 0.01) {
             return false;

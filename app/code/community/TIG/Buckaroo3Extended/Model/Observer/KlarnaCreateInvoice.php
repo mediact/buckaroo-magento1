@@ -68,9 +68,11 @@ class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core
          *  and that should only happen when all the shipped items are included within the order_item_collection.
          */
         if (empty($qtys)) {
-            Mage::throwException(Mage::helper('core')->__(
-                'Cannot create an invoice, because Klarna can not work with an empty qtys array'
-            ));
+            Mage::throwException(
+                Mage::helper('core')->__(
+                    'Cannot create an invoice, because Klarna can not work with an empty qtys array'
+                )
+            );
         }
 
         $this->_createInvoice($order, $qtys);
@@ -89,8 +91,10 @@ class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core
             $service = Mage::getModel('sales/service_order', $order);
             $invoice = $service->prepareInvoice($qtys);
             if (!$invoice->getTotalQty()) {
-                Mage::throwException(Mage::helper('core')->__(
-                    'Could not create a invoice for this shipment without products.')
+                Mage::throwException(
+                    Mage::helper('core')->__(
+                        'Could not create a invoice for this shipment without products.'
+                    )
                 );
             }
 
@@ -103,7 +107,6 @@ class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core
             $transaction->addObject($invoice);
             $transaction->addObject($invoice->getOrder());
             $transaction->save();
-
         } catch (Mage_Core_Exception $exception) {
             Mage::throwException($exception->getMessage());
         }
@@ -131,6 +134,7 @@ class TIG_Buckaroo3Extended_Model_Observer_KlarnaCreateInvoice extends Mage_Core
             if (!key_exists($orderItem->getSku(), $shippedItems) || !isset($shippedItems[$orderItem->getSku()])) {
                 continue;
             }
+
             $qtys[$orderItem->getId()] = $shippedItems[$orderItem->getSku()];
         }
 

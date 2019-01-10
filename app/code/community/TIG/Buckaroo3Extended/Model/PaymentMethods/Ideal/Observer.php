@@ -105,6 +105,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Ideal_Observer extends TIG_Buck
         if ($chosenMethod === $this->_code) {
             $ret = true;
         }
+
         return $ret;
     }
 

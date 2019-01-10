@@ -70,14 +70,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         $this->_addPaymentGuaranteeVariables($vars);
 
         $additionalInformation = $this->_order->getPayment()->getMethodInstance()->getInfoInstance()->getAdditionalInformation();
-        if (
-            array_key_exists('checked_terms_and_conditions', $additionalInformation)
+        if (array_key_exists('checked_terms_and_conditions', $additionalInformation)
             && $additionalInformation['checked_terms_and_conditions'] === true
         ) {
             $message = Mage::helper('buckaroo3extended')->__('Customer accepted terms and conditions.');
         } else {
             $message = Mage::helper('buckaroo3extended')->__('Customer did NOT accept the terms and conditions.');
         }
+
         $this->_order->addStatusHistoryComment($message)->save();
 
         $request->setVars($vars);
@@ -121,21 +121,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
 
         $push->addNote($response['message'], $this->_method);
 
-        if (
-            isset($postArray['brq_payment_method'])
+        if (isset($postArray['brq_payment_method'])
             && !$order->getPaymentMethodUsedForTransaction()
             && $postArray['brq_statuscode'] == '190'
         )
         {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
-        } elseif (
-            isset($postArray['brq_transaction_method'])
+        } elseif (isset($postArray['brq_transaction_method'])
             && !$order->getPaymentMethodUsedForTransaction()
             && $postArray['brq_statuscode'] == '190'
         )
         {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
         }
+
         $order->save();
 
         $push->setCustomResponseProcessing(true);
@@ -213,8 +212,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
     protected function _addPaymentGuaranteeVariables(&$vars)
     {
         $dueDays        = Mage::getStoreConfig('buckaroo/buckaroo3extended_paymentguarantee/duedate', Mage::app()->getStore()->getStoreId());
-        $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays), date("Y")));
-        $dueDate        = date('Y-m-d', mktime(0, 0, 0, date("m")  , (date("d") + $dueDays + 14), date("Y")));
+        $dueDateInvoice = date('Y-m-d', mktime(0, 0, 0, date("m"), (date("d") + $dueDays), date("Y")));
+        $dueDate        = date('Y-m-d', mktime(0, 0, 0, date("m"), (date("d") + $dueDays + 14), date("Y")));
 
         $VAT = 0;
         foreach($this->_order->getFullTaxInfo() as $taxRecord)
@@ -258,10 +257,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
 
         if(!$canRefund){
             Mage::getSingleton('core/session')->addNotice(
-                Mage::helper('buckaroo3extended')->__( "Currently the option to create a creditnote with a Paymentguarantee transaction is disabled." )
+                Mage::helper('buckaroo3extended')->__("Currently the option to create a creditnote with a Paymentguarantee transaction is disabled.")
             );
             return $this;
         }
+
         $request = $observer->getRequest();
 
         $codeBits = explode('_', $this->_code);
@@ -319,7 +319,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
         {
             $tax += $taxRecord['amount'];
         }
-        $tax = round($tax ,2);
+
+        $tax = round($tax, 2);
 
         $array = array(
             'OriginalInvoiceNumber' => $vars['orderId'],
@@ -351,7 +352,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_Observer exten
 
         if($response['status'] == self::BUCKAROO_SUCCESS){
             Mage::getSingleton('core/session')->addNotice(
-                Mage::helper('buckaroo3extended')->__( "Note: By creating a credit-note for this order does not mean this order will actually be refunded.\n To refund this order please go to the Payment Plaza and do it manually." )
+                Mage::helper('buckaroo3extended')->__("Note: By creating a credit-note for this order does not mean this order will actually be refunded.\n To refund this order please go to the Payment Plaza and do it manually.")
             );
         }
 

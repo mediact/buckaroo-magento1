@@ -89,7 +89,7 @@ class TIG_Buckaroo3Extended_Model_Soap_ClientWSSEC extends SoapClient
      * @return string
      * @throws Exception
      */
-    public function __doRequest ($request , $location , $action , $version , $one_way = 0 )
+    public function __doRequest($request , $location , $action , $version , $one_way = 0 )
     {
         // Add code to inspect/dissect/debug/adjust the XML given in $request here
         $domDOC = new DOMDocument();
@@ -140,7 +140,7 @@ class TIG_Buckaroo3Extended_Model_Soap_ClientWSSEC extends SoapClient
      */
     private function calculateDigestValue($input)
     {
-        return base64_encode(pack('H*',sha1($input)));
+        return base64_encode(pack('H*', sha1($input)));
     }
 
     /**
@@ -155,14 +155,14 @@ class TIG_Buckaroo3Extended_Model_Soap_ClientWSSEC extends SoapClient
         $xPath = new DOMXPath($domDocument);
 
         //register namespaces to use in xpath query's
-        $xPath->registerNamespace('wsse','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
-        $xPath->registerNamespace('sig','http://www.w3.org/2000/09/xmldsig#');
-        $xPath->registerNamespace('soap','http://schemas.xmlsoap.org/soap/envelope/');
+        $xPath->registerNamespace('wsse', 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
+        $xPath->registerNamespace('sig', 'http://www.w3.org/2000/09/xmldsig#');
+        $xPath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
 
         //Set id on soap body to easily extract the body later.
         $bodyNodeList = $xPath->query('/soap:Envelope/soap:Body');
         $bodyNode = $bodyNodeList->item(0);
-        $bodyNode->setAttribute('Id','_body');
+        $bodyNode->setAttribute('Id', '_body');
 
         //Get the digest values
         $controlHash = $this->CalculateDigestValue($this->GetCanonical($this->GetReference('_control', $xPath)));
@@ -226,11 +226,11 @@ class TIG_Buckaroo3Extended_Model_Soap_ClientWSSEC extends SoapClient
         $sigNodeSet = $sigQueryNodeset->item(0);
 
         //Create keyinfo element and Add public key to KeyIdentifier element
-        $KeyTypeNode = $domDocument->createElementNS("http://www.w3.org/2000/09/xmldsig#","KeyInfo");
-        $SecurityTokenReference = $domDocument->createElementNS('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd','SecurityTokenReference');
+        $KeyTypeNode = $domDocument->createElementNS("http://www.w3.org/2000/09/xmldsig#", "KeyInfo");
+        $SecurityTokenReference = $domDocument->createElementNS('http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd', 'SecurityTokenReference');
         $KeyIdentifier = $domDocument->createElement("KeyIdentifier");
         $KeyIdentifier->nodeValue = $this->thumbprint;
-        $KeyIdentifier->setAttribute('ValueType','http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbPrintSHA1');
+        $KeyIdentifier->setAttribute('ValueType', 'http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbPrintSHA1');
         $SecurityTokenReference->appendChild($KeyIdentifier);
         $KeyTypeNode->appendChild($SecurityTokenReference);
         $sigNodeSet->appendChild($KeyTypeNode);

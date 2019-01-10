@@ -39,7 +39,7 @@
 class TIG_Buckaroo3Extended_Model_Observer_CancelAuthorize extends Mage_Core_Model_Abstract
 {
     /** @var array */
-    private $_allowedMethods = array('afterpay', 'afterpay2', 'klarna');
+    protected $_allowedMethods = array('afterpay', 'afterpay2', 'klarna');
 
     /**
      * @param Varien_Event_Observer $observer

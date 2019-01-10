@@ -5,7 +5,7 @@ class TIG_Buckaroo3Extended_Model_Adminhtml_System_Config_Backend_Buckaroo_Fee e
     public function _beforeSave()
     {
         $groups = $this->getGroups();
-        foreach($groups as &$group) {
+        foreach ($groups as &$group) {
             $fields = $group['fields'];
             if (array_key_exists('payment_fee', $fields)) {
                 $fee = $group['fields']['payment_fee']['value'];

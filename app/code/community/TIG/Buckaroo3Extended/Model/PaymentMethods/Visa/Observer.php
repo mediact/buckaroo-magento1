@@ -56,6 +56,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Visa_Observer extends TIG_Bucka
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
+
         $request->setVars($vars);
 
         return $this;

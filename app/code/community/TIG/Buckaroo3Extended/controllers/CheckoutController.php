@@ -62,8 +62,6 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
 
         $session = Mage::getSingleton('checkout/session');
         $session->setData($name, $value);
-
-        return;
     }
 
     public function pospaymentPendingAction()
@@ -110,8 +108,6 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
 
         $this->getResponse()->clearHeaders()->setHeader('Content-type', 'application/json');;
         $this->getResponse()->setBody($jsonResponse);
-
-        return;
     }
 
     /**

@@ -51,7 +51,8 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     public function __construct($data = array())
     {
         if(!defined('LIB_DIR')) {
-            define('LIB_DIR',
+            define(
+                'LIB_DIR',
                 Mage::getBaseDir()
                 . DS
                 . 'app'
@@ -97,7 +98,8 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         try
         {
             //first attempt: use the cached WSDL
-            $client = Mage::getModel('buckaroo3extended/soap_clientWSSEC',
+            $client = Mage::getModel(
+                'buckaroo3extended/soap_clientWSSEC',
                 array(
                     'wsdl' => self::WSDL_URL,
                     'options' => array('trace' => 1, 'cache_wsdl' => WSDL_CACHE_DISK)
@@ -107,7 +109,8 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             try {
                 //second attempt: use an uncached WSDL
                 ini_set('soap.wsdl_cache_ttl', 1);
-                $client = Mage::getModel('buckaroo3extended/soap_clientWSSEC',
+                $client = Mage::getModel(
+                    'buckaroo3extended/soap_clientWSSEC',
                     array(
                         'wsdl' => self::WSDL_URL,
                         'options' => array('trace' => 1, 'cache_wsdl' => WSDL_CACHE_NONE)
@@ -116,7 +119,8 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             } catch (SoapFault $e) {
                 try {
                     //third and final attempt: use the supplied wsdl found in the lib folder
-                    $client = Mage::getModel('buckaroo3extended/soap_clientWSSEC',
+                    $client = Mage::getModel(
+                        'buckaroo3extended/soap_clientWSSEC',
                         array(
                             'wsdl' => LIB_DIR . 'Buckaroo.wsdl',
                             'options' => array('trace' => 1, 'cache_wsdl' => WSDL_CACHE_NONE)
@@ -159,9 +163,11 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         if (isset($this->_vars['amountDebit'])) {
             $TransactionRequest->AmountDebit = round($this->_vars['amountDebit'], 2);
         }
+
         if (isset($this->_vars['amountCredit'])) {
             $TransactionRequest->AmountCredit = round($this->_vars['amountCredit'], 2);
         }
+
         if (isset($this->_vars['amount'])) {
             $TransactionRequest->Amount = round($this->_vars['amount'], 2);
         }
@@ -367,6 +373,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
             $services[] = $service;
         }
+
         $TransactionRequest->Services->Service = $services;
     }
 
@@ -376,8 +383,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
      */
     protected function _addCustomFields(&$service, $name)
     {
-        if (
-            !isset($this->_vars['customVars'])
+        if (!isset($this->_vars['customVars'])
             || !isset($this->_vars['customVars'][$name])
             || empty($this->_vars['customVars'][$name])
         ) {
@@ -388,7 +394,6 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $requestParameters = array();
 
         foreach ($this->_vars['customVars'][$name] as $fieldName => $value) {
-
             if ($fieldName == 'Articles' && is_array($value) && !empty($value)) {
                 foreach ($value as $groupId => $articleArray) {
                     if (!is_array($articleArray) || empty($articleArray)) {
@@ -404,6 +409,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
                         $requestParameters[]   = $newParameter;
                     }
                 }
+
                 continue;
             }
 
@@ -449,8 +455,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
     {
         $requestParameters = array();
         foreach($this->_vars['customParameters'] as $fieldName => $value) {
-            if (
-                (is_null($value) || $value === '')
+            if ((is_null($value) || $value === '')
                 || (
                     is_array($value)
                     && (is_null($value['value']) || $value['value'] === '')
