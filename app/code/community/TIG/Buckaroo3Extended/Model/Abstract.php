@@ -685,10 +685,13 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
           0     => array( '*'=>array(    "omschrijving" => "De credit card transactie is pending.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
-        001     => array( '*'=>array(    "omschrijving" => "De credit card transactie is pending. De MPI-status van " .
-            "de klant wordt gecheckt.",
-                        "code"        => self::BUCKAROO_NEUTRAL,
-                        "type"        => "creditcard")),
+        001     => array(
+            '*'=>array(
+                "omschrijving" => "De credit card transactie is pending. De MPI-status van de klant wordt gecheckt.",
+                "code"        => self::BUCKAROO_NEUTRAL,
+                "type"        => "creditcard"
+            )
+        ),
         070     => array( '*'=>array(    "omschrijving" => "De refund is nog niet verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
@@ -707,14 +710,20 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         101     => array( '*'=>array(    "omschrijving" => "De transactie is door de credit-maatschappij afgekeurd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
-        102     => array( '*'=>array(    "omschrijving" => "De transactie is mislukt. Er is een fout opgetreden in " .
-            "de verwerking bij de creditmaatschappij.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "creditcard")),
-        103     => array( '*'=>array(    "omschrijving" => "Deze creditcardtransactie is niet binnen de maximale,  " .
-            "toegestane tijd uitgevoerd.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "creditcard")),
+        102     => array(
+            '*'=>array(
+                "omschrijving" => "De transactie is mislukt. Er is een fout opgetreden in de verwerking bij de creditmaatschappij.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "creditcard"
+            )
+        ),
+        103     => array(
+            '*'=>array(
+                "omschrijving" => "Deze creditcardtransactie is niet binnen de maximale,  toegestane tijd uitgevoerd.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "creditcard"
+            )
+        ),
         104     => array( '*'=>array(    "omschrijving" => "De kaart is verlopen.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
@@ -727,14 +736,18 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         122     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is door de consument geannuleerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
-        123     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is niet binnen de maximale, " .
-            "toegestane tijd uitgevoerd.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "paypal")),
-        124     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is om onbekende reden bij PayPal " .
-            "mislukt.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "paypal")),
+        123     => array(
+            '*'=>array(
+                "omschrijving" => "Deze PayPal-transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "paypal"
+            )
+        ),
+        124     => array(
+            '*'=>array(
+                "omschrijving" => "Deze PayPal-transactie is om onbekende reden bij PayPal mislukt.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "paypal")),
         125     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is niet geaccepteerd.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
@@ -744,10 +757,13 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         135     => array( '*'=>array(    "omschrijving" => "Deze PayPal-transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
-        136     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie " .
-            "nog niet bij PayPal worden achterhaald. De transactie is mogelijk nog niet afgerond",
-                        "code"        => self::BUCKAROO_NEUTRAL,
-                        "type"        => "paypal")),
+        136     => array(
+            '*'=>array(
+                "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij PayPal worden achterhaald. De transactie is mogelijk nog niet afgerond",
+                "code"        => self::BUCKAROO_NEUTRAL,
+                "type"        => "paypal"
+            )
+        ),
         137     => array( '*'=>array(    "omschrijving" => "De afschrijvingscode is ongeldig.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
@@ -766,46 +782,65 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         151     => array( '*'=>array(    "omschrijving" => "Transactiestatus: authorisatie geslaagd.",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "paypal")),
-        152     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is door de consument " .
-            "geannuleerd.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "paypal")),
-        153     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is niet binnen de maximale, " .
-            "toegestane tijd uitgevoerd.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "paypal")),
+        152     => array(
+            '*'=>array(
+                "omschrijving" => "Deze Paysafecard-transactie is door de consument geannuleerd.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "paypal"
+            )
+        ),
+        153     => array(
+            '*'=>array(
+                "omschrijving" => "Deze Paysafecard-transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "paypal")),
         155     => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is niet geaccepteerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "paypal")),
         156  => array( '*'=>array(    "omschrijving" => "Deze Paysafecard-transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
-        157     => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie " .
-            "nog niet bij Paysafecard worden achterhaald. De transactie is mogelijk nog niet afgerond.",
-                        "code"        => self::BUCKAROO_NEUTRAL,
-                        "type"        => "paypal")),
-        158     => array( '*'=>array(    "omschrijving" => "Er is een systeemfout opgetreden bij Paysafecard. " .
-            "Onze excuses voor het ongemak.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "paypal")),
-        159     => array( '*'=>array(    "omschrijving" => "Het Paysafecard transactie-id is ongeldig of niet " .
-            "beschikbaar.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "paypal")),
+        157     => array(
+            '*'=>array(
+                "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij Paysafecard worden achterhaald. De transactie is mogelijk nog niet afgerond.",
+                "code"        => self::BUCKAROO_NEUTRAL,
+                "type"        => "paypal"
+            )
+        ),
+        158     => array(
+            '*'=>array(
+                "omschrijving" => "Er is een systeemfout opgetreden bij Paysafecard. Onze excuses voor het ongemak.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "paypal"
+            )
+        ),
+        159     => array(
+            '*'=>array(
+                "omschrijving" => "Het Paysafecard transactie-id is ongeldig of niet beschikbaar.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "paypal"
+            )
+        ),
         170     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "paypal")),
         171     => array( '*'=>array(    "omschrijving" => "Transactiestatus: authorisatie geslaagd",
                         "code"        => self::BUCKAROO_SUCCESS,
                         "type"        => "creditcard")),
-        172     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is door de consument " .
-            "geannuleerd.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "creditcard")),
-        173     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is niet binnen de maximale, " .
-            "toegestane tijd uitgevoerd.",
-                        "code"        => self::BUCKAROO_FAILED,
-                        "type"        => "creditcard")),
+        172     => array(
+            '*'=>array(
+                "omschrijving" => "Deze Cash-Ticket transactie is door de consument geannuleerd.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "creditcard"
+            )
+        ),
+        173     => array(
+            '*'=>array(
+                "omschrijving" => "Deze Cash-Ticket transactie is niet binnen de maximale, toegestane tijd uitgevoerd.",
+                "code"        => self::BUCKAROO_FAILED,
+                "type"        => "creditcard"
+            )
+        ),
         175     => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is niet geaccepteerd.",
                         "code"        => self::BUCKAROO_FAILED,
                         "type"        => "creditcard")),
