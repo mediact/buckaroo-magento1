@@ -31,9 +31,11 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_RequestParameter
 {
+    //@codingStandardsIgnoreStart
     public $_;
     public $Name;
     public $Group;
     public $GroupID;
     public $Key;
+    //@codingStandardsIgnoreEnd
 }

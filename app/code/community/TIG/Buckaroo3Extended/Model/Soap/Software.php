@@ -31,9 +31,11 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_Software
 {
+    //@codingStandardsIgnoreStart
     public $PlatformName;
     public $PlatformVersion;
     public $ModuleSupplier;
     public $ModuleName;
     public $ModuleVersion;
+    //@codingStandardsIgnoreEnd
 }

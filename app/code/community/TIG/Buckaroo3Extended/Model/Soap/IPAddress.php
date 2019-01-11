@@ -31,6 +31,8 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_IPAddress
 {
+    //@codingStandardsIgnoreStart
     public $_;
     public $Type;
+    //@codingStandardsIgnoreEnd
 }

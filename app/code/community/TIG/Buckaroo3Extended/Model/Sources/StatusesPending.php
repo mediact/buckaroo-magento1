@@ -8,8 +8,7 @@ class TIG_Buckaroo3Extended_Model_Sources_StatusesPending extends Varien_Object
          
         $options=array();
         $options[]=array('value'=>'', 'label'=>Mage::helper('buckaroo3extended')->__('-- Please Select --'));
-        foreach($statuses as $value=>$label)
-        {
+        foreach ($statuses as $value=>$label) {
             $options[]=array('value'=>$value, 'label'=>$label);
         }
         

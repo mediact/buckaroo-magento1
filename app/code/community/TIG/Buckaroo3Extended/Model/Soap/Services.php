@@ -31,6 +31,8 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_Services
 {
+    //@codingStandardsIgnoreStart
     public $Global;
     public $Service;
+    //@codingStandardsIgnoreEnd
 }

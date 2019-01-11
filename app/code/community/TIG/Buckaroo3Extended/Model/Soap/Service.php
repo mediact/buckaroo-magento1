@@ -31,8 +31,10 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_Service
 {
+    //@codingStandardsIgnoreStart
     public $RequestParameter;
     public $Name;
     public $Action;
     public $Version;
+    //@codingStandardsIgnoreEnd
 }
