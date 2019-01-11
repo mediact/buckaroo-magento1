@@ -848,10 +848,13 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         176  => array( '*'=>array(    "omschrijving" => "Deze Cash-Ticket transactie is nog niet volledig verwerkt.",
                         "code"        => self::BUCKAROO_NEUTRAL,
                         "type"        => "creditcard")),
-        177  => array( '*'=>array(    "omschrijving" => "Om technische reden kon de status van deze transactie nog " .
-            "niet bij Cash-Ticket worden achterhaald. De transactie is mogelijk nog niet afgerond.",
-                        "code"        => self::BUCKAROO_NEUTRAL,
-                        "type"        => "creditcard")),
+        177  => array(
+            '*'=>array(
+                "omschrijving" => "Om technische reden kon de status van deze transactie nog niet bij Cash-Ticket worden achterhaald. De transactie is mogelijk nog niet afgerond.",
+                "code"        => self::BUCKAROO_NEUTRAL,
+                "type"        => "creditcard"
+            )
+        ),
         178  => array(
             '*'=>array(
                 "omschrijving" => "Er is een systeemfout opgetreden bij Cash-Ticket. Onze excuses voor het ongemak.",
