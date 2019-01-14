@@ -258,7 +258,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $signatureMethod->Algorithm = 'http://www.w3.org/2000/09/xmldsig#rsa-sha1';
 
         $header->Security->Signature->SignedInfo = Mage::getModel('buckaroo3extended/soap_signedInfoType');
-        $header->Security->Signature->SignedInfo->CanonicalizationMethod = $canonicalizationMethod
+        $header->Security->Signature->SignedInfo->CanonicalizationMethod = $canonicalizationMethod;
         $header->Security->Signature->SignedInfo->SignatureMethod = $signatureMethod;
 
         $reference = Mage::getModel('buckaroo3extended/soap_referenceType');
