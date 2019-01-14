@@ -31,10 +31,12 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_MessageControlBlock
 {
+    //@codingStandardsIgnoreStart
     public $Id;
     public $WebsiteKey;
     public $Culture;
     public $TimeStamp;
     public $Channel;
     public $Software;
+    //@codingStandardsIgnoreEnd
 }

@@ -55,15 +55,18 @@ class TIG_Buckaroo3Extended_Model_Request_QuoteFinal extends TIG_Buckaroo3Extend
         $this->_debugEmail .= "Processing response... \n";
 
         //process the response
-        $responseModel = Mage::getModel($this->_responseModelClass, array(
+        $responseModel = Mage::getModel(
+            $this->_responseModelClass, array(
             'response'   => $response,
             'XML'        => $responseXML,
             'debugEmail' => $this->_debugEmail,
-        ));
+            )
+        );
 
         if (!$responseModel->getOrder()) {
             $responseModel->setOrder($this->_order);
         }
+
         return $responseModel->processResponse();
     }
 

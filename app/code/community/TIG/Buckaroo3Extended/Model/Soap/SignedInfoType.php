@@ -31,7 +31,9 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_SignedInfoType
 {
+    //@codingStandardsIgnoreStart
     public $CanonicalizationMethod;
     public $SignatureMethod;
     public $Reference;
+    //@codingStandardsIgnoreEnd
 }

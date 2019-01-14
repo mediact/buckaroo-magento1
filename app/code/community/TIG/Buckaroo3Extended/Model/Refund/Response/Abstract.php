@@ -34,6 +34,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Abstract extends TIG_Buckaroo3
             $this->_debugEmail .= "Authenticity could NOT be verified!";
             $this->_verifyError();
         }
+
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
         $this->_payment->setTransactionKey($this->_response->Key)->save();

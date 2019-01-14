@@ -7,7 +7,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
 
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -22,7 +22,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
             ),
         );
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+        if (Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement',
+            Mage::app()->getStore()->getStoreId()
+        )) {
             $array['creditmanagement'] = array(
                     'action'    => 'Invoice',
                     'version'   => 1,
@@ -42,7 +45,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
 
     public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -52,16 +55,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
 
         $vars = $request->getVars();
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+        if (Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement',
+            Mage::app()->getStore()->getStoreId()
+        )) {
             $this->_addCustomerVariables($vars);
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
-        $array = array(
-            //'customercode' => $issuer,
-        );
-        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
+        $array = array();
+        if (array_key_exists('customVars', $vars)
+            && array_key_exists($this->_method, $vars['customVars'])
+            && is_array($vars['customVars'][$this->_method])
+        ) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
             $vars['customVars'][$this->_method] = $array;
@@ -74,7 +81,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
 
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -100,12 +107,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
         if ($chosenMethod === $this->_code) {
             $ret = true;
         }
+
         return $ret;
     }
 
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -120,7 +128,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
 
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -153,7 +161,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Bancontactmrcash_Observer
      */
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 

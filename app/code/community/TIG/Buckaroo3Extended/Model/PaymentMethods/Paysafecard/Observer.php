@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Paysafecard_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Paysafecard_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
+    
     protected $_code = 'buckaroo3extended_paysafecard';
     protected $_method = 'paysafecard';
     
@@ -56,6 +57,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paysafecard_Observer extends TI
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
+
         $request->setVars($vars);
         
         return $this;

@@ -77,7 +77,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
 
         $creditmemoInvoice = $creditmemo->getInvoice();
 
-        if ($creditmemoInvoice && ($creditmemoInvoice->getBuckarooFee() < 0.01 || $creditmemoInvoice->getBaseBuckarooFee() < 0.01)) {
+        if ($creditmemoInvoice && ($creditmemoInvoice->getBuckarooFee() < 0.01
+                || $creditmemoInvoice->getBaseBuckarooFee() < 0.01)) {
             return $this;
         }
 
@@ -137,9 +138,13 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
      *
      * @return $this
      */
-    protected function _updateCreditmemoTotals(Mage_Sales_Model_Order_Creditmemo $creditmemo,
-                                               Mage_Sales_Model_Order $order, $fee, $baseFee)
-    {
+    protected function _updateCreditmemoTotals(
+        Mage_Sales_Model_Order_Creditmemo $creditmemo,
+        Mage_Sales_Model_Order $order,
+        $fee,
+        $baseFee
+        // @codingStandardsIgnoreLine
+    ) {
         $creditmemo->setBuckarooFee($fee)
                    ->setBaseBuckarooFee($baseFee)
                    ->setGrandTotal($creditmemo->getGrandTotal() + $fee)
@@ -162,9 +167,12 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
      *
      * @throws Mage_Exception
      */
-    protected function _updateCreditmemoTotalsFromParams(Mage_Sales_Model_Order_Creditmemo $creditmemo,
-                                                         Mage_Sales_Model_Order $order, array $creditmemoParameters)
-    {
+    protected function _updateCreditmemoTotalsFromParams(
+        Mage_Sales_Model_Order_Creditmemo $creditmemo,
+        Mage_Sales_Model_Order $order,
+        array $creditmemoParameters
+        // @codingStandardsIgnoreLine
+    ) {
         /**
          * Get the fee amounts that are to be refunded.
          */
@@ -202,6 +210,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Creditmemo_Total_Fee
         }
 
         if (round($orderBaseFeeRefunded + $baseFee, 4) > $orderBaseFee) {
+            // @codingStandardsIgnoreLine
             throw new Mage_Exception(
                 $this->getHelper()->__(
                     'Maximum Buckaroo Payment fee amount available to refunds is %s.',

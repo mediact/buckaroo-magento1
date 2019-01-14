@@ -20,7 +20,8 @@
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod
+    extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
         'EUR',
@@ -49,6 +50,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
     /**
      * {@inheritdoc}
      */
+    // @codingStandardsIgnoreLine
     public function capture(Varien_Object $payment, $amount)
     {
         if (!$this->canCapture()) {
@@ -80,12 +82,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
      */
     protected function _getBPEPostData($post)
     {
-        $accountNumber = isset($post[$this->_code . '_bpe_customer_account_number']) ? $post[$this->_code . '_bpe_customer_account_number'] : '';
+        $accountNumber = isset($post[$this->_code . '_bpe_customer_account_number'])
+            ? $post[$this->_code . '_bpe_customer_account_number'] : '';
 
         $customerBirthDate = date(
-            'Y-m-d', strtotime($post['payment'][$this->_code]['year']
+            'Y-m-d', strtotime(
+                $post['payment'][$this->_code]['year']
                 . '-' . $post['payment'][$this->_code]['month']
-                . '-' . $post['payment'][$this->_code]['day'])
+                . '-' . $post['payment'][$this->_code]['day']
+            )
         );
 
         $array = array(
@@ -97,13 +102,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
             'BPE_Accept'            => 'true',
         );
 
-        if((int)$array['BPE_B2B'] == 2){
+        if ((int)$array['BPE_B2B'] == 2) {
             $additionalArray = array(
                 'BPE_CompanyCOCRegistration' => $post[$this->_code . '_BPE_CompanyCOCRegistration'],
                 'BPE_CompanyName'            => $post[$this->_code . '_BPE_CompanyName'],
             );
 
-            $array = array_merge($array,$additionalArray);
+            $array = array_merge($array, $additionalArray);
         }
 
         return $array;
@@ -117,7 +122,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
 
         $array = $this->_getBPEPostData($post);
 
-        $session->setData('additionalFields',$array);
+        $session->setData('additionalFields', $array);
 
         return parent::getOrderPlaceRedirectUrl();
     }
@@ -125,8 +130,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
     public function validate()
     {
         $postData = Mage::app()->getRequest()->getPost();
-        if (
-            !array_key_exists($this->_code . '_bpe_accept', $postData)
+        if (!array_key_exists($this->_code . '_bpe_accept', $postData)
             || $postData[$this->_code . '_bpe_accept'] != 'checked'
         ) {
             Mage::throwException(
@@ -153,87 +157,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
     {
         $storeId = Mage::app()->getStore()->getId();
 
-        // Check if quote is null, and try to look it up based on adminhtml session
-        if (!$quote && Mage::helper('buckaroo3extended')->isAdmin()) {
-            $quote = Mage::getSingleton('adminhtml/session_quote');
-        }
-
-        // If quote is not null, set storeId to quote storeId
-        if ($quote) {
-            $storeId = $quote->getStoreId();
-        }
-
-        //check if the module is set to enabled
-        if (!Mage::getStoreConfig('buckaroo/' . $this->_code . '/active', $storeId)) {
+        if (!$this->checkQuoteAndSession($quote)) {
             return false;
         }
 
-        if ($quote) {
-            $quoteItems = $quote->getAllVisibleItems();
-            if (count($quoteItems) > 99) {
-                return false;
-            }
-        }
-
-        $session = Mage::getSingleton('checkout/session');
-        if ($session->getData('buckarooAfterpayRejected') == true) {
+        if (!$this->checkAvailabilityInShopArea($storeId)) {
             return false;
         }
 
-        // Check if the country specified in the billing address is allowed to use this payment method
-        if (
-            $quote
-            && Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $storeId) == 1
-            && $quote->getBillingAddress()->getCountry())
-        {
-            $allowedCountries = explode(',',Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', $storeId));
-            $country = $quote->getBillingAddress()->getCountry();
-
-            if (!in_array($country, $allowedCountries)) {
-                return false;
-            }
-        }
-
-        $areaAllowed = null;
-        if ($this->canUseInternal()) {
-            $areaAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/area', $storeId);
-        }
-
-        // Check if the paymentmethod is available in the current shop area (frontend or backend)
-        if (
-            $areaAllowed == 'backend'
-            && !Mage::helper('buckaroo3extended')->isAdmin()
-        ) {
-            return false;
-        } elseif (
-            $areaAllowed == 'frontend'
-            && Mage::helper('buckaroo3extended')->isAdmin()
-        ) {
-            return false;
-        }
-
-        // Check if max amount for the issued PaymentMethod is set and if the quote basegrandtotal exceeds that
-        $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', $storeId);
-        if (
-            $quote
-            && !empty($maxAmount)
-            && $quote->getBaseGrandTotal() > $maxAmount
-        ) {
-            return false;
-        }
-
-        // check if min amount for the issued PaymentMethod is set and if the quote basegrandtotal is less than that
-        $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', $storeId);
-        if (
-            $quote
-            && !empty($minAmount)
-            && $quote->getBaseGrandTotal() < $minAmount
-        ) {
+        if (!$this->checkWithinAmount($storeId, $quote)) {
             return false;
         }
 
         // Check limit by ip
-        if (mage::getStoreConfig('dev/restrict/allow_ips') && Mage::getStoreConfig('buckaroo/' . $this->_code . '/limit_by_ip')) {
+        if (mage::getStoreConfig('dev/restrict/allow_ips')
+            && Mage::getStoreConfig('buckaroo/' . $this->_code . '/limit_by_ip')) {
             $allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
             if (!in_array(Mage::helper('core/http')->getRemoteAddr(), $allowedIp)) {
                 return false;
@@ -268,6 +206,97 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
         return $canUseBuckaroo;
     }
 
+    protected function checkQuoteAndSession($quote, &$storeId)
+    {
+        // Check if quote is null, and try to look it up based on adminhtml session
+        if (!$quote && Mage::helper('buckaroo3extended')->isAdmin()) {
+            $quote = Mage::getSingleton('adminhtml/session_quote');
+        }
+
+        // If quote is not null, set storeId to quote storeId
+        if ($quote) {
+            $storeId = $quote->getStoreId();
+        }
+
+        //check if the module is set to enabled
+        if (!Mage::getStoreConfig('buckaroo/' . $this->_code . '/active', $storeId)) {
+            return false;
+        }
+
+        if ($quote) {
+            $quoteItems = $quote->getAllVisibleItems();
+            if (count($quoteItems) > 99) {
+                return false;
+            }
+        }
+
+        $session = Mage::getSingleton('checkout/session');
+        if ($session->getData('buckarooAfterpayRejected') == true) {
+            return false;
+        }
+
+        // Check if the country specified in the billing address is allowed to use this payment method
+        if ($quote
+            && Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $storeId) == 1
+            && $quote->getBillingAddress()->getCountry()
+        ) {
+            $allowedCountries = explode(
+                ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', $storeId)
+            );
+            $country = $quote->getBillingAddress()->getCountry();
+
+            if (!in_array($country, $allowedCountries)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function checkAvailabilityInShopArea($storeId)
+    {
+        $areaAllowed = null;
+        if ($this->canUseInternal()) {
+            $areaAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/area', $storeId);
+        }
+
+        // Check if the paymentmethod is available in the current shop area (frontend or backend)
+        if ($areaAllowed == 'backend'
+            && !Mage::helper('buckaroo3extended')->isAdmin()
+        ) {
+            return false;
+        } elseif ($areaAllowed == 'frontend'
+            && Mage::helper('buckaroo3extended')->isAdmin()
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function checkWithinAmount($storeId, $quote)
+    {
+        // Check if max amount for the issued PaymentMethod is set and if the quote basegrandtotal exceeds that
+        $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', $storeId);
+        if ($quote
+            && !empty($maxAmount)
+            && $quote->getBaseGrandTotal() > $maxAmount
+        ) {
+            return false;
+        }
+
+        // check if min amount for the issued PaymentMethod is set and if the quote basegrandtotal is less than that
+        $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', $storeId);
+        if ($quote
+            && !empty($minAmount)
+            && $quote->getBaseGrandTotal() < $minAmount
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * @param $responseData
      *
@@ -275,10 +304,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod extends 
      */
     public function getRejectedMessage($responseData)
     {
+        // @codingStandardsIgnoreLine
         if (!isset($responseData->ConsumerMessage->HtmlText)) {
             return false;
         }
 
+        // @codingStandardsIgnoreLine
         $rejectedMessage = $responseData->ConsumerMessage->HtmlText;
 
         if (!$rejectedMessage) {

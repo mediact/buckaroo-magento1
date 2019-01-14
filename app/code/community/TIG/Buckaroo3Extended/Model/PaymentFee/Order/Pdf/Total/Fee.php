@@ -69,7 +69,9 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Fee extends Mage_Sa
 
         $displayMode = $this->getDisplayMode();
         $paymentMethod = $this->getOrder()->getPayment()->getMethod();
-        $baseLabel = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($this->getOrder()->getStoreId(),$paymentMethod);
+        $baseLabel = Mage::helper('buckaroo3extended')->getBuckarooFeeLabel(
+            $this->getOrder()->getStoreId(), $paymentMethod
+        );
 
         /**
          * Get the fee excl. tax.
@@ -91,6 +93,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Fee extends Mage_Sa
             if ($displayMode === self::DISPLAY_MODE_BOTH) {
                 $label .= ' (' . $this->getTaxLabel(false) . ')';
             }
+
             $label .= ':';
 
             /**
@@ -123,6 +126,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Fee extends Mage_Sa
             if ($displayMode === self::DISPLAY_MODE_BOTH) {
                 $label .= ' (' . $this->getTaxLabel(true) . ')';
             }
+
             $label .= ':';
 
             /**
@@ -145,7 +149,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Pdf_Total_Fee extends Mage_Sa
      */
     public function getDisplayMode()
     {
-        $displayMode = (int) Mage::getStoreConfig(self::XPATH_DISPLAY_MODE_BUCKAROO_FEE, $this->getOrder()->getStoreId());
+        $displayMode = (int) Mage::getStoreConfig(
+            self::XPATH_DISPLAY_MODE_BUCKAROO_FEE,
+            $this->getOrder()->getStoreId()
+        );
 
         return $displayMode;
     }

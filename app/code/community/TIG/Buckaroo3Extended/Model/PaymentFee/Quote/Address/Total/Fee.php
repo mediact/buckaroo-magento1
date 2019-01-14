@@ -80,7 +80,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
         }
 
         $items = $address->getAllItems();
-        if (!count($items)) {
+        if (empty($items)) {
             return $this;
         }
 
@@ -98,14 +98,14 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
          */
         $paymentMethod = $quote->getPayment()->getMethod();
 
-        if(strpos($paymentMethod,'buckaroo') === false){
+        if (strpos($paymentMethod, 'buckaroo') === false) {
             return $this;
         }
 
         /**
          * Get the fee amount.
          */
-        $baseFee = $this->_getPaymentFee($quote,$paymentMethod);
+        $baseFee = $this->_getPaymentFee($quote, $paymentMethod);
         if ($baseFee <= 0) {
             return $this;
         }
@@ -163,7 +163,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
         $address->addTotal(
             array(
                 'code'  => $this->getCode(),
-                'title' => Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($storeId,$paymentMethod,$amount),
+                'title' => Mage::helper('buckaroo3extended')->getBuckarooFeeLabel($storeId, $paymentMethod, $amount),
                 'value' => $amount,
             )
         );
@@ -182,21 +182,20 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
     {
         $store   = $quote->getStore();
         $storeId = $store->getId();
-        
+
         $configuredFee = Mage::getStoreConfig(
-            sprintf(self::XPATH_BUCKAROO_FEE, $quote->getPayment()->getMethod()), 
+            sprintf(self::XPATH_BUCKAROO_FEE, $quote->getPayment()->getMethod()),
             $storeId
         );
-        
+
         if (strpos($configuredFee, '%') !== false) {
             return $configuredFee;
         }
-        
+
         $baseFee = $this->_getPaymentFee($quote, $paymentMethod);
         $fee     = $store->convertPrice($baseFee);
         $includeTax  = false;
-        if(!$this->getFeeIsInclTax($storeId))
-        {
+        if (!$this->getFeeIsInclTax($storeId)) {
             $includeTax = true;
         }
 
@@ -221,11 +220,11 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
         /**
          * Get the fee as configured by the merchant.
          */
-        if(empty($paymentMethod)){
+        if (empty($paymentMethod)) {
             $paymentMethod = $quote->getPayment()->getMethod();
         }
 
-        if(!$paymentMethod){
+        if (!$paymentMethod) {
             return 0;
         }
 
@@ -236,7 +235,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
          */
         if (strpos($fee, '%') !== false) {
             $this->_feeIsPercentage = true;
-                        
+
             /**
              * If the fee is a percentage, get the configured percentage value and determine over which part of the
              * quote this percentage needs to be calculated.
@@ -248,30 +247,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
                 $address = $quote->getBillingAddress();
             }
 
-            $calculationAmount = false;
-            $feePercentageMode = Mage::getStoreConfig(self::XPATH_BUCKAROO_FEE_PERCENTAGE_MODE, $storeId);
-            switch ($feePercentageMode) {
-                case 'subtotal':
-                    $calculationAmount = $address->getBaseSubtotal()
-                                       - $address->getBaseDiscountAmount();
-                                       
-                    $this->_feeIsInclTax = false;
-                    break;
-                case 'subtotal_incl_tax':
-                    $calculationAmount = $address->getBaseSubtotalInclTax()
-                                       - $address->getBaseDiscountAmount();
-                                       
-                    $this->_feeIsInclTax = true;
-                    break;
-                case 'grandtotal':
-                    $calculationAmount = $address->getBaseSubtotalInclTax()
-                                       + $address->getBaseShippingInclTax()
-                                       - $address->getBaseDiscountAmount();
-                                       
-                    $this->_feeIsInclTax = true;
-                    break;
-                //no default
-            }
+            $calculationAmount = $this->getCalculationAmount($storeId, $address);
 
             /**
              * Calculate the flat fee.
@@ -322,5 +298,36 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee
         $fee -= $feeTax;
 
         return $fee;
+    }
+
+    protected function getCalculationAmount($storeId, $address)
+    {
+        $calculationAmount = false;
+
+        $feePercentageMode = Mage::getStoreConfig(self::XPATH_BUCKAROO_FEE_PERCENTAGE_MODE, $storeId);
+        switch ($feePercentageMode) {
+            case 'subtotal':
+                $calculationAmount = $address->getBaseSubtotal()
+                    - $address->getBaseDiscountAmount();
+
+                $this->_feeIsInclTax = false;
+                break;
+            case 'subtotal_incl_tax':
+                $calculationAmount = $address->getBaseSubtotalInclTax()
+                    - $address->getBaseDiscountAmount();
+
+                $this->_feeIsInclTax = true;
+                break;
+            case 'grandtotal':
+                $calculationAmount = $address->getBaseSubtotalInclTax()
+                    + $address->getBaseShippingInclTax()
+                    - $address->getBaseDiscountAmount();
+
+                $this->_feeIsInclTax = true;
+                break;
+            //no default
+        }
+
+        return $calculationAmount;
     }
 }

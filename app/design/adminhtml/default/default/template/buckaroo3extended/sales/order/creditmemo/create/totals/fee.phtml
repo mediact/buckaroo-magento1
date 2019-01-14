@@ -37,8 +37,9 @@
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
 ?>
-<?php $_source  = $this->getSource() ?>
-<?php if ($_source): ?>
+<?php // @codingStandardsIgnoreFile ?>
+<?php $source  = $this->getSource() ?>
+<?php if ($source): ?>
     <tr>
         <td class="label">
             <label for="buckaroo_fee_amount">
@@ -46,7 +47,10 @@
             </label>
         </td>
         <td>
-            <input type="text" name="creditmemo[buckaroo_fee]" value="<?php echo $this->getBuckarooFeeAmount(); ?>" class="input-text not-negative-amount" style="width:60px;text-align:right" id="buckaroo_fee_amount" />
+            <input type="text" name="creditmemo[buckaroo_fee]"
+                   value="<?php echo $this->getBuckarooFeeAmount(); ?>"
+                   class="input-text not-negative-amount" style="width:60px;text-align:right"
+                   id="buckaroo_fee_amount" />
         </td>
     </tr>
     <tr>

@@ -1,3 +1,4 @@
+<?php // @codingStandardsIgnoreFile ?>
 <div style="
 background-image:url('<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>adminhtml/default/default/images/fam_bullet_error.gif');
 background-repeat:no-repeat; 
@@ -8,5 +9,9 @@ height:27px;
 border:1px solid #CCCCCC;
 background-position:10px 10px;
 ">
-    <h4><?php echo Mage::helper('buckaroo3extended')->__('Options for Buckaroo 3 Extended Refunding are only available at the Default Config (GLOBAL) level.');?></h4>
+    <h4>
+        <?php echo Mage::helper('buckaroo3extended')->__(
+            'Options for Buckaroo 3 Extended Refunding are only available at the Default Config (GLOBAL) level.'
+        );?>
+    </h4>
 </div>

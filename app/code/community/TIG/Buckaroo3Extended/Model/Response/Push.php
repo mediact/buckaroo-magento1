@@ -63,12 +63,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         if (!empty($data['order'])) {
             $this->setCurrentOrder($data['order']);
         }
+
         if (!empty($data['postArray'])) {
             $this->setPostArray($data['postArray']);
         }
+
         if (!empty($data['debugEmail'])) {
             $this->setDebugEmail($data['debugEmail']);
         }
+
         if (!empty($data['method'])) {
             $this->setMethod($data['method']);
         }
@@ -84,7 +87,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
 
         //check if the push is valid and if the order can be updated
-        list($canProcess, $canUpdate) = $this->_canProcessPush(false,$response);
+        list($canProcess, $canUpdate) = $this->_canProcessPush(false, $response);
 
         $this->_debugEmail .= "Can the order be processed? " . $canProcess . "\n"."Can the order be updated? " . $canUpdate . "\n";
 
@@ -123,15 +126,15 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         {
             case self::BUCKAROO_ERROR:
             case self::BUCKAROO_FAILED:               $updatedFailed = $this->_processFailed($newStates, $response['message']);
-                                                   break;
+                break;
             case self::BUCKAROO_SUCCESS:           $updatedSuccess = $this->_processSuccess($newStates, $response['message']);
-                                                   break;
+                break;
             case self::BUCKAROO_NEUTRAL:           $this->_addNote($response['message']);
-                                                   break;
+                break;
             case self::BUCKAROO_PENDING_PAYMENT:   $updatedPendingPayment = $this->_processPendingPayment($newStates, $response['message']);
-                                                   break;
+                break;
             case self::BUCKAROO_INCORRECT_PAYMENT: $updatedIncorrectPayment = $this->_processIncorrectPayment($newStates);
-                                                   break;
+                break;
         }
 
         //revert the original status in order complete the whole process like it should.
@@ -181,6 +184,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         } else {
             $currencyCode = $this->_order->getOrderCurrencyCode();
         }
+
         $brqAmount = Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']);
 
         $description .= 'Partial amount of ' . $brqAmount . ' has been paid';
@@ -242,7 +246,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $currentStateAndStatus    = array($this->_order->getState(), $this->_order->getStatus());
 
         //prevent completed orders from recieving further updates
-        if(    $completedStateAndStatus != $currentStateAndStatus
+        if($completedStateAndStatus != $currentStateAndStatus
             && $cancelledStateAndStatus != $currentStateAndStatus
             && $holdedStateAndStatus    != $currentStateAndStatus
             && $closedStateAndStatus    != $currentStateAndStatus
@@ -252,7 +256,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         }
 
         //when payperemail is used and the order has the status other then success, and current pushed status is success; send email to shopowner
-        if( !empty($response)
+        if(!empty($response)
             && $response['status']                      == self::BUCKAROO_SUCCESS
             && $this->_order->getPayment()->getMethod() == 'buckaroo3extended_payperemail'
             && (
@@ -274,7 +278,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
     /**
      * Send the shop owner and subscribers to the debug-email an email with the message that there is a double transaction
      */
-    protected function _sendDoubleTransactionEmail(){
+    protected function _sendDoubleTransactionEmail()
+    {
 
         $helper             = Mage::helper('buckaroo3extended');
         $orderId            = $this->_order->getIncrementId();
@@ -283,7 +288,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
         $recipients         = explode(',', Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/debug_email', $this->getStoreId()));
         $recipients[]       = Mage::getStoreConfig('trans_email/ident_general/email');
 
-        $mail               = $helper->__('Status Success received for order %s while the order currently the status %s has.',$orderId,$currentOrderStatus);
+        $mail               = $helper->__('Status Success received for order %s while the order currently the status %s has.', $orderId, $currentOrderStatus);
 
         foreach($recipients as $recipient) {
             mail(
@@ -409,8 +414,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $this->_order->setTransactionKey($this->_postArray['brq_transactions']);
         }
 
-        if (
-            Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
+        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/cancel_on_failed', $this->_order->getStoreId())
             && $this->_order->canCancel()
         ) {
             /* Do not cancel order on a failed authorize, because it will send a cancel authorize /cancel reservation
@@ -465,16 +469,16 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
         if ($amount > $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__(
-                               'Not enough paid: %s has been transfered. Order grand total was: %s.',
-                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']),
-                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($orderAmount)
-                           );
+                'Not enough paid: %s has been transfered. Order grand total was: %s.',
+                Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']),
+                Mage::app()->getLocale()->currency($currencyCode)->toCurrency($orderAmount)
+            );
         } elseif ($amount < $this->_postArray['brq_amount']) {
             $description = Mage::helper('buckaroo3extended')->__(
-                               'Too much paid: %s has been transfered. Order grand total was: %s.',
-                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']),
-                               Mage::app()->getLocale()->currency($currencyCode)->toCurrency($orderAmount)
-                           );
+                'Too much paid: %s has been transfered. Order grand total was: %s.',
+                Mage::app()->getLocale()->currency($currencyCode)->toCurrency($this->_postArray['brq_amount']),
+                Mage::app()->getLocale()->currency($currencyCode)->toCurrency($orderAmount)
+            );
         } else {
             //the correct amount was actually paid, so return false
             return false;
@@ -537,7 +541,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param bool $description
      * @return bool
      */
-    public function processPendingPayment($newStates, $description = false) {
+    public function processPendingPayment($newStates, $description = false) 
+    {
         return $this->_processPendingPayment($newStates, $description);
     }
 
@@ -546,7 +551,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param bool $description
      * @return bool
      */
-    public function processSuccess($newStates, $description = false) {
+    public function processSuccess($newStates, $description = false) 
+    {
         return $this->_processSuccess($newStates, $description);
     }
 
@@ -555,7 +561,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param bool $description
      * @return bool
      */
-    public function processFailed($newStates, $description = false) {
+    public function processFailed($newStates, $description = false) 
+    {
         return $this->_processFailed($newStates, $description);
     }
 
@@ -563,7 +570,8 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param $newStates
      * @return bool
      */
-    public function processIncorrectPayment($newStates) {
+    public function processIncorrectPayment($newStates) 
+    {
         return $this->_processIncorrectPayment($newStates);
     }
 
@@ -664,12 +672,14 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
                 if (!isset($this->_postArray['brq_transactions'])) {
                     continue;
                 }
+
                 $invoice->setTransactionId($this->_postArray['brq_transactions'])
                         ->save();
             }
 
             $response = $this->_parsePostResponse($this->_postArray['brq_statuscode']);
-            Mage::dispatchEvent('buckaroo3extended_push_custom_save_invoice_after',
+            Mage::dispatchEvent(
+                'buckaroo3extended_push_custom_save_invoice_after',
                 array(
                     'push' => $this,
                     'order' => $this->getCurrentOrder(),
@@ -707,6 +717,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
             $value = $this->decodePushValue($key, $value);
             $signatureString .= $key . '=' . $value;
         }
+
         $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->_order->getStoreId());
 
         $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";

@@ -144,6 +144,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         if($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
         return $this;
     }
 
@@ -196,7 +197,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
         );
 
         switch ($eligibilityType) {
-
             case 'Eligible':
                 $eligibilityStatus = Mage::getStoreConfig(
                     'buckaroo/buckaroo3extended_paypal/sellers_protection_eligible',
@@ -233,6 +233,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_Observer extends TIG_Buc
                       ->save();
                 break;
         }
+
         return $this;
     }
 }

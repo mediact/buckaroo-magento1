@@ -14,6 +14,7 @@ class TIG_Buckaroo3Extended_Model_OldPaymentMethods_OldPaymentMethod extends Mag
     protected $_canUseForMultishipping  = false;
     protected $_canSaveCc               = false;
 
+    // @codingStandardsIgnoreLine
     public function getOrderPlaceRedirectUrl()
     {
 

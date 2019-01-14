@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Abstract extends Mage_Tax_Model_Sales_Total_Quote_Tax
+abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Abstract
+    extends Mage_Tax_Model_Sales_Total_Quote_Tax
 {
     /**
      * Xpath to the Buckaroo fee setting.
@@ -123,8 +124,8 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
         if (null !== $this->_feeIsInclTax) {
             return $this->_feeIsInclTax;
         }
-        
-        if (is_null($store)) {
+
+        if (!$store) {
             $storeId = Mage::app()->getStore()->getId();
         } elseif ($store instanceof Mage_Core_Model_Store) {
             $storeId = $store->getId();
@@ -133,7 +134,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
         }
 
         $feeIsInclTax = Mage::getStoreConfigFlag(self::XPATH_BUCKAROO_FEE_INCLUDING_TAX, $storeId);
-        
+
         $this->_feeIsInclTax = $feeIsInclTax;
         return $feeIsInclTax;
     }
@@ -200,7 +201,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
      */
     protected function _getBuckarooFeeTax($address, $taxRate, $fee = null, $isInclTax = false)
     {
-        if (is_null($fee)) {
+        if ($fee === null) {
             $fee = (float) $address->getBuckarooFee();
         }
 
@@ -228,7 +229,7 @@ abstract class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_Fee_Ab
      */
     protected function _getBaseBuckarooFeeTax($address, $taxRate, $fee = null, $isInclTax = false)
     {
-        if (is_null($fee)) {
+        if ($fee === null) {
             $fee = (float) $address->getBaseBuckarooFee();
         }
 

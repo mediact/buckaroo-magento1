@@ -21,9 +21,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
         $accountNumber = $post[$this->_code.'_bpe_customer_account_number'];
 
         $customerBirthDate = date(
-            'Y-m-d', strtotime($post['payment'][$this->_code]['year']
+            'Y-m-d', strtotime(
+                $post['payment'][$this->_code]['year']
                 . '-' . $post['payment'][$this->_code]['month']
-                . '-' . $post['payment'][$this->_code]['day'])
+                . '-' . $post['payment'][$this->_code]['day']
+            )
         );
 
         $session->setData(
@@ -42,8 +44,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paymentguarantee_PaymentMethod 
     public function validate()
     {
         $postData = Mage::app()->getRequest()->getPost();
-        if (
-            !array_key_exists('buckaroo3extended_paymentguarantee_bpe_terms_and_conditions', $postData)
+        if (!array_key_exists('buckaroo3extended_paymentguarantee_bpe_terms_and_conditions', $postData)
             || $postData['buckaroo3extended_paymentguarantee_bpe_terms_and_conditions'] != 'checked'
         ) {
             Mage::throwException(

@@ -1,5 +1,6 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_PaymentMethod
+    extends TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod
 {
     public $allowedCurrencies = array(
         'ARS',

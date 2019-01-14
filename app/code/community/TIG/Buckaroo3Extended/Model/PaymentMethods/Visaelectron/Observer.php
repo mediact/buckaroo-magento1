@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Visaelectron_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Visaelectron_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
+    
     protected $_code = 'buckaroo3extended_visaelectron';
     protected $_method = 'visaelectron';
     
