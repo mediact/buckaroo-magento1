@@ -52,6 +52,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         if (empty($availableCards)) {
             Mage::throwException('no giftcards available');
         }
+
         $availableCards .= ',ideal';
 
         $array = array(
@@ -98,6 +99,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Giftcards_Observer extends TIG_
         if ($chosenMethod === $this->_code) {
             $ret = true;
         }
+
         return $ret;
     }
 

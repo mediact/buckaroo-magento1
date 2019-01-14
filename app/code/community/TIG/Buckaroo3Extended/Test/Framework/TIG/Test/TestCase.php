@@ -56,12 +56,12 @@ class TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase extends PHPUnit_Fra
         )->setResponse(new TIG_Buckaroo3Extended_Test_Framework_TIG_Test_Http_Response());
 
         $handler = set_error_handler(
-            function() {
+            function () {
             }
         );
 
         set_error_handler(
-            function($errno, $errstr, $errfile, $errline) use ($handler) {
+            function ($errno, $errstr, $errfile, $errline) use ($handler) {
                 if (E_WARNING === $errno
                     && 0 === strpos($errstr, 'include(')
                     && substr($errfile, -19) == 'Varien/Autoload.php'

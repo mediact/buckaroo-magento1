@@ -6,7 +6,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
     public function buckaroo3extended_request_addservices(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -21,10 +21,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
             ),
         );
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' .  $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+        if (Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_' .
+            $this->_method . '/use_creditmanagement',
+            Mage::app()->getStore()->getStoreId()
+        )) {
             $array['creditmanagement'] = array(
-                    'action'    => 'Invoice',
-                    'version'   => 1,
+                'action'  => 'Invoice',
+                'version' => 1,
             );
         }
 
@@ -41,7 +45,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
     public function buckaroo3extended_request_addcustomvars(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -51,14 +55,19 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
         $vars = $request->getVars();
 
-        if (Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement', Mage::app()->getStore()->getStoreId())) {
+        if (Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_' . $this->_method . '/use_creditmanagement',
+            Mage::app()->getStore()->getStoreId()
+        )) {
             $this->_addCustomerVariables($vars);
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
 
-        if(Mage::getStoreConfig('buckaroo/buckaroo3extended_' . $this->_method . '/address_verification', Mage::app()->getStore()->getStoreId()))
-        {
+        if (Mage::getStoreConfig(
+            'buckaroo/buckaroo3extended_' . $this->_method . '/address_verification',
+            Mage::app()->getStore()->getStoreId()
+        )) {
             $this->_addAavCredentials($vars);
         }
 
@@ -69,7 +78,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
     public function buckaroo3extended_request_setmethod(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -84,7 +93,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
     public function buckaroo3extended_refund_request_setmethod(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -99,7 +108,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -125,13 +134,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
 
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
         return $this;
     }
-
 
     /**
      * If AddressVerification is enabled in the config, this method will add the required variables so American Express
@@ -188,7 +196,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
             'CustomerEmail'             => $customerEmail,
         );
 
-        if (array_key_exists('customVars', $vars) && array_key_exists($this->_method, $vars['customVars']) && is_array($vars['customVars'][$this->_method])) {
+        if (array_key_exists('customVars', $vars)
+            && array_key_exists($this->_method, $vars['customVars'])
+            && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $array);
         } else {
             $vars['customVars'][$this->_method] = $array;
@@ -227,22 +237,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Amex_Observer extends TIG_Bucka
             //if the number is bigger then 13, it means that there are probably a zero to much
             $return['mobile'] = $this->_isMobileNumber($number);
             $return['clean'] = $this->_isValidNotation($number);
-            if(strlen((string)$return['clean']) == 13) {
+            if (strlen((string)$return['clean']) == 13) {
                 $return['valid'] = true;
             }
-
         } elseif (strlen((string)$number) == 12 or strlen((string)$number) == 11) {
             //if the number is equal to 11 or 12, it means that they used a + in their number instead of 00
             $return['mobile'] = $this->_isMobileNumber($number);
             $return['clean'] = $this->_isValidNotation($number);
-            if(strlen((string)$return['clean']) == 13) {
+            if (strlen((string)$return['clean']) == 13) {
                 $return['valid'] = true;
             }
-
         } elseif (strlen((string)$number) == 10) {
             //this means that the user has no trailing "0031" and therfore only
             $return['mobile'] = $this->_isMobileNumber($number);
-            $return['clean'] = '0031'.substr($number,1);
+            $return['clean'] = '0031'.substr($number, 1);
             if (strlen((string) $return['clean']) == 13) {
                 $return['valid'] = true;
             }

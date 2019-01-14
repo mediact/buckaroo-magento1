@@ -46,8 +46,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
 
         $isEnterprise    = self::isEnterprise();
 
-        if (
-            $configValues        === true
+        if ($configValues        === true
             && $currencyAllowed  === true
             && $ipAllowed        === true
             && (
@@ -57,6 +56,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
         {
             $return = true;
         }
+
         return $return;
     }
 
@@ -90,8 +90,8 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
         $configEnabled             = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/active', $storeId);
         $merchantKeyEntered        = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/key', $storeId);
         $thumbprintEntered         = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended/thumbprint', $storeId);
-        $orderStatusSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success',$storeId);
-        $orderStatusFailedEntered  = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed',$storeId);
+        $orderStatusSuccessEntered = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_success', $storeId);
+        $orderStatusFailedEntered  = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status_failed', $storeId);
 
         //advanced config values that need to be entered
         $newOrderStatusEntered     = (bool) Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/order_status', $storeId);
@@ -110,6 +110,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
         {
             $configValues = true;
         }
+
         return $configValues;
     }
 
@@ -168,6 +169,7 @@ class TIG_Buckaroo3Extended_Model_Request_Availability extends TIG_Buckaroo3Exte
         if (empty($quote)) {
             return true;
         }
+
         $isZero = false;
 
         if ($quote->getBaseGrandTotal() < 0.01) {

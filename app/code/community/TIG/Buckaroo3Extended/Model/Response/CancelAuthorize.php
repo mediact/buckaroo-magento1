@@ -86,6 +86,7 @@ class TIG_Buckaroo3Extended_Model_Response_CancelAuthorize extends TIG_Buckaroo3
             $this->_debugEmail .= "The authenticity of the response could NOT be verified. \n";
             return $this->_verifyError();
         }
+
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
         if (is_object($this->_response)

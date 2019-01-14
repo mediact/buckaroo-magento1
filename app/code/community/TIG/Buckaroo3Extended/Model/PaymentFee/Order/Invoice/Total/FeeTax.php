@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total_FeeTax extends Mage_Sales_Model_Order_Invoice_Total_Abstract
+class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total_FeeTax
+    extends Mage_Sales_Model_Order_Invoice_Total_Abstract
 {
     /**
      * @param Mage_Sales_Model_Order_Invoice $invoice
@@ -82,10 +83,10 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Order_Invoice_Total_FeeTax extends 
         $helper = Mage::helper('buckaroo3extended');
 
         //fix for Magento 1.6.2.0 for showing correctly taxes in the order totals
-        if (!$helper->isEnterprise() && version_compare(Mage::getVersion(), '1.6.2.0', '==')){
+        if (!$helper->isEnterprise() && version_compare(Mage::getVersion(), '1.6.2.0', '==')) {
             $grandTotal     = $invoice->getGrandTotal();
             $baseGrandTotal = $invoice->getBaseGrandTotal();
-        }else{
+        } else {
             $grandTotal     = $invoice->getGrandTotal() + $feeTax;
             $baseGrandTotal = $invoice->getBaseGrandTotal() + $baseFeeTax;
         }

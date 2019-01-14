@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Postpay_PaymentMethod extends TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Postpay_PaymentMethod
+    extends TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_PaymentMethod
 {
     protected $_code = 'buckaroo3extended_capayablepostpay';
 }

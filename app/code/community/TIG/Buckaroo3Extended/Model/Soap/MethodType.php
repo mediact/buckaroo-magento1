@@ -31,5 +31,6 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_MethodType
 {
+    //@codingStandardsIgnoreLine
     public $Algorithm;
 }

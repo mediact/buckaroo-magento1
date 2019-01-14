@@ -154,7 +154,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
             $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
                 + $item->getBaseTaxAmount()
                 + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice,2);
+            $productPrice = round($productPrice, 2);
 
 
             $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
@@ -234,9 +234,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Masterpass_Observer
         if($fee > 0){
             $article['ArticleDescription']['value'] = 'Servicekosten';
             $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = (string) round($feeTotal,2);
+            $article['ArticleUnitPrice']['value']   = (string) round($feeTotal, 2);
             return $article;
         }
+
         return false;
     }
 

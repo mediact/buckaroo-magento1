@@ -24,11 +24,14 @@
  * @license     http://www.magentocommerce.com/license/enterprise-edition
  */
 ?>
+<?php // @codingStandardsIgnoreFile ?>
 <?php /** @var TIG_Buckaroo3Extended_Block_PaymentFee_Checkout_Total_Fee $this */ ?>
-<?php $_displayMode = $this->getDisplayMode(); ?>
-<?php if ($_displayMode === TIG_Buckaroo3Extended_Block_PaymentFee_Checkout_Total_Fee::DISPLAY_MODE_BOTH): ?>
+<?php $displayMode = $this->getDisplayMode(); ?>
+<?php if ($displayMode === TIG_Buckaroo3Extended_Block_PaymentFee_Checkout_Total_Fee::DISPLAY_MODE_BOTH): ?>
     <tr>
-        <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
+        <td colspan="<?php echo $this->getColspan(); ?>"
+            style="<?php echo $this->getTotal()->getStyle() ?>"
+            class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
                 <strong>
             <?php endif; ?>
@@ -48,7 +51,9 @@
         </td>
     </tr>
     <tr>
-        <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
+        <td colspan="<?php echo $this->getColspan(); ?>"
+            style="<?php echo $this->getTotal()->getStyle() ?>"
+            class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
                 <strong>
             <?php endif; ?>
@@ -68,13 +73,15 @@
         </td>
     </tr>
 <?php else: ?>
-    <?php if ($_displayMode === TIG_Buckaroo3Extended_Block_PaymentFee_Checkout_Total_Fee::DISPLAY_MODE_EXCL): ?>
-        <?php $_value = $this->getValue(false); ?>
+    <?php if ($displayMode === TIG_Buckaroo3Extended_Block_PaymentFee_Checkout_Total_Fee::DISPLAY_MODE_EXCL): ?>
+        <?php $value = $this->getValue(false); ?>
     <?php else: ?>
-        <?php $_value = $this->getValue(true); ?>
+        <?php $value = $this->getValue(true); ?>
     <?php endif; ?>
     <tr>
-        <td colspan="<?php echo $this->getColspan(); ?>" style="<?php echo $this->getTotal()->getStyle() ?>" class="a-right">
+        <td colspan="<?php echo $this->getColspan(); ?>"
+            style="<?php echo $this->getTotal()->getStyle() ?>"
+            class="a-right">
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
                 <strong>
             <?php endif; ?>
@@ -87,10 +94,10 @@
             <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
                 <strong>
             <?php endif; ?>
-            <?php echo $this->helper('checkout')->formatPrice($_value) ?>
+            <?php echo $this->helper('checkout')->formatPrice($value) ?>
                 <?php if ($this->getRenderingArea() == $this->getTotal()->getArea()): ?>
                 </strong>
-            <?php endif; ?>
+                <?php endif; ?>
         </td>
     </tr>
 <?php endif; ?>

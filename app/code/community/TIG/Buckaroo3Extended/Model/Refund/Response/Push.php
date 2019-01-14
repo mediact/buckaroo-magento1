@@ -208,6 +208,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
             $this->_order->setState($newStates[0], $newStates[1], Mage::helper('buckaroo3extended')->__($description))
                          ->save();
         }
+
         return true;
     }
 
@@ -292,19 +293,23 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
         return $this->_getNewStates($code);
     }
 
-    public function processPendingPayment($newStates, $description = false) {
+    public function processPendingPayment($newStates, $description = false) 
+    {
         return $this->_processPendingPayment($newStates, $description);
     }
 
-    public function processSuccess($newStates, $description = false) {
+    public function processSuccess($newStates, $description = false) 
+    {
         return $this->_processPendingPayment($newStates, $description);
     }
 
-    public function processFailed($newStates, $description = false) {
+    public function processFailed($newStates, $description = false) 
+    {
         return $this->_processPendingPayment($newStates, $description);
     }
 
-    public function processIncorrectPayment($newStates) {
+    public function processIncorrectPayment($newStates) 
+    {
         return $this->_processPendingPayment($newStates);
     }
 
@@ -334,6 +339,7 @@ class TIG_Buckaroo3Extended_Model_Refund_Response_Push extends TIG_Buckaroo3Exte
             $value = urldecode($value);
             $signatureString .= $key . '=' . $value;
         }
+
         $signatureString .= Mage::getStoreConfig('buckaroo/buckaroo3extended/digital_signature', $this->getStoreId());
 
         $this->_debugEmail .= "\nSignaturestring: {$signatureString}\n";

@@ -31,9 +31,11 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_ReferenceType
 {
+    //@codingStandardsIgnoreStart
     public $Transforms;
     public $DigestMethod;
     public $DigestValue;
     public $URI;
     public $Id;
+    //@codingStandardsIgnoreEnd
 }

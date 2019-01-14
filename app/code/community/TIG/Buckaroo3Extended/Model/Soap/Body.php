@@ -31,6 +31,7 @@
  */
 class TIG_Buckaroo3Extended_Model_Soap_Body
 {
+    //@codingStandardsIgnoreStart
     public $Currency;
     public $Amount;
     public $AmountDebit;
@@ -49,4 +50,5 @@ class TIG_Buckaroo3Extended_Model_Soap_Body
     public $StartRecurrent;
     public $Services;
     public $Transaction;
+    //@codingStandardsIgnoreEnd
 }

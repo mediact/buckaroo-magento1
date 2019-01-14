@@ -71,7 +71,6 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
         $storeId = $this->getOrder()->getStoreId();
         $url = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $storeId);
         $this->_redirect($url);
-        return;
     }
 
     /**

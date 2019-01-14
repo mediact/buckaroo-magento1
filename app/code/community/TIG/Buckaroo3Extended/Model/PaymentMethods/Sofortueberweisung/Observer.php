@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Sofortueberweisung_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Sofortueberweisung_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
+    
     protected $_code = 'buckaroo3extended_sofortueberweisung';
     protected $_method = 'sofortueberweisung';
     
@@ -56,6 +57,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Sofortueberweisung_Observer ext
             $this->_addCreditManagement($vars);
             $this->_addAdditionalCreditManagementVariables($vars);
         }
+
         $request->setVars($vars);
         
         return $this;

@@ -79,7 +79,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_FeeTax
               ->setBaseBuckarooFeeTax(0);
 
         $items = $address->getAllItems();
-        if (!count($items)) {
+        if (empty($items)) {
             return $this;
         }
 
@@ -88,7 +88,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_FeeTax
         }
 
         $items = $address->getAllItems();
-        if (!count($items)) {
+        if (empty($items)) {
             return $this;
         }
 
@@ -113,7 +113,7 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Quote_Address_Total_FeeTax
         $paymentMethod = $quote->getPayment()->getMethod();
 
         $baseFee = $address->getBaseBuckarooFee();
-        
+
         $fee     = $store->convertPrice($baseFee);
 
         $feeTax     = $this->_getBuckarooFeeTax($address, $taxRate, $fee, false);

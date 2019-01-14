@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer
+    extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     protected $_method = 'Capayable';
 
@@ -86,7 +87,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      */
     public function buckaroo3extended_refund_request_addservices(Varien_Event_Observer $observer)
     {
-        if($this->_isChosenMethod($observer) === false) {
+        if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
 
@@ -99,7 +100,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
 
         );
 
-        if($this->_method == false){
+        if ($this->_method == false){
             $storeId = Mage::app()->getStore()->getStoreId();
             $this->_method = Mage::getStoreConfig('buckaroo/' . $this->_code . '/paymethod', $storeId);
         }
@@ -140,7 +141,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @param $vars
      */
-    private function addCustomerData(&$vars)
+    protected function addCustomerData(&$vars)
     {
         $country = $this->_billingInfo['countryCode'];
         $phoneNumber = ($country == 'BE' ? $this->_processPhoneNumberCMBe() : $this->_processPhoneNumberCM());
@@ -175,7 +176,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @return array
      */
-    private function getPersonGroupData()
+    protected function getPersonGroupData()
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
         $gender = 0;
@@ -222,7 +223,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @return array
      */
-    private function getAddressGroupData()
+    protected function getAddressGroupData()
     {
         $address = $this->_processAddressCM();
         $country = $this->_billingInfo['countryCode'];
@@ -260,7 +261,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @return array
      */
-    private function getCompanyGroupData()
+    protected function getCompanyGroupData()
     {
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
 
@@ -289,7 +290,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @return string
      */
-    private function getCustomerType()
+    protected function getCustomerType()
     {
         $customerType = '';
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
@@ -320,7 +321,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @param array $vars
      */
-    private function addProductData(&$vars)
+    protected function addProductData(&$vars)
     {
         $products = $this->_order->getAllItems();
         $max      = 99;
@@ -360,7 +361,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      *
      * @return array
      */
-    private function getProductArticle($item, $groupId = 1)
+    protected function getProductArticle($item, $groupId = 1)
     {
         $article = array();
 
@@ -385,7 +386,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      *
      * @return array
      */
-    private function getGiftwrapArticles($groupId = 1)
+    protected function getGiftwrapArticles($groupId = 1)
     {
         if (!Mage::helper('buckaroo3extended')->isEnterprise()) {
             return array();
@@ -430,7 +431,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
     /**
      * @param $vars
      */
-    private function addSubtotalData(&$vars)
+    protected function addSubtotalData(&$vars)
     {
         if (!isset($vars['customVars'][$this->_method]['Articles'])
             || empty($vars['customVars'][$this->_method]['Articles'])
@@ -451,7 +452,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      *
      * @return array
      */
-    private function getSubtotalLine($name, $value, $groupId = 1)
+    protected function getSubtotalLine($name, $value, $groupId = 1)
     {
         $subtotalLine = array();
 
@@ -470,7 +471,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      *
      * @return array
      */
-    private function getDiscountLine(&$groupId)
+    protected function getDiscountLine(&$groupId)
     {
         $discount = abs((double)$this->_order->getDiscountAmount());
 
@@ -493,7 +494,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      *
      * @return array
      */
-    private function getFeeLine(&$groupId)
+    protected function getFeeLine(&$groupId)
     {
         $fee    = (double) $this->_order->getBuckarooFee();
 
@@ -514,7 +515,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer extends TIG_
      *
      * @return array
      */
-    private function getShippingCostsLine(&$groupId)
+    protected function getShippingCostsLine(&$groupId)
     {
         $shippingCosts = $this->_order->getBaseShippingInclTax();
 
