@@ -140,9 +140,9 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     {
         $dob = null;
 
-        $dobDay = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[day]');
-        $dobMonth = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[month]');
-        $dobYear = $this->getSession()->getData($this->getMethodCode() . '_customerbirthdate[year]');
+        $dobDay = $this->getSession()->getData('payment[' . $this->getMethodCode() . '][day]');
+        $dobMonth = $this->getSession()->getData('payment[' . $this->getMethodCode() . '][month]');
+        $dobYear = $this->getSession()->getData('payment[' . $this->getMethodCode() . '][year]');
 
         if ($dobDay) {
             $dob = $dobYear . '-' . $dobMonth . '-' . $dobDay;
@@ -168,10 +168,10 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
      */
     public function getEmail()
     {
-        $email = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customeremail');
+        $email = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customermail');
 
         if (!$email) {
-            $this->getAddress()->getEmail();
+            $email = $this->getAddress()->getEmail();
         }
 
         if (!$email && $this->getCustomer()) {

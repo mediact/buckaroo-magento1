@@ -263,6 +263,7 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $billingAddress = $this->_order->getBillingAddress();
 
         $firstname          = $billingAddress->getFirstname();
+        $middlename         = $billingAddress->getMiddlename();
         $lastname           = $billingAddress->getLastname();
         $city                 = $billingAddress->getCity();
         $state                 = $billingAddress->getState();
@@ -273,8 +274,13 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
         $fax              = $billingAddress->getFax();
         $countryCode      = $billingAddress->getCountry();
 
+        if (empty($email)) {
+            $email = $billingAddress->getEmail();
+        }
+
         $billingInfo = array(
             'firstname'     => $firstname,
+            'middlename'    => $middlename,
             'lastname'        => $lastname,
             'city'             => $city,
             'state'         => $state,
@@ -401,6 +407,10 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
                 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_paypal_paymentMethod');
                 $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_paypal/allowed_currencies', $this->getStoreId());
                 break;
+            case 'buckaroo3extended_payconiq':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_payconiq_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_payconiq/allowed_currencies', $this->getStoreId());
+                break;
             case 'buckaroo3extended_transfer':
             case 'buckarootransfer':
             case 'buckaroo2012overschrijving':
@@ -439,6 +449,17 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
             case 'buckaroo3extended_maestro':
                 $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_maestro_paymentMethod');
                 $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_maestro/allowed_currencies', $this->getStoreId());
+                break;
+            case 'buckaroo3extended_kbc':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_kbc_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_kbc/allowed_currencies', $this->getStoreId());
+                break;
+            case 'buckaroo3extended_p24':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_p24_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_p24/allowed_currencies', $this->getStoreId());
+            case 'buckaroo3extended_dankort':
+                $paymentMethod = Mage::getModel('buckaroo3extended/paymentMethods_dankort_paymentMethod');
+                $currenciesAllowedConfig = Mage::getStoreConfig('buckaroo/buckaroo3extended_dankort/allowed_currencies', $this->getStoreId());
                 break;
             default:
                 $paymentMethod = null;
@@ -492,14 +513,21 @@ class TIG_Buckaroo3Extended_Model_Abstract extends Mage_Payment_Model_Method_Abs
      */
     protected function _parseResponse()
     {
+        $returnArray = array(
+            'message' => 'Onbekende responsecode',
+            'status' => self::BUCKAROO_NEUTRAL
+        );
+
+        if (!isset($this->_response->Status->Code->Code)) {
+            return $returnArray;
+        }
+
         $code = $this->_response->Status->Code->Code;
 
-        if (!isset($this->responseCodes[$code]))
-        {
-            return array(
-                'message' => 'Onbekende responsecode: ' . $code,
-                'status' => self::BUCKAROO_NEUTRAL
-            );
+        if (!isset($this->responseCodes[$code])) {
+            $returnArray['message'] .= ': ' . $code;
+
+            return $returnArray;
         }
 
         $returnArray = $this->responseCodes[$code];

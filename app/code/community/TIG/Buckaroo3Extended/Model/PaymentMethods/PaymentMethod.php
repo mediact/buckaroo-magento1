@@ -217,7 +217,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
 
         // get current currency code
-        $currency = Mage::app()->getStore()->getBaseCurrencyCode();
+        if ($quote) {
+            $currency = $quote->getQuoteCurrencyCode();
+        }
+
+        if (!$currency) {
+            $currency = Mage::app()->getStore()->getBaseCurrencyCode();
+        }
 
         // currency is not available for this module
         if (!in_array($currency, $this->allowedCurrencies)) {
@@ -305,5 +311,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
         }
 
         return $value;
+    }
+
+    /**
+     * @param $responsedData
+     *
+     * @return bool
+     */
+    public function getRejectedMessage($responsedData)
+    {
+        return false;
     }
 }

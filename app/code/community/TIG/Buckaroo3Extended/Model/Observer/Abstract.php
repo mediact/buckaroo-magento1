@@ -250,6 +250,38 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
+     * @param string $fullStreet
+     *
+     * @return array
+     */
+    protected function _processAddress($fullStreet)
+    {
+        //get address from billingInfo
+        $address = $fullStreet;
+
+        $ret = array();
+        $ret['house_number'] = '';
+        $ret['number_addition'] = '';
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
+            if ('' == $matches[1]) {
+                // Number at beginning
+                $ret['house_number'] = trim($matches[2]);
+                $ret['street']         = trim($matches[3]);
+            } else {
+                // Number at end
+                $ret['street']            = trim($matches[1]);
+                $ret['house_number']    = trim($matches[2]);
+                $ret['number_addition'] = trim($matches[3]);
+            }
+        } else {
+            // No number
+            $ret['street'] = $address;
+        }
+
+        return $ret;
+    }
+
+    /**
      *
      * Processes the customer's billing_address so as to fit the SOAP request. returning an array
      *
@@ -262,13 +294,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 
         $addressRegexResult = preg_match('#\A(.*?)\s+(\d+[a-zA-Z]{0,1}\s{0,1}[-]{1}\s{0,1}\d*[a-zA-Z]{0,1}|\d+[a-zA-Z-]{0,1}\d*[a-zA-Z]{0,1})#', $address, $matches);
         if (!$addressRegexResult || !is_array($matches)) {
-            $addressData = array(
-                'street'           => $address,
-                'house_number'          => '',
-                'number_addition' => '',
-            );
-
-            return $addressData;
+            return $this->_processAddress($address);
         }
 
         $streetname = '';

@@ -194,4 +194,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
 
         $this->assertEquals($expected, $result);
     }
+
+    public function testGetRejectedMessage()
+    {
+        $instance = $this->_getInstance();
+        $result = $instance->getRejectedMessage(array());
+        $this->assertFalse($result);
+    }
 }

@@ -6,6 +6,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Paypal_PaymentMethod extends TI
         'BRL',
         'CAD',
         'CHF',
+        'CZK',
         'DKK',
         'EUR',
         'GBP',

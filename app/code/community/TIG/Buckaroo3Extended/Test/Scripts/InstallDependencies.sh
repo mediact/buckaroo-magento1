@@ -18,7 +18,7 @@ fi
 
 which coveralls
 if [ $? != "0" ] && [ "${CODE_COVERAGE}" = "true" ]; then
-    COMPOSER_REQUIRE="${COMPOSER_REQUIRE} satooshi/php-coveralls"
+    COMPOSER_REQUIRE="${COMPOSER_REQUIRE} satooshi/php-coveralls ^1.0"
 fi
 
 if [ ! -f "${COMPOSER_HOME}phpunit" ]; then

@@ -35,6 +35,11 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
     /** @var null|TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer */
     protected $_instance = null;
 
+    public function setUp()
+    {
+        $this->registerMockSessions('checkout');
+    }
+
     /**
      * @return null|TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer
      */
@@ -503,6 +508,10 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
      */
     public function testGetPaymentFeeLine($fee, $expected)
     {
+        $taxCalcMock = $this->getMockBuilder('Mage_Tax_Model_Calculation')->setMethods(array('getRate'))->getMock();
+        $taxCalcMock->expects($this->once())->method('getRate')->willReturn(0.00);
+        $this->setModelMock('tax/calculation', $taxCalcMock);
+
         $mockOrder = $this->getMockOrder();
         $mockOrder->setBuckarooFee($fee);
 
@@ -545,6 +554,10 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Klarna_ObserverTest
      */
     public function testGetShipmentCostsLine($shipmentCosts, $expected)
     {
+        $taxCalcMock = $this->getMockBuilder('Mage_Tax_Model_Calculation')->setMethods(array('getRate'))->getMock();
+        $taxCalcMock->expects($this->once())->method('getRate')->willReturn(0.00);
+        $this->setModelMock('tax/calculation', $taxCalcMock);
+
         $mockOrder = $this->getMockOrder();
         $mockOrder->setBaseShippingInclTax($shipmentCosts);
 

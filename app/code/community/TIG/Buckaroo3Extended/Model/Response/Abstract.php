@@ -269,7 +269,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $errorMessage = $this->_getCorrectFailureMessage($message);
 
-        if ($billingCountry == 'NL' && $parsedResponse['code'] == 490) {
+        if ($billingCountry == 'NL' && isset($parsedResponse['code']) && $parsedResponse['code'] == 490) {
             $responseErrorMessage = $this->getResponseFailureMessage();
             $errorMessage = strlen($responseErrorMessage) > 0 ? $responseErrorMessage : $errorMessage;
         }
@@ -330,21 +330,16 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->_debugEmail .= "The transaction generated an error. \n";
 
-        $paymentMethod = $this->_order->getPayment()->getMethod();
-        switch($paymentMethod){
-            case 'buckaroo3extended_afterpay':
-            case 'buckaroo3extended_afterpay2':
-                    $message = Mage::helper('buckaroo3extended')->__(
-                        $this->getAfterpayRejectMessage($message)
-                    );
-                break;
-            default:
-                $message = Mage::helper('buckaroo3extended')->__(
-                    $this->_getCorrectFailureMessage($message)
-                );
+        $paymentInstance = $this->_order->getPayment()->getMethodInstance();
+        $rejectedMessage = $paymentInstance->getRejectedMessage($this->_response);
+
+        if ($rejectedMessage == false || strlen($rejectedMessage) <= 0) {
+            $rejectedMessage = $this->_getCorrectFailureMessage($message);
         }
 
-        Mage::getSingleton('core/session')->addError($message);
+        $rejectedMessage = Mage::helper('buckaroo3extended')->__($rejectedMessage);
+
+        Mage::getSingleton('core/session')->addError($rejectedMessage);
 
         $this->_returnGiftcards($this->_order);
         $this->setBuckarooFailedAuthorize();
@@ -453,14 +448,14 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $setFailedAuthorize = false;
 
         //Afterpay
-        if ($this->_response->TransactionType == 'I013') {
+        if (isset($this->_response->TransactionType) && $this->_response->TransactionType == 'I013') {
             $setFailedAuthorize = true;
         }
 
         //Klarna
-        if ($this->_response->requestType == 'DataRequest' &&
-            $this->_response->ServiceCode == 'klarna' &&
-            $this->_response->Status->Code->Code == '490' ) {
+        if (isset($this->_response->requestType) && $this->_response->requestType == 'DataRequest' &&
+            isset($this->_response->ServiceCode) && $this->_response->ServiceCode == 'klarna' &&
+            isset($this->_response->Status->Code->Code) && $this->_response->Status->Code->Code == '490' ) {
             $setFailedAuthorize = true;
         }
  
@@ -469,22 +464,6 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             $payment->setAdditionalInformation('buckaroo_failed_authorize', 1);
             $payment->save();
         }
-    }
-
-    /**
-     * @param $message null
-     *
-     * @return string
-     */
-    private function getAfterpayRejectMessage($message = null)
-    {
-        $rejectedMessage = $this->_response->ConsumerMessage->HtmlText;
-
-        if ($rejectedMessage) {
-            return $rejectedMessage;
-        }
-
-        return $message;
     }
 
     /**

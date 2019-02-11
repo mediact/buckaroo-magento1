@@ -35,24 +35,24 @@
 #checkout-step-payment #paymentguarantee_terms_and_conditions a.button span { display:block; height:19px; border:1px solid #de5400; background:#f18200; padding:0 8px; font:bold 12px/19px Arial, Helvetica, sans-serif; text-align:center; white-space:nowrap; color:#fff; }
 #checkout-step-payment #paymentguarantee_terms_and_conditions a.button span span { border:0; padding:0; }
 
-/* Logo ============================================================================================================= */
-#checkout-payment-method-load input { z-index: 10; }
-#checkout-payment-method-load label { position: relative; width: auto; padding: 0 230px 0 0; }
 
-/* Default */
-#checkout-payment-method-load dt label:after {
-    content: '';
-    width: 80px;
-    height: 11px;
-    position: absolute;
-    right: 0;
-    top: 0;
+/* Afterpay + Payment guarantee - terms and conditions - align with checkbox */
+
+.sp-methods .form-list li {
+    clear: both;
 }
 
-/* Klarna */
-#checkout-payment-method-load #dt_method_buckaroo3extended_klarna label:after {
-    background-image: url('../../../../../base/default/images/tig_buckaroo3extended/payment_logo/buckaroo_klarna.png');
-    background-size: 35px;
-    background-repeat: no-repeat;
-    background-position: 100% 50%;
+#checkout-step-payment .buckaroo-method .tac-accept .input-box{
+    float: left !important;
+    width: auto;
+}
+
+#checkout-step-payment .buckaroo-method .tac-accept .input-box input {
+    width: 25px;
+    vertical-align: text-top;
+    margin-top: 2px;
+}
+
+#checkout-step-payment .buckaroo-method .tac-accept .input-box:after {
+    clear:none;
 }

@@ -224,4 +224,56 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Afterpay2_PaymentMeth
         $instance = $this->_getInstance();
         $instance->validate();
     }
+
+    /**
+     * @return array
+     */
+    public function getRejectedMessageProvider()
+    {
+        return array(
+            'has rejected message' => array(
+                (Object)array(
+                    'ConsumerMessage' => (Object)array(
+                        'HtmlText' => 'Error from Payment Plaza'
+                    )
+                ),
+                'Error from Payment Plaza'
+            ),
+            'has no rejected message' => array(
+                (Object)array(
+                    'ConsumerMessage' => (Object)array(
+                        'HtmlText' => ''
+                    )
+                ),
+                false
+            ),
+            'has no HtmlText' => array(
+                (Object)array(
+                    'ConsumerMessage' => (Object)array(
+                        'someOtherObject' => 'TIG response'
+                    )
+                ),
+                false
+            ),
+            'has no ConsumerMessage' => array(
+                (Object)array(
+                    'transaction' => 'abcdef123456'
+                ),
+                false
+            ),
+        );
+    }
+
+    /**
+     * @param $responseData
+     * @param $expected
+     *
+     * @dataProvider getRejectedMessageProvider
+     */
+    public function testGetRejectedMessage($responseData, $expected)
+    {
+        $instance = $this->_getInstance();
+        $result = $instance->getRejectedMessage($responseData);
+        $this->assertEquals($expected, $result);
+    }
 }
