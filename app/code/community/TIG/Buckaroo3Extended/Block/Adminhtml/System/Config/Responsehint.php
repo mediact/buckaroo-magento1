@@ -30,6 +30,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Responsehint
         'eps',
         'afterpay',
         'afterpay2',
+        'afterpay20',
         'masterpass',
     );
 
