@@ -56,10 +56,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_PaymentMethod
     protected function _getBPEPostData($post)
     {
         $customerBirthDate = date(
-            'Y-m-d', strtotime(
-                $post['payment'][$this->_code]['year']
+            'd-m-Y', strtotime(
+                $post['payment'][$this->_code]['day']
                 . '-' . $post['payment'][$this->_code]['month']
-                . '-' . $post['payment'][$this->_code]['day']
+                . '-' . $post['payment'][$this->_code]['year']
             )
         );
 
@@ -118,67 +118,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_PaymentMethod
 
     /**
      * {@inheritdoc}
-     *
-     * @throws Mage_Core_Model_Store_Exception
-     * @throws Zend_Controller_Request_Exception
      */
     public function isAvailable($quote = null)
     {
-        $storeId = Mage::app()->getStore()->getId();
-
-        if (!$this->checkQuoteAndSession($quote)) {
-            return false;
-        }
-
-        if (!$this->checkAvailabilityInShopArea($storeId)) {
-            return false;
-        }
-
-        if (!$this->checkWithinAmount($storeId, $quote)) {
-            return false;
-        }
-
-        // Check limit by ip
-        if (mage::getStoreConfig('dev/restrict/allow_ips')
-            && Mage::getStoreConfig('buckaroo/' . $this->_code . '/limit_by_ip')) {
-            $allowedIp = explode(',', mage::getStoreConfig('dev/restrict/allow_ips'));
-            if (!in_array(Mage::helper('core/http')->getRemoteAddr(), $allowedIp)) {
-                return false;
-            }
-        }
-
-        // Get current currency code
-        $currency = Mage::app()->getStore()->getBaseCurrencyCode();
-
-        // Currency is not available for this module
-        if (!in_array($currency, $this->allowedCurrencies)) {
-            return false;
-        }
-
-        if ($this->hideForPosPayment()) {
-            return false;
-        }
-
-        $canUseBuckaroo = TIG_Buckaroo3Extended_Model_Request_Availability::canUseBuckaroo($quote);
-
-        return $canUseBuckaroo;
-    }
-
-    protected function checkQuoteAndSession($quote, &$storeId)
-    {
-        // Check if quote is null, and try to look it up based on adminhtml session
         if (!$quote && Mage::helper('buckaroo3extended')->isAdmin()) {
             $quote = Mage::getSingleton('adminhtml/session_quote');
-        }
-
-        // If quote is not null, set storeId to quote storeId
-        if ($quote) {
-            $storeId = $quote->getStoreId();
-        }
-
-        //check if the module is set to enabled
-        if (!Mage::getStoreConfig('buckaroo/' . $this->_code . '/active', $storeId)) {
-            return false;
         }
 
         if ($quote) {
@@ -193,66 +137,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_PaymentMethod
             return false;
         }
 
-        // Check if the country specified in the billing address is allowed to use this payment method
-        if ($quote
-            && Mage::getStoreConfig('buckaroo/' . $this->_code . '/allowspecific', $storeId) == 1
-            && $quote->getBillingAddress()->getCountry()
-        ) {
-            $allowedCountries = explode(
-                ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/specificcountry', $storeId)
-            );
-            $country = $quote->getBillingAddress()->getCountry();
-
-            if (!in_array($country, $allowedCountries)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    protected function checkAvailabilityInShopArea($storeId)
-    {
-        $areaAllowed = null;
-        if ($this->canUseInternal()) {
-            $areaAllowed = Mage::getStoreConfig('buckaroo/' . $this->_code . '/area', $storeId);
-        }
-
-        // Check if the paymentmethod is available in the current shop area (frontend or backend)
-        if ($areaAllowed == 'backend'
-            && !Mage::helper('buckaroo3extended')->isAdmin()
-        ) {
-            return false;
-        } elseif ($areaAllowed == 'frontend'
-            && Mage::helper('buckaroo3extended')->isAdmin()
-        ) {
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function checkWithinAmount($storeId, $quote)
-    {
-        // Check if max amount for the issued PaymentMethod is set and if the quote basegrandtotal exceeds that
-        $maxAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/max_amount', $storeId);
-        if ($quote
-            && !empty($maxAmount)
-            && $quote->getBaseGrandTotal() > $maxAmount
-        ) {
-            return false;
-        }
-
-        // check if min amount for the issued PaymentMethod is set and if the quote basegrandtotal is less than that
-        $minAmount = Mage::getStoreConfig('buckaroo/' . $this->_code . '/min_amount', $storeId);
-        if ($quote
-            && !empty($minAmount)
-            && $quote->getBaseGrandTotal() < $minAmount
-        ) {
-            return false;
-        }
-
-        return true;
+        return parent::isAvailable($quote);
     }
 
     /**

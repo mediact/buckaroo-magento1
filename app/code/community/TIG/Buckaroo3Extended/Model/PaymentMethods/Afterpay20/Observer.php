@@ -71,6 +71,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
+     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -87,15 +88,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
 
         $vars = $request->getVars();
 
-        $this->_addAfterpayVariables($vars, $this->_method);
-        $this->_addArticlesVariables($vars, $this->_method);
-        $this->_addShippingCostsVariables($vars, $this->_method);
+        $this->addAfterpayVariables($vars);
+        $this->addArticlesVariables($vars);
 
         $request->setVars($vars);
         return $this;
     }
 
     /**
+     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -116,6 +117,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
+     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -136,6 +138,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
+     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -167,6 +170,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         return $this;
     }
 
+    /**
+     * TODO
+     * @param Varien_Event_Observer $observer
+     *
+     * @return $this
+     */
     public function buckaroo3extended_refund_request_addcustomvars(Varien_Event_Observer $observer)
     {
         if ($this->_isChosenMethod($observer) === false) {
@@ -186,6 +195,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         return $this;
     }
 
+    /**
+     * @return Mage_Core_Helper_Abstract|TIG_Buckaroo3Extended_Helper_Data
+     */
     private function getHelper()
     {
         if ($this->helper == null) {
@@ -198,134 +210,47 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     /**
      * @param array $vars
      */
-    protected function _addAfterpayVariables(&$vars)
+    private function addAfterpayVariables(&$vars)
     {
         $session            = Mage::getSingleton('checkout/session');
         $additionalFields   = $session->getData('additionalFields');
-
         $paymentAdditionalInformation = $this->_order->getPayment()->getAdditionalInformation();
-        if (is_array($paymentAdditionalInformation)
-            && !empty($paymentAdditionalInformation)
-        ) {
+
+        if (is_array($paymentAdditionalInformation) && !empty($paymentAdditionalInformation)) {
             $additionalFields = $paymentAdditionalInformation;
         }
 
-        $requestArray       = array();
+        $requestArray = array();
 
         //add billing address
-        $billingAddress     = $this->_order->getBillingAddress();
-        $streetFull         = $this->_processAddress($billingAddress->getStreetFull());
-        $rawPhoneNumber     = $billingAddress->getTelephone();
-
-        if (!is_numeric($rawPhoneNumber) || $rawPhoneNumber == '-') {
-            $rawPhoneNumber = $additionalFields['BPE_PhoneNumber'];
-        }
-
-        $billingPhonenumber = ($billingAddress->getCountryId() == 'BE'
-            ? $this->_processPhoneNumberBe($rawPhoneNumber) : $this->_processPhoneNumber($rawPhoneNumber));
-        $billingInfo = array(
-            'BillingTitle'             => $billingAddress->getFirstname(),
-            'BillingGender'            => $additionalFields['BPE_Customergender'],
-            'BillingInitials'          => strtoupper(substr($billingAddress->getFirstname(), 0, 1)),
-            'BillingLastName'          => $billingAddress->getLastname(),
-            'BillingBirthDate'         => $additionalFields['BPE_customerbirthdate'],
-            'BillingStreet'            => $streetFull['street'],
-            'BillingHouseNumber'       => $streetFull['house_number'],
-            'BillingHouseNumberSuffix' => $streetFull['number_addition'],
-            'BillingPostalCode'        => $billingAddress->getPostcode(),
-            'BillingCity'              => $billingAddress->getCity(),
-            'BillingRegion'            => $billingAddress->getRegion(),
-            'BillingCountry'           => $billingAddress->getCountryId(),
-            'BillingEmail'             => $billingAddress->getEmail(),
-            'BillingPhoneNumber'       => $billingPhonenumber['clean'],
-            'BillingLanguage'          => $billingAddress->getCountryId(),
-        );
+        $billingInfo = $this->getAddressData($this->_order->getBillingAddress(), $additionalFields, 'BillingCustomer');
         $requestArray = array_merge($requestArray, $billingInfo);
 
         // Compatible with postnl pakjegemak
-        $pakjeGemakAddress = false;
-        if (Mage::helper('core')->isModuleEnabled('TIG_PostNL')) {
-            $addresses = $this->_order->getAddressesCollection();
-
-            foreach ($addresses as $addressNew) {
-                if ($addressNew->getAddressType() == 'pakje_gemak') {
-                    $pakjeGemakAddress = $addressNew;
-                    break;
-                }
-            }
-        }
+        $pakjeGemakAddress = $this->getPakjeGemakAddress();
 
         //add shipping address (only when different from billing address)
         if ($this->isShippingDifferent() || $pakjeGemakAddress) {
-            $shippingAddress     = $this->_order->getShippingAddress();
-            $streetFull          = $this->_processAddress($shippingAddress->getStreetFull());
-            $shippingPhonenumber = ($shippingAddress->getCountryId() ?
-                $this->_processPhoneNumberBe($shippingAddress->getTelephone()) :
-                $this->_processPhoneNumber($shippingAddress->getTelephone()));
-
-            $shippingInfo = array(
-                'AddressesDiffer'           => 'true',
-                'ShippingTitle'             => $shippingAddress->getFirstname(),
-                'ShippingGender'            => $additionalFields['BPE_Customergender'],
-                'ShippingInitials'          => strtoupper(substr($shippingAddress->getFirstname(), 0, 1)),
-                'ShippingLastName'          => $shippingAddress->getLastname(),
-                'ShippingBirthDate'         => $additionalFields['BPE_customerbirthdate'],
-                'ShippingStreet'            => $streetFull['street'],
-                'ShippingHouseNumber'       => $streetFull['house_number'],
-                'ShippingHouseNumberSuffix' => $streetFull['number_addition'],
-                'ShippingPostalCode'        => $shippingAddress->getPostcode(),
-                'ShippingCity'              => $shippingAddress->getCity(),
-                'ShippingRegion'            => $shippingAddress->getRegion(),
-                'ShippingCountryCode'       => $shippingAddress->getCountryId(),
-                'ShippingEmail'             => $shippingAddress->getEmail(),
-                'ShippingPhoneNumber'       => $shippingPhonenumber['clean'],
-                'ShippingLanguage'          => $shippingAddress->getCountryId(),
-            );
+            $shippingInfo = $this->getAddressData($this->_order->getShippingAddress(), $additionalFields, 'ShippingCustomer');
 
             //Update with pakjeGemak values
             if ($pakjeGemakAddress) {
                 $streetPakjeGemak = $this->_processAddress($pakjeGemakAddress->getStreetFull());
 
-                $shippingInfo['ShippingTitle']             = 'A';
-                $shippingInfo['ShippingLastName']          = 'POSTNL afhaalpunt ' . $pakjeGemakAddress->getCompany();
-                $shippingInfo['ShippingStreet']            = $streetPakjeGemak['street'];
-                $shippingInfo['ShippingHouseNumber']       = $streetPakjeGemak['house_number'];
-                $shippingInfo['ShippingHouseNumberSuffix'] = $streetPakjeGemak['number_addition'];
-                $shippingInfo['ShippingPostalCode']        = $pakjeGemakAddress->getPostcode();
-                $shippingInfo['ShippingCity']              = $pakjeGemakAddress->getCity();
-                $shippingInfo['ShippingCountryCode']       = $pakjeGemakAddress->getCountryId();
-                $shippingInfo['ShippingPhoneNumber']       = $pakjeGemakAddress->getTelephone();
+                $shippingInfo['FirstName']['value']              = 'A';
+                $shippingInfo['LastName']['value']            = 'POSTNL afhaalpunt ' . $pakjeGemakAddress->getCompany();
+                $shippingInfo['Street']['value']                 = $streetPakjeGemak['street'];
+                $shippingInfo['StreetNumber']['value']           = $streetPakjeGemak['house_number'];
+                $shippingInfo['StreetNumberAdditional']['value'] = $streetPakjeGemak['number_addition'];
+                $shippingInfo['PostalCode']['value']             = $pakjeGemakAddress->getPostcode();
+                $shippingInfo['City']['value']                   = $pakjeGemakAddress->getCity();
+                $shippingInfo['Country']['value']                = $pakjeGemakAddress->getCountryId();
+                $shippingInfo['Phone']['value']                  = $pakjeGemakAddress->getTelephone();
             }
 
             $requestArray = array_merge($requestArray, $shippingInfo);
         }
 
-        //customer info
-        $customerInfo = array(
-            'CustomerIPAddress'     => Mage::helper('core/http')->getRemoteAddr(),
-            'Accept'                => $additionalFields['BPE_Accept'],
-        );
-
-        /** @var Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice $discountData */
-        $discountData = $this->_order;
-
-        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
-        $invoiceCollection = $this->_order->getInvoiceCollection();
-
-        if (!empty($invoiceCollection)) {
-            $discountData = $invoiceCollection->getLastItem();
-        }
-
-        $discount = $this->calculateDiscount($discountData);
-
-        //add order Info
-        $orderInfo = array(
-            'Discount'      => $discount,
-        );
-
-        $requestArray = array_merge($requestArray, $customerInfo);
-        $requestArray = array_merge($requestArray, $orderInfo);
-
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
@@ -333,136 +258,166 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         }
     }
 
-    protected function calculateDiscount($discountData)
+    /**
+     * @param Mage_Sales_Model_Order_Address $address
+     * @param array                          $additionalFields
+     * @param string                         $addressType
+     *
+     * @return array
+     */
+    private function getAddressData($address, $additionalFields, $addressType = 'BillingCustomer')
     {
-        $discount = null;
-        $helper = $this->getHelper();
+        $streetFull         = $this->_processAddress($address->getStreetFull());
+        $rawPhoneNumber     = $address->getTelephone();
 
-        if ($helper->isEnterprise()) {
-            if ((double)$discountData->getGiftCardsAmount() > 0) {
-                $discount = (double)$discountData->getGiftCardsAmount();
-            }
+        if (!is_numeric($rawPhoneNumber) || $rawPhoneNumber == '-') {
+            $rawPhoneNumber = $additionalFields['BPE_PhoneNumber'];
         }
 
-        if (abs((double)$discountData->getDiscountAmount()) > 0) {
-            $discount += abs((double)$discountData->getDiscountAmount());
+        $phonenumber = ($address->getCountryId() == 'BE'
+            ? $this->_processPhoneNumberCMBe($rawPhoneNumber) : $this->_processPhoneNumberCM($rawPhoneNumber));
+        $phonenumberKey = ($phonenumber['mobile'] ? 'MobilePhone' : 'Phone');
+
+        $addressInfo = array();
+        $addressInfo[] = $this->getParameterLine('Category', 'Person', $addressType);
+        $addressInfo[] = $this->getParameterLine('Salutation', $additionalFields['BPE_Customergender'], $addressType);
+        $addressInfo[] = $this->getParameterLine('FirstName', $address->getFirstname(), $addressType);
+        $addressInfo[] = $this->getParameterLine('LastName', $address->getLastname(), $addressType);
+        $addressInfo[] = $this->getParameterLine('BirthDate', $additionalFields['BPE_customerbirthdate'], $addressType);
+        $addressInfo[] = $this->getParameterLine('Street', $streetFull['street'], $addressType);
+        $addressInfo[] = $this->getParameterLine('StreetNumber', $streetFull['house_number'], $addressType);
+        $addressInfo[] = $this->getParameterLine('StreetNumberAdditional', $streetFull['number_addition'], $addressType);
+        $addressInfo[] = $this->getParameterLine('PostalCode', $address->getPostcode(), $addressType);
+        $addressInfo[] = $this->getParameterLine('City', $address->getCity(), $addressType);
+        $addressInfo[] = $this->getParameterLine('Country', $address->getCountryId(), $addressType);
+        $addressInfo[] = $this->getParameterLine($phonenumberKey, $phonenumber['clean'], $addressType);
+        $addressInfo[] = $this->getParameterLine('Email', $address->getEmail(), $addressType);
+        $addressInfo[] = $this->getParameterLine('ConversationLanguage', $address->getCountryId(), $addressType);
+
+        //TODO: Enable when finnish id number is implemented
+//        if ($additionalFields['identification_number']) {
+//            $addressInfo[] = $this->getParameterLine('IdentificationNumber', $additionalFields['identification_number'], $addressType);
+//        }
+
+        if ($this->_order->getCustomerId()) {
+            $addressInfo[] = $this->getParameterLine('CustomerNumber', $this->_order->getCustomerId(), $addressType);
         }
 
-        if ($helper->isEnterprise()
-            && abs((double)$discountData->getCustomerBalanceAmount()) > 0) {
-            $discount += abs((double)$discountData->getCustomerBalanceAmount());
-        }
-
-        return round($discount, 2);
+        return $addressInfo;
     }
 
     /**
-     * @param $vars
+     * @return bool|Mage_Sales_Model_Order_Address
      */
-    protected function _addShippingCostsVariables(&$vars)
+    private function getPakjeGemakAddress()
     {
-        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+        $pakjeGemakAddress = false;
 
-        $orderInfo = array(
-            'ShippingCosts' => $shippingCosts,
+        if (!Mage::helper('core')->isModuleEnabled('TIG_PostNL')) {
+            return $pakjeGemakAddress;
+        }
+
+        $addresses = $this->_order->getAddressesCollection();
+
+        foreach ($addresses as $addressNew) {
+            if ($addressNew->getAddressType() == 'pakje_gemak') {
+                $pakjeGemakAddress = $addressNew;
+                break;
+            }
+        }
+
+        return $pakjeGemakAddress;
+    }
+
+    /**
+     * @param string      $name
+     * @param string      $value
+     * @param string|null $group
+     * @param int|null    $groupId
+     *
+     * @return array
+     */
+    private function getParameterLine($name, $value, $group = null, $groupId = null)
+    {
+        $parameterContent = array(
+            'name' => $name,
+            'value' => $value
         );
 
-        if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-            $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $orderInfo);
-        } else {
-            $vars['customVars'][$this->_method] = $orderInfo;
+        if (strlen($group) > 0) {
+            $parameterContent['group'] = $group;
         }
+
+        if ($groupId > 0) {
+            $parameterContent['groupId'] = $groupId;
+        }
+
+        $parameter = $parameterContent;
+
+        return $parameter;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order|Mage_Sales_Model_Order_Invoice $discountObject
+     *
+     * @return float|int
+     */
+    protected function calculateDiscount($discountObject)
+    {
+        $discount = 0;
+        $helper = $this->getHelper();
+
+        if ($helper->isEnterprise() && abs((double)$discountObject->getGiftCardsAmount()) > 0) {
+            $discount = abs((double)$discountObject->getGiftCardsAmount());
+        }
+
+        if (abs((double)$discountObject->getDiscountAmount()) > 0) {
+            $discount += abs((double)$discountObject->getDiscountAmount());
+        }
+
+        if ($helper->isEnterprise() && abs((double)$discountObject->getCustomerBalanceAmount()) > 0) {
+            $discount += abs((double)$discountObject->getCustomerBalanceAmount());
+        }
+
+        $discount = (-1 * round($discount, 2));
+
+        return $discount;
     }
 
     /**
      * @param array $vars
      */
-    protected function _addArticlesVariables(&$vars)
+    private function addArticlesVariables(&$vars)
     {
-        //add all products max 10
-        $products = $this->_order->getAllItems();
-        $max      = 99;
         $i        = 1;
-        $group    = array();
+        $articles = array();
 
-        foreach ($products as $item) {
-            /** @var $item Mage_Sales_Model_Order_Item */
+        $productArticles = $this->getProductArticles($i);
+        $i += count($productArticles);
+        $articles = array_merge($articles, $productArticles);
 
-            if (empty($item) || $item->hasParentItemId()) {
-                continue;
-            }
+        $enterpriseArticles = $this->getEnterpriseArticles($i);
+        $i += count($enterpriseArticles);
+        $articles = array_merge($articles, $enterpriseArticles);
 
-            // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
-            // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
-            // Quantity will always be 1 and quantity ordered will be in the article description.
-            $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
-                + $item->getBaseTaxAmount()
-                + $item->getBaseHiddenTaxAmount();
-            $productPrice = round($productPrice, 2);
-
-
-            $article['ArticleDescription']['value'] = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
-            $article['ArticleId']['value']          = $item->getId();
-            $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = $productPrice;
-            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory($this->_getTaxClassId($item));
-
-            $group[$i] = $article;
-
-
-            if ($i <= $max) {
-                $i++;
-                continue;
-            }
-
-            break;
+        $paymentFeeArticles = $this->getPaymentFeeLine($i);
+        if (!empty($paymentFeeArticles)) {
+            $articles[] = $paymentFeeArticles;
+            $i++;
         }
 
-        $helper = $this->getHelper();
-
-        if ($helper->isEnterprise()) {
-            $gwId = 1;
-            $gwTax = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
-
-            if ($this->_order->getGwBasePrice() > 0) {
-                $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
-
-                $gwOrder = array();
-                $gwOrder['ArticleDescription']['value'] = $helper->__('Gift Wrapping for Order');
-                $gwOrder['ArticleId']['value'] = 'gwo_' . $this->_order->getGwId();
-                $gwOrder['ArticleQuantity']['value'] = 1;
-                $gwOrder['ArticleUnitPrice']['value'] = $gwPrice;
-                $gwOrder['ArticleVatcategory']['value'] = $gwTax;
-
-                $group[] = $gwOrder;
-
-                $gwId += $this->_order->getGwId();
-            }
-
-            if ($this->_order->getGwItemsBasePrice() > 0) {
-                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
-
-                $gwiOrder = array();
-                $gwiOrder['ArticleDescription']['value'] = $helper->__('Gift Wrapping for Items');
-                $gwiOrder['ArticleId']['value'] = 'gwi_' . $gwId;
-                $gwiOrder['ArticleQuantity']['value'] = 1;
-                $gwiOrder['ArticleUnitPrice']['value'] = $gwiPrice;
-                $gwiOrder['ArticleVatcategory']['value'] = $gwTax;
-
-                $group[] = $gwiOrder;
-            }
+        $discountArticle = $this->getDiscountArticle($i);
+        if (!empty($discountArticle)) {
+            $articles[] = $discountArticle;
+            $i++;
         }
 
-        end($group);// move the internal pointer to the end of the array
-        $key             = (int)key($group);
-        $feeGroupId      = $key+1;
-        $paymentFeeArray = $this->_getPaymentFeeLine();
-
-        if (false !== $paymentFeeArray && is_array($paymentFeeArray)) {
-            $group[$feeGroupId] = $paymentFeeArray;
+        $shippingArticle = $this->getShippingArticle($i);
+        if (!empty($shippingArticle)) {
+            $articles[] = $shippingArticle;
         }
 
-        $requestArray = array('Articles' => $group);
+        $requestArray = array('Articles' => $articles);
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
@@ -471,6 +426,183 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         }
     }
 
+    /**
+     * @param $i
+     *
+     * @return array
+     */
+    private function getProductArticles($i)
+    {
+        $products = $this->_order->getAllItems();
+        $max      = 99;
+        $productArticles = array();
+
+        /** @var $item Mage_Sales_Model_Order_Item */
+        foreach ($products as $item) {
+            if (empty($item) || $item->hasParentItemId()) {
+                continue;
+            }
+
+            $productArticles[] = $this->getSingleProductArticle($item, $i++);
+
+            if ($i > $max) {
+                break;
+            }
+        }
+
+        return $productArticles;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Item $item
+     * @param int                         $groupId
+     *
+     * @return array
+     */
+    private function getSingleProductArticle($item, $groupId = 1)
+    {
+        // Changed calculation from unitPrice to orderLinePrice due to impossible to recalculate unitprice,
+        // because of differences in outcome between TAX settings: Unit, OrderLine and Total.
+        // Quantity will always be 1 and quantity ordered will be in the article description.
+        $productPrice = ($item->getBasePrice() * $item->getQtyOrdered())
+            + $item->getBaseTaxAmount()
+            + $item->getBaseHiddenTaxAmount();
+        $productPrice = round($productPrice, 2);
+
+        $description = (int) $item->getQtyOrdered() . 'x ' . $item->getName();
+
+        $article = array();
+        $article[] = $this->getParameterLine('Description', $description, 'Article', $groupId);
+        $article[] = $this->getParameterLine('GrossUnitPrice', $productPrice, 'Article', $groupId);
+        $article[] = $this->getParameterLine('VatPercentage', round($item->getTaxPercent(), 2), 'Article', $groupId);
+        $article[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Identifier', $item->getId(), 'Article', $groupId);
+        $article[] = $this->getParameterLine('ImageUrl', $item->getProduct()->getImageUrl(), 'Article', $groupId);
+        $article[] = $this->getParameterLine('Url', $item->getProduct()->getProductUrl(), 'Article', $groupId);
+
+        return $article;
+    }
+
+    /**
+     * @param $groupId
+     *
+     * @return array
+     */
+    private function getEnterpriseArticles($groupId)
+    {
+        $articles = array();
+        $helper = $this->getHelper();
+
+        if (!$helper->isEnterprise()) {
+            return $articles;
+        }
+
+        $gwId = 1;
+        $gwTaxClass = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
+        $gwTax = $this->getTaxPercent($gwTaxClass);
+
+        if ($this->_order->getGwBasePrice() > 0) {
+            $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
+            $description = $helper->__('Gift Wrapping for Order');
+
+            $gwArticle = array();
+            $gwArticle[] = $this->getParameterLine('Description', $description, 'Article', $groupId);
+            $gwArticle[] = $this->getParameterLine('GrossUnitPrice', $gwPrice, 'Article', $groupId);
+            $gwArticle[] = $this->getParameterLine('VatPercentage', $gwTax, 'Article', $groupId);
+            $gwArticle[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+            $gwArticle[] = $this->getParameterLine('Identifier', 'gwo_' . $this->_order->getGwId(), 'Article', $groupId);
+
+            $articles[] = $gwArticle;
+
+            $gwId += $this->_order->getGwId();
+            $groupId++;
+        }
+
+        if ($this->_order->getGwItemsBasePrice() > 0) {
+            $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
+            $description = $helper->__('Gift Wrapping for Items');
+
+            $gwiArticle = array();
+            $gwiArticle[] = $this->getParameterLine('Description', $description, 'Article', $groupId);
+            $gwiArticle[] = $this->getParameterLine('GrossUnitPrice', $gwiPrice, 'Article', $groupId);
+            $gwiArticle[] = $this->getParameterLine('VatPercentage', $gwTax, 'Article', $groupId);
+            $gwiArticle[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+            $gwiArticle[] = $this->getParameterLine('Identifier', 'gwi_' . $gwId, 'Article', $groupId);
+
+            $articles[] = $gwiArticle;
+        }
+
+        return $articles;
+    }
+
+    /**
+     * @param $groupId
+     *
+     * @return array
+     */
+    private function getDiscountArticle($groupId)
+    {
+        $article = array();
+        $discountObject = $this->_order;
+
+        /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
+        $invoiceCollection = $this->_order->getInvoiceCollection();
+
+        if (!empty($invoiceCollection)) {
+            $discountObject = $invoiceCollection->getLastItem();
+        }
+
+        $discount = $this->calculateDiscount($discountObject);
+
+        if ($discount == 0) {
+            return $article;
+        }
+
+        $article = array();
+        $article[] = $this->getParameterLine('Description', 'Discount', 'Article', $groupId);
+        $article[] = $this->getParameterLine('GrossUnitPrice', $discount, 'Article', $groupId);
+        $article[] = $this->getParameterLine('VatPercentage', 0, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Identifier', 'discount_1', 'Article', $groupId);
+
+        return $article;
+    }
+
+    /**
+     * @param $groupId
+     *
+     * @return array
+     */
+    private function getShippingArticle($groupId)
+    {
+        $article = array();
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+
+        if ($shippingCosts <= 0) {
+            return $article;
+        }
+
+        $store = $this->_order->getStore();
+        $shippingTaxClass = Mage::getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_SHIPPING_TAX_CLASS, $store);
+        $shippingTaxPercent = $this->getTaxPercent($shippingTaxClass);
+
+        $article = array();
+        $article[] = $this->getParameterLine('Description', 'Shipping fee', 'Article', $groupId);
+        $article[] = $this->getParameterLine('GrossUnitPrice', $shippingCosts, 'Article', $groupId);
+        $article[] = $this->getParameterLine('VatPercentage', $shippingTaxPercent, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Identifier', 'shipping_1', 'Article', $groupId);
+
+        return $article;
+    }
+
+    /**
+     * TODO
+     * @param $vars
+     * @param $payment
+     *
+     * @throws Mage_Core_Model_Store_Exception
+     */
     protected function _addCreditmemoArticlesVariables(&$vars, $payment)
     {
         /** @var Mage_Sales_Model_Resource_Order_Creditmemo_Collection $creditmemoCollection */
@@ -493,8 +625,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
             $article['ArticleId']['value']          = $item->getOrderItemId();
             $article['ArticleQuantity']['value']    = 1;
             $article['ArticleUnitPrice']['value']   = $item->getRowTotalInclTax() - $item->getDiscountAmount();
-            $article['ArticleVatcategory']['value'] =
-                $this->_getTaxCategory($this->_getTaxClassId($item->getOrderItem()));
+            $article['ArticleVatcategory']['value'] = 0;//$this->_getTaxCategory($this->_getTaxClassId($item->getOrderItem()));
 
             $group[$i] = $article;
 
@@ -519,9 +650,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
             $feeArticle['ArticleId']['value']          = 1;
             $feeArticle['ArticleQuantity']['value']    = 1;
             $feeArticle['ArticleUnitPrice']['value']   = round($fee + $feeTax, 2);
-            $feeArticle['ArticleVatcategory']['value'] = $this->_getTaxCategory(
-                Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId())
-            );
+            $feeArticle['ArticleVatcategory']['value'] = 0;//$this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
 
             $feeGroupId = $key+1;
             $group[$feeGroupId] = $feeArticle;
@@ -550,6 +679,13 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         }
     }
 
+    /**
+     * TODO
+     * @param $group
+     * @param $creditmemoCollection
+     *
+     * @return array
+     */
     protected function handleEnterprise($group, $creditmemoCollection)
     {
         $helper = $this->getHelper();
@@ -590,193 +726,54 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         return $group;
     }
 
-    protected function _getPaymentFeeLine()
+    /**
+     * @param $groupId
+     *
+     * @return array
+     */
+    private function getPaymentFeeLine($groupId)
     {
+        $article = array();
         $fee    = (double) $this->_order->getBuckarooFee();
         $feeTax = (double) $this->_order->getBuckarooFeeTax();
 
-        if ($fee > 0) {
-            $article['ArticleDescription']['value'] = 'Servicekosten';
-            $article['ArticleId']['value']          = 1;
-            $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = round($fee+$feeTax, 2);
-            $article['ArticleVatcategory']['value'] = $this->_getTaxCategory(
-                Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId())
-            );
-
+        if ($fee <= 0) {
             return $article;
         }
 
-        return false;
+        $feeTaxId = Mage::getStoreConfig('tax/classes/buckaroo_fee', $this->_order->getStoreId());
+        $feeTaxPercentage = $this->getTaxPercent($feeTaxId);
+
+        $article = array();
+        $article[] = $this->getParameterLine('Description', 'Payment fee', 'Article', $groupId);
+        $article[] = $this->getParameterLine('GrossUnitPrice', round($fee+$feeTax, 2), 'Article', $groupId);
+        $article[] = $this->getParameterLine('VatPercentage', $feeTaxPercentage, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Identifier', 1, 'Article', $groupId);
+
+        return $article;
     }
 
     /**
-     * @param Mage_Sales_Model_Order_Item|Mage_Sales_Model_Order_Invoice_Item $item
-     * @return array|bool|string
+     * @param $taxClassId
+     *
+     * @return float
      */
-    protected function _getTaxClassId($item)
+    private function getTaxPercent($taxClassId)
     {
-        return Mage::getResourceModel('catalog/product')->getAttributeRawValue(
-            $item->getProductId(),
-            'tax_class_id',
-            $item->getStoreId()
-        );
-    }
+        $store = $this->_order->getStore();
+        $billingAddress = $this->_order->getBillingAddress();
+        $shippingAddress = $this->_order->getShippingAddress();
+        $customerTaxClass = $this->_order->getCustomerTaxClassId();
 
-    protected function _getTaxCategory($taxClassId)
-    {
-        if (!$taxClassId) {
-            return 4;
-        }
+        /** @var Mage_Tax_Model_Calculation $taxCalculation */
+        $taxCalculation = Mage::getModel('tax/calculation');
 
-        $highTaxClasses = explode(
-            ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/high', Mage::app()->getStore()->getStoreId())
-        );
-        $middleTaxClasses = explode(
-            ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/middle', Mage::app()->getStore()->getStoreId())
-        );
-        $lowTaxClasses = explode(
-            ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/low', Mage::app()->getStore()->getStoreId())
-        );
-        $zeroTaxClasses = explode(
-            ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/zero', Mage::app()->getStore()->getStoreId())
-        );
-        $noTaxClasses = explode(
-            ',', Mage::getStoreConfig('buckaroo/' . $this->_code . '/no', Mage::app()->getStore()->getStoreId())
-        );
+        $request = $taxCalculation->getRateRequest($shippingAddress, $billingAddress, $customerTaxClass, $store);
+        $request->setProductClassId($taxClassId);
 
-        if (in_array($taxClassId, $highTaxClasses)) {
-            return 1;
-        } elseif (in_array($taxClassId, $middleTaxClasses)) {
-            return 5;
-        } elseif (in_array($taxClassId, $lowTaxClasses)) {
-            return 2;
-        } elseif (in_array($taxClassId, $zeroTaxClasses)) {
-            return 3;
-        } else {
-            return 4;
-        }
-    }
-
-    /**
-     * @param $telephoneNumber
-     * @return array
-     */
-    protected function _processPhoneNumber($telephoneNumber)
-    {
-        $number = $telephoneNumber;
-
-        //the final output must like this: 0031123456789 for mobile: 0031612345678
-        //so 13 characters max else number is not valid
-        //but for some error correction we try to find if there is some faulty notation
-
-        $return = array("orginal" => $number, "clean" => false, "mobile" => false, "valid" => false);
-
-        //first strip out the non-numeric characters:
-        $match = preg_replace('/[^0-9]/Uis', '', $number);
-        if ($match) {
-            $number = $match;
-        }
-
-        if (strlen((string)$number) == 13) {
-            //if the length equal to 13 is, then we can check if its a mobile number or normal number
-            $return['mobile'] = $this->_isMobileNumber($number);
-            //now we can almost say that the number is valid
-            $return['valid'] = true;
-            $return['clean'] = $number;
-        } elseif (strlen((string) $number) > 13) {
-            //if the number is bigger then 13, it means that there are probably a zero to much
-            $return['mobile'] = $this->_isMobileNumber($number);
-            $return['clean'] = $this->_isValidNotation($number);
-            if (strlen((string)$return['clean']) == 13) {
-                $return['valid'] = true;
-            }
-        } elseif (strlen((string)$number) == 12 or strlen((string)$number) == 11) {
-            //if the number is equal to 11 or 12, it means that they used a + in their number instead of 00
-            $return['mobile'] = $this->_isMobileNumber($number);
-            $return['clean'] = $this->_isValidNotation($number);
-            if (strlen((string)$return['clean']) == 13) {
-                $return['valid'] = true;
-            }
-        } elseif (strlen((string)$number) == 10) {
-            //this means that the user has no trailing "0031" and therfore only
-            $return['mobile'] = $this->_isMobileNumber($number);
-            $return['clean'] = '0031'.substr($number, 1);
-            if (strlen((string) $return['clean']) == 13) {
-                $return['valid'] = true;
-            }
-        } else {
-            //if the length equal to 13 is, then we can check if its a mobile number or normal number
-            $return['mobile'] = $this->_isMobileNumber($number);
-            //now we can almost say that the number is valid
-            $return['valid'] = true;
-            $return['clean'] = $number;
-        }
-
-        return $return;
-    }
-
-    /**
-     * @param $telephoneNumber
-     * @return array
-     */
-    protected function _processPhoneNumberBe($telephoneNumber)
-    {
-        $number = $telephoneNumber;
-
-        //the final output must like this: 003212345678 for mobile: 0032461234567
-        //so 13 characters max else number is not valid
-        //but for some error correction we try to find if there is some faulty notation
-
-        $return = array("orginal" => $number, "clean" => false, "mobile" => false, "valid" => false);
-
-        //first strip out the non-numeric characters:
-        $match = preg_replace('/[^0-9]/Uis', '', $number);
-        if ($match) {
-            $number = $match;
-        }
-
-        $return['mobile'] = $this->_isMobileNumberBe($number);
-        $numberLength = strlen((string)$number);
-
-        if (($return['mobile'] && $numberLength == 13) || (!$return['mobile'] && $numberLength == 12)) {
-            //if the length equal to 12 or 13 is, then we can check if the number is valid
-            $return['valid'] = true;
-            $return['clean'] = $number;
-        } elseif ($numberLength > 13 || (!$return['mobile'] && $numberLength > 12)) {
-            //if the number is bigger then 13, it means that there are probably a zero to much
-            $return['clean'] = $this->_isValidNotationBe($number);
-            $cleanLength = strlen((string)$return['clean']);
-
-            if (($return['mobile'] && $cleanLength == 13) || (!$return['mobile'] && $cleanLength == 12)) {
-                $return['valid'] = true;
-            }
-        } elseif (($return['mobile'] && ($numberLength == 11 || $numberLength == 12))
-            || (!$return['mobile'] && ($numberLength == 10 || $numberLength == 11))
-        ) {
-            //if the number is equal to 10, 11 or 12, it means that they used a + in their number instead of 00
-            $return['clean'] = $this->_isValidNotationBe($number);
-            $cleanLength = strlen((string)$return['clean']);
-
-            if (($return['mobile'] && $cleanLength == 13) || (!$return['mobile'] && $cleanLength == 12)) {
-                $return['valid'] = true;
-            }
-        } elseif (($return['mobile'] && $numberLength == 10) || (!$return['mobile'] && $numberLength == 9)) {
-            //this means that the user has no trailing "0032" and therfore only
-            $return['clean'] = '0032'.substr($number, 1);
-            $cleanLength = strlen((string)$return['clean']);
-
-            if (($return['mobile'] && $cleanLength == 13) || (!$return['mobile'] && $cleanLength == 12)) {
-                $return['valid'] = true;
-            }
-        } else {
-            $return['mobile'] = $this->_isMobileNumberBe($number);
-            //now we can almost say that the number is valid
-            $return['valid'] = true;
-            $return['clean'] = $number;
-        }
-
-        return $return;
+        $percent = $taxCalculation->getRate($request);
+        return $percent;
     }
 
     /**
