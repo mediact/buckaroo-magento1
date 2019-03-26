@@ -231,22 +231,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
 
         //add shipping address (only when different from billing address)
         if ($this->isShippingDifferent() || $pakjeGemakAddress) {
-            $shippingInfo = $this->getAddressData($this->_order->getShippingAddress(), $additionalFields, 'ShippingCustomer');
-
-            //Update with pakjeGemak values
-            if ($pakjeGemakAddress) {
-                $streetPakjeGemak = $this->_processAddress($pakjeGemakAddress->getStreetFull());
-
-                $shippingInfo['FirstName']['value']              = 'A';
-                $shippingInfo['LastName']['value']            = 'POSTNL afhaalpunt ' . $pakjeGemakAddress->getCompany();
-                $shippingInfo['Street']['value']                 = $streetPakjeGemak['street'];
-                $shippingInfo['StreetNumber']['value']           = $streetPakjeGemak['house_number'];
-                $shippingInfo['StreetNumberAdditional']['value'] = $streetPakjeGemak['number_addition'];
-                $shippingInfo['PostalCode']['value']             = $pakjeGemakAddress->getPostcode();
-                $shippingInfo['City']['value']                   = $pakjeGemakAddress->getCity();
-                $shippingInfo['Country']['value']                = $pakjeGemakAddress->getCountryId();
-                $shippingInfo['Phone']['value']                  = $pakjeGemakAddress->getTelephone();
-            }
+            $shippingAddress = $this->getShippingAddress($pakjeGemakAddress);
+            $shippingInfo = $this->getAddressData($shippingAddress, $additionalFields, 'ShippingCustomer');
 
             $requestArray = array_merge($requestArray, $shippingInfo);
         }
@@ -304,6 +290,31 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         }
 
         return $addressInfo;
+    }
+
+    /**
+     * @param bool|Mage_Sales_Model_Order_Address $pakjeGemakAddress
+     *
+     * @return Mage_Sales_Model_Order_Address
+     */
+    private function getShippingAddress($pakjeGemakAddress = false)
+    {
+        $shippingAddress = $this->_order->getShippingAddress();
+
+        if (!$pakjeGemakAddress) {
+            return $shippingAddress;
+        }
+
+        //Update with pakjeGemak values
+        $shippingAddress->setFirstname('A');
+        $shippingAddress->setLastname('POSTNL afhaalpunt ' . $pakjeGemakAddress->getCompany());
+        $shippingAddress->setStreetFull($pakjeGemakAddress->getStreetFull());
+        $shippingAddress->setPostcode($pakjeGemakAddress->getPostcode());
+        $shippingAddress->setCity($pakjeGemakAddress->getCity());
+        $shippingAddress->setCountryId($pakjeGemakAddress->getCountryId());
+        $shippingAddress->setTelephone($pakjeGemakAddress->getTelephone());
+
+        return $shippingAddress;
     }
 
     /**
