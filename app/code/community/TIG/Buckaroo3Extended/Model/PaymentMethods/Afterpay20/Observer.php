@@ -71,7 +71,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -96,7 +95,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -117,7 +115,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -138,7 +135,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -171,7 +167,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * TODO
      * @param Varien_Event_Observer $observer
      *
      * @return $this
@@ -188,7 +183,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
 
         $vars = $request->getVars();
 
-        $this->_addCreditmemoArticlesVariables($vars, $payment, $this->_method);
+        $this->addCreditmemoArticlesVariables($vars, $payment);
 
         $request->setVars($vars);
 
@@ -411,7 +406,9 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         $i += count($enterpriseArticles);
         $articles = array_merge($articles, $enterpriseArticles);
 
-        $paymentFeeArticles = $this->getPaymentFeeLine($i);
+        $fee    = (double) $this->_order->getBuckarooFee();
+        $feeTax = (double) $this->_order->getBuckarooFeeTax();
+        $paymentFeeArticles = $this->getPaymentFeeLine($fee, $feeTax, $i);
         if (!empty($paymentFeeArticles)) {
             $articles[] = $paymentFeeArticles;
             $i++;
@@ -422,8 +419,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
             $articles[] = $discountArticle;
             $i++;
         }
-
-        $shippingArticle = $this->getShippingArticle($i);
+        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
+        $shippingArticle = $this->getShippingArticle($shippingCosts, $i);
         if (!empty($shippingArticle)) {
             $articles[] = $shippingArticle;
         }
@@ -490,6 +487,62 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         $article[] = $this->getParameterLine('Identifier', $item->getId(), 'Article', $groupId);
         $article[] = $this->getParameterLine('ImageUrl', $item->getProduct()->getImageUrl(), 'Article', $groupId);
         $article[] = $this->getParameterLine('Url', $item->getProduct()->getProductUrl(), 'Article', $groupId);
+
+        return $article;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @param                                $i
+     *
+     * @return array
+     */
+    private function getCreditmemoProductArticles($payment, $i)
+    {
+        /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
+        $creditmemo = $payment->getCreditmemo();
+        $products = $creditmemo->getAllItems();
+        $max      = 99;
+        $productArticles    = array();
+
+        /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
+        foreach ($products as $item) {
+            if (empty($item) || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
+                continue;
+            }
+
+            $productArticles[] = $this->getSingleCreditmemoProductArticle($item, $i++);
+
+            if ($i > $max) {
+                break;
+            }
+        }
+
+        return $productArticles;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo_Item $item
+     * @param $groupId
+     *
+     * @return array
+     */
+    private function getSingleCreditmemoProductArticle($item, $groupId)
+    {
+        $orderItem = $item->getOrderItem();
+        $description = (int) $item->getQty() . 'x ' . $item->getName();
+        $productPrice = $item->getRowTotalInclTax() - $item->getDiscountAmount();
+        $taxPercent = round($orderItem->getTaxPercent(), 2);
+
+        $article = array();
+        $article[] = $this->getParameterLine('RefundType', 'Return', 'Article', $groupId);
+        $article[] = $this->getParameterLine('Description', $description, 'Article', $groupId);
+        $article[] = $this->getParameterLine('GrossUnitPrice', $productPrice, 'Article', $groupId);
+        $article[] = $this->getParameterLine('VatPercentage', $taxPercent, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
+        $article[] = $this->getParameterLine('Identifier', $item->getOrderItemId(), 'Article', $groupId);
+        $article[] = $this->getParameterLine('ImageUrl', $orderItem->getProduct()->getImageUrl(), 'Article', $groupId);
+        $article[] = $this->getParameterLine('Url', $orderItem->getProduct()->getProductUrl(), 'Article', $groupId);
 
         return $article;
     }
@@ -580,14 +633,14 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * @param $groupId
+     * @param float|double $shippingCosts
+     * @param int $groupId
      *
      * @return array
      */
-    private function getShippingArticle($groupId)
+    private function getShippingArticle($shippingCosts, $groupId)
     {
         $article = array();
-        $shippingCosts = round($this->_order->getBaseShippingInclTax(), 2);
 
         if ($shippingCosts <= 0) {
             return $article;
@@ -608,145 +661,64 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     }
 
     /**
-     * TODO
      * @param $vars
-     * @param $payment
-     *
-     * @throws Mage_Core_Model_Store_Exception
+     * @param Mage_Sales_Model_Order_Payment $payment
      */
-    protected function _addCreditmemoArticlesVariables(&$vars, $payment)
+    protected function addCreditmemoArticlesVariables(&$vars, $payment)
     {
+        $i     = 1;
+        $articles = array();
+
+        $productArticles = $this->getCreditmemoProductArticles($payment, $i);
+        $i += count($productArticles);
+        $articles = array_merge($articles, $productArticles);
+
         /** @var Mage_Sales_Model_Resource_Order_Creditmemo_Collection $creditmemoCollection */
         $creditmemoCollection = $this->_order->getCreditmemosCollection();
 
+        if (count($creditmemoCollection) == 1) {
+            $enterpriseArticles = $this->getEnterpriseArticles($i);
+            $i += count($enterpriseArticles);
+            $articles = array_merge($articles, $enterpriseArticles);
+        }
+
         /** @var Mage_Sales_Model_Order_Creditmemo $creditmemo */
         $creditmemo = $payment->getCreditmemo();
-        $products = $creditmemo->getAllItems();
-        $max      = 99;
-        $i        = 1;
-        $group    = array();
-
-        /** @var Mage_Sales_Model_Order_Creditmemo_Item $item */
-        foreach ($products as $item) {
-            if (empty($item) || ($item->getOrderItem() && $item->getOrderItem()->getParentItem())) {
-                continue;
-            }
-
-            $article['ArticleDescription']['value'] = (int) $item->getQty() . 'x ' . $item->getName();
-            $article['ArticleId']['value']          = $item->getOrderItemId();
-            $article['ArticleQuantity']['value']    = 1;
-            $article['ArticleUnitPrice']['value']   = $item->getRowTotalInclTax() - $item->getDiscountAmount();
-            $article['ArticleVatcategory']['value'] = 0;//$this->_getTaxCategory($this->_getTaxClassId($item->getOrderItem()));
-
-            $group[$i] = $article;
-
-            if ($i <= $max) {
-                $i++;
-                continue;
-            }
-
-            break;
+        $fee    = (double) $creditmemo->getBuckarooFee();
+        $feeTax = (double) $creditmemo->getBuckarooFeeTax();
+        $paymentFeeArticles = $this->getPaymentFeeLine($fee, $feeTax, $i);
+        if (!empty($paymentFeeArticles)) {
+            $paymentFeeArticles[] = $this->getParameterLine('RefundType', 'Refund', 'Article', $i);
+            $articles[] = $paymentFeeArticles;
+            $i++;
         }
 
-        $group = $this->handleEnterprise($group, $creditmemoCollection);
-
-        end($group);// move the internal pointer to the end of the array
-        $key = (int)key($group);
-        $fee = (double) $creditmemo->getBuckarooFee();
-
-        if ($fee > 0) {
-            $feeTax = (double) $creditmemo->getBuckarooFeeTax();
-
-            $feeArticle['ArticleDescription']['value'] = 'Servicekosten';
-            $feeArticle['ArticleId']['value']          = 1;
-            $feeArticle['ArticleQuantity']['value']    = 1;
-            $feeArticle['ArticleUnitPrice']['value']   = round($fee + $feeTax, 2);
-            $feeArticle['ArticleVatcategory']['value'] = 0;//$this->_getTaxCategory(Mage::getStoreConfig('tax/classes/buckaroo_fee', Mage::app()->getStore()->getId()));
-
-            $feeGroupId = $key+1;
-            $group[$feeGroupId] = $feeArticle;
+        $shippingCosts = round($creditmemo->getBaseShippingAmount() + $creditmemo->getBaseShippingTaxAmount(), 2);
+        $shippingArticle = $this->getShippingArticle($shippingCosts, $i);
+        if (!empty($shippingArticle)) {
+            $shippingArticle[] = $this->getParameterLine('RefundType', 'Refund', 'Article', $i);
+            $articles[] = $shippingArticle;
         }
 
-        $requestArray = array('Articles' => $group);
+        $requestArray = array('Articles' => $articles);
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
             $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $requestArray);
         } else {
             $vars['customVars'][$this->_method] = $requestArray;
         }
-
-        $shippingCosts = round($creditmemo->getBaseShippingAmount() + $creditmemo->getBaseShippingTaxAmount(), 2);
-
-        if ($shippingCosts > 0) {
-            $shippingInfo = array(
-                'ShippingCosts' => $shippingCosts,
-            );
-
-            if (array_key_exists('customVars', $vars) && is_array($vars['customVars'][$this->_method])) {
-                $vars['customVars'][$this->_method] = array_merge($vars['customVars'][$this->_method], $shippingInfo);
-            } else {
-                $vars['customVars'][$this->_method] = $shippingInfo;
-            }
-        }
     }
 
     /**
-     * TODO
-     * @param $group
-     * @param $creditmemoCollection
-     *
-     * @return array
-     */
-    protected function handleEnterprise($group, $creditmemoCollection)
-    {
-        $helper = $this->getHelper();
-
-        if ($helper->isEnterprise() && count($creditmemoCollection) == 1) {
-            $gwId = 1;
-            $gwTax = Mage::helper('enterprise_giftwrapping')->getWrappingTaxClass($this->_order->getStoreId());
-
-            if ($this->_order->getGwBasePrice() > 0) {
-                $gwPrice = $this->_order->getGwBasePrice() + $this->_order->getGwBaseTaxAmount();
-
-                $gwOrder = array();
-                $gwOrder['ArticleDescription']['value'] = $helper->__('Gift Wrapping for Order');
-                $gwOrder['ArticleId']['value'] = 'gwo_' . $this->_order->getGwId();
-                $gwOrder['ArticleQuantity']['value'] = 1;
-                $gwOrder['ArticleUnitPrice']['value'] = $gwPrice;
-                $gwOrder['ArticleVatcategory']['value'] = $gwTax;
-
-                $group[] = $gwOrder;
-
-                $gwId += $this->_order->getGwId();
-            }
-
-            if ($this->_order->getGwItemsBasePrice() > 0) {
-                $gwiPrice = $this->_order->getGwItemsBasePrice() + $this->_order->getGwItemsBaseTaxAmount();
-
-                $gwiOrder = array();
-                $gwiOrder['ArticleDescription']['value'] = $helper->__('Gift Wrapping for Items');
-                $gwiOrder['ArticleId']['value'] = 'gwi_' . $gwId;
-                $gwiOrder['ArticleQuantity']['value'] = 1;
-                $gwiOrder['ArticleUnitPrice']['value'] = $gwiPrice;
-                $gwiOrder['ArticleVatcategory']['value'] = $gwTax;
-
-                $group[] = $gwiOrder;
-            }
-        }
-
-        return $group;
-    }
-
-    /**
+     * @param double $fee
+     * @param double $feeTax
      * @param $groupId
      *
      * @return array
      */
-    private function getPaymentFeeLine($groupId)
+    private function getPaymentFeeLine($fee, $feeTax, $groupId)
     {
         $article = array();
-        $fee    = (double) $this->_order->getBuckarooFee();
-        $feeTax = (double) $this->_order->getBuckarooFeeTax();
 
         if ($fee <= 0) {
             return $article;
