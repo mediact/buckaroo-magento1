@@ -271,35 +271,33 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
-     * @param string $fullStreet
-     *
+     * @param $street
      * @return array
      */
-    protected function _processAddress($fullStreet)
+    protected function _processAddress($street)
     {
-        //get address from billingInfo
-        $address = $fullStreet;
+        $format = [
+            'house_number'    => '',
+            'number_addition' => '',
+            'street'          => $street
+        ];
 
-        $ret = array();
-        $ret['house_number'] = '';
-        $ret['number_addition'] = '';
-        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $street, $matches)) {
+            // Check if the number is at the beginning of streetname
             if ('' == $matches[1]) {
-                // Number at beginning
-                $ret['house_number'] = trim($matches[2]);
-                $ret['street']         = trim($matches[3]);
+                preg_match('#^([0-9]+)(.*?)([0-9]+)(.*)#s', $street, $matches);
+                $format['house_number'] = trim($matches[3]);
+                $format['street'] = trim($matches[1]) . trim($matches[2]);
             } else {
-                // Number at end
-                $ret['street']            = trim($matches[1]);
-                $ret['house_number']    = trim($matches[2]);
-                $ret['number_addition'] = trim($matches[3]);
+                $format['street']          = trim($matches[1]);
+                $format['house_number']    = trim($matches[2]);
+                $format['number_addition'] = trim($matches[3]);
             }
         } else {
-            // No number
-            $ret['street'] = $address;
+            $format['street'] = $street;
         }
 
-        return $ret;
+        return $format;
     }
 
     /**
