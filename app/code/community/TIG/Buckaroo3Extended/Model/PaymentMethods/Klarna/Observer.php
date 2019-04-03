@@ -702,7 +702,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
 
         $addressType    = ucfirst($address->getAddressType());
         $street         = $address['street'];
-        $streetFull     = $this->formatStreet($street);
+        $streetFull     = $this->processAddress($street);
 
         $rawPhoneNumber = $address->getTelephone();
         if (!is_numeric($rawPhoneNumber) || $rawPhoneNumber == '-') {
@@ -735,7 +735,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
      *
      * @return array
      */
-    public function formatStreet($street)
+    public function processAddress($street)
     {
         $format = [
             'house_number'    => '',
