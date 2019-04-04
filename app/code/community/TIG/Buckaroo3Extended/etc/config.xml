@@ -419,6 +419,11 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_refund_request_setmethod>
             <buckaroo3extended_refund_request_addservices>
@@ -568,6 +573,11 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_refund_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_refund_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_refund_request_addservices>
             <buckaroo3extended_refund_request_addcustomvars>
@@ -717,6 +727,11 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_refund_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_refund_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_refund_request_addcustomvars>
             <buckaroo3extended_refund_response_custom_processing>
@@ -929,6 +944,11 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_request_addservices</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_request_addservices</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_request_addservices>
             <buckaroo3extended_request_addcustomvars>
@@ -1108,6 +1128,11 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_request_addcustomvars</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_request_addcustomvars</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_request_addcustomvars>
             <buckaroo3extended_request_setmethod>
@@ -1287,6 +1312,11 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_request_setmethod</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_request_setmethod>
             <buckaroo3extended_push_custom_processing>
@@ -1381,6 +1411,13 @@
                         <method>buckaroo3extended_return_custom_processing</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
                 </observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_return_custom_processing</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
+                </observers>
             </buckaroo3extended_return_custom_processing>
             <buckaroo3extended_push_custom_processing_after>
                 <observers>
@@ -1424,6 +1461,13 @@
                         <class>buckaroo3extended/paymentMethods_dankort_observer</class>
                         <method>buckaroo3extended_push_custom_processing_after</method>
                     </buckaroo3extended_paymentmethod_observer_dankort>
+                </observers>
+                <observers>
+                    <buckaroo3extended_paymentmethod_observer_creditcard>
+                        <type>Singleton</type>
+                        <class>buckaroo3extended/paymentMethods_creditcard_observer</class>
+                        <method>buckaroo3extended_push_custom_processing_after</method>
+                    </buckaroo3extended_paymentmethod_observer_creditcard>
                 </observers>
             </buckaroo3extended_push_custom_processing_after>
             <buckaroo3extended_response_custom_processing>
@@ -1774,6 +1818,13 @@
                 <sort_order>270</sort_order>
                 <group>buckaroo3extended</group>
             </buckaroo3extended_dankort>
+            <buckaroo3extended_creditcard>
+                <active>1</active>
+                <model>buckaroo3extended/paymentMethods_creditcard_paymentMethod</model>
+                <title>Creditcard</title>
+                <sort_order>290</sort_order>
+                <group>buckaroo3extended</group>
+            </buckaroo3extended_creditcard>
             <buckaroo2012ideal>
                 <active>0</active>
                 <model>buckaroo3extended/oldPaymentMethods_oldPaymentMethod</model>
@@ -2478,6 +2529,21 @@
                 <allowed_currencies>EUR</allowed_currencies>
                 <limit_by_ip>0</limit_by_ip>
             </buckaroo3extended_dankort>
+
+            <buckaroo3extended_creditcard>
+                <active>0</active>
+                <mode>0</mode>
+                <title>Creditcard</title>
+                <sort_order>300</sort_order>
+                <order_email>1</order_email>
+                <payment_fee_label>Fee</payment_fee_label>
+                <order_status_success></order_status_success>
+                <order_status_failed></order_status_failed>
+                <allowspecific>0</allowspecific>
+                <specificcountry></specificcountry>
+                <allowed_currencies>EUR</allowed_currencies>
+                <limit_by_ip>0</limit_by_ip>
+            </buckaroo3extended_creditcard>
         </buckaroo>
         <tax>
             <calculation>

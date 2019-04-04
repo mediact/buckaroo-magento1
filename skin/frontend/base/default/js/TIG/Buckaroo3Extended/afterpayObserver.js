@@ -70,3 +70,27 @@ document.observe(
     }
 );
 
+function getEncryptedData() {
+    var cardNumber = jQuery_1123("#cardNumber").val();
+    var cvc = jQuery_1123("#cvc").val();
+    var cardHolderName = jQuery_1123("#cardHolderName").val();
+    var expirationYear = jQuery_1123("#expirationYear").val();
+    var expirationMonth = jQuery_1123("#expirationMonth").val();
+    var cardNumberValid = BuckarooClientSideEncryption.V001.validateCardNumber(cardNumber);
+    var cvcValid = BuckarooClientSideEncryption.V001.validateCvc(cvc);
+    var cardHolderNameValid = BuckarooClientSideEncryption.V001.validateCardholderName(cardHolderName);
+    var expirationYearValid = BuckarooClientSideEncryption.V001.validateYear(expirationYear);
+    var expirationMonthValid = BuckarooClientSideEncryption.V001.validateMonth(expirationMonth);
+    debugger;
+    if (cardNumberValid && cvcValid && cardHolderNameValid && expirationYearValid && expirationMonthValid) {
+        BuckarooClientSideEncryption.V001.encryptCardData(cardNumber,
+            expirationYear,
+            expirationMonth,
+            cvc,
+            cardHolderName,
+            function(encryptedCardData) {
+                console.log(encryptedCardData);
+            });
+    }
+}
+

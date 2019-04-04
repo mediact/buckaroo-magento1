@@ -42,6 +42,13 @@
                 <type>skin_js</type>
                 <name>js/TIG/Buckaroo3Extended/afterpayObserver.js</name>
             </action>
+            <block type="core/text" name="buckaroo">
+                <action method="setText">
+                    <text>
+                        <![CDATA[<script type="text/javascript" src="https://static.buckaroo.nl/script/ClientSideEncryption001.js"></script>]]>
+                    </text>
+                </action>
+            </block>
 		</reference>
 		<reference name="before_body_end">
 			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
@@ -63,6 +70,13 @@
                 <type>skin_js</type>
                 <name>js/TIG/Buckaroo3Extended/afterpayObserver.js</name>
             </action>
+            <block type="core/text" name="buckaroo">
+                <action method="setText">
+                    <text>
+                        <![CDATA[<script type="text/javascript" src="https://static.buckaroo.nl/script/ClientSideEncryption001.js"></script>]]>
+                    </text>
+                </action>
+            </block>
 		</reference>
 		<reference name="before_body_end">
 			<block type="core/template" name="buckaroo_save_sata_js" template="buckaroo3extended/saveData.phtml"/>
