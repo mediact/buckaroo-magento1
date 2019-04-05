@@ -275,10 +275,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         $addressInfo[] = $this->getParameterLine('Email', $address->getEmail(), $addressType);
         $addressInfo[] = $this->getParameterLine('ConversationLanguage', $address->getCountryId(), $addressType);
 
+
         //TODO: Enable when finnish id number is implemented
-//        if ($additionalFields['identification_number']) {
-//            $addressInfo[] = $this->getParameterLine('IdentificationNumber', $additionalFields['identification_number'], $addressType);
-//        }
+        if ($additionalFields['identification_number']) {
+            $addressInfo[] = $this->getParameterLine('IdentificationNumber', $additionalFields['identification_number'], $addressType);
+        }
 
         if ($this->_order->getCustomerId()) {
             $addressInfo[] = $this->getParameterLine('CustomerNumber', $this->_order->getCustomerId(), $addressType);

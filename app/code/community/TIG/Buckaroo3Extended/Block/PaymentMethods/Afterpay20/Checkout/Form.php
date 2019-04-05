@@ -77,4 +77,49 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay20_Checkout_Form
 
         return $url;
     }
+
+
+    /**
+     * @param string $countryFormatAfterpay
+     * @return string
+     */
+    public function getAcceptanceUrl($countryFormatAfterpay = '')
+    {
+        if (!$countryFormatAfterpay) {
+            $billingCountry = $this->getBillingCountry();
+
+            switch ($billingCountry) {
+                case 'DE' :
+                    $countryFormatAfterpay = 'de_de';
+                    break;
+                case 'AT' :
+                    $countryFormatAfterpay = 'de_at';
+                    break;
+                case 'NL' :
+                    $countryFormatAfterpay = 'nl_nl';
+                    break;
+                case 'BE' :
+                    $countryFormatAfterpay = 'nl_be';
+                    break;
+                case 'FI' :
+                    $countryFormatAfterpay = 'fi_fi';
+                    break;
+                default:
+                    $countryFormatAfterpay = 'en_nl';
+                    break;
+            }
+        }
+
+        $url = "https://documents.myafterpay.com/consumer-terms-conditions/" . $countryFormatAfterpay . "/";
+
+        return $url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAcceptanceUrlFrance($code = '')
+    {
+
+    }
 }
