@@ -149,12 +149,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_PaymentMethod
     public function getRejectedMessage($responseData)
     {
         // @codingStandardsIgnoreLine
-        if (!isset($responseData->ConsumerMessage->HtmlText)) {
+        if (!isset($responseData->Status->SubCode->_)) {
             return false;
         }
 
         // @codingStandardsIgnoreLine
-        $rejectedMessage = $responseData->ConsumerMessage->HtmlText;
+        $rejectedMessage = $responseData->Status->SubCode->_;
 
         if (!$rejectedMessage) {
             return false;
