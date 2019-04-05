@@ -67,6 +67,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_PaymentMethod
             'BPE_Customergender'    => $post[$this->_code . '_BPE_Customergender'],
             'BPE_PhoneNumber'       => $post[$this->_code . '_bpe_customer_phone_number'],
             'BPE_customerbirthdate' => $customerBirthDate,
+            'identification_number' => $post[$this->_code . '_bpe_customer_idnumber'],
             'BPE_Accept'            => 'true',
         );
 
