@@ -22,7 +22,7 @@
                         <label for="expirationMonth">Expiration Month:</label><br />
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="cardNumber" id="cardNumber" value="5386860000000000" /><br />
+                        <input type="text" name="cardNumber" id="cardNumber" value="5386860000000000" onkeyup="checkCardType(this)" /><br />
                         <input type="text" name="cvc" id="cvc" value="123" /><br />
                         <input type="text" name="cardHolderName" id="cardHolderName" value="John Williams" /><br />
                         <input type="number" name="expirationYear" id="expirationYear" min="2018" max="2028" value="2020" /><br />
