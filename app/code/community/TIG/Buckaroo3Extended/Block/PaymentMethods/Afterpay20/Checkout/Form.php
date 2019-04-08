@@ -39,47 +39,6 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay20_Checkout_Form
     }
 
     /**
-     * @return string
-     */
-    public function getTosUrl()
-    {
-        $url = $this->getDigiacceptUrl();
-
-        return $url;
-    }
-
-    /**
-     * @return string
-     */
-    public function getB2CUrl()
-    {
-        $billingCountry = $this->getBillingCountry();
-
-        switch ($billingCountry) {
-            case 'BE':
-                $url = 'https://www.afterpay.be/be/footer/betalen-met-afterpay/betalingsvoorwaarden';
-                break;
-            case 'NL':
-            default:
-                $url = 'https://www.afterpay.nl/nl/algemeen/betalen-met-afterpay/betalingsvoorwaarden';
-                break;
-        }
-
-        return $url;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getDigiacceptUrl()
-    {
-        $url = $this->getB2CUrl();
-
-        return $url;
-    }
-
-
-    /**
      * @param string $countryFormatAfterpay
      * @return string
      */
@@ -113,13 +72,5 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay20_Checkout_Form
         $url = "https://documents.myafterpay.com/consumer-terms-conditions/" . $countryFormatAfterpay . "/";
 
         return $url;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAcceptanceUrlFrance($code = '')
-    {
-
     }
 }
