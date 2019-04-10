@@ -9,11 +9,9 @@ function getEncryptedData() {
     var cardHolderNameValid = BuckarooClientSideEncryption.V001.validateCardholderName(cardHolderName);
     var expirationYearValid = BuckarooClientSideEncryption.V001.validateYear(expirationYear);
     var expirationMonthValid = BuckarooClientSideEncryption.V001.validateMonth(expirationMonth);
-    debugger;
     if (!cardNumberValid || !cvcValid || !cardHolderNameValid || !expirationYearValid || !expirationMonthValid) {
         return;
     }
-    console.log('2');
     BuckarooClientSideEncryption.V001.encryptCardData(cardNumber,
         expirationYear,
         expirationMonth,
@@ -22,7 +20,6 @@ function getEncryptedData() {
         function (encryptedCardData) {
             jQuery_1123("#buckaroo3extended_creditcard_encryptedCardData").val(encryptedCardData)
         });
-    console.log('3');
 }
 
 function checkCardType(cardNumberElement) {
@@ -125,7 +122,6 @@ function checkCardType(cardNumberElement) {
     for (var key in matches) {
         if (creditcardNumber.match(matches[key].regex)) {
                 jQuery_1123("#buckaroo3extended_creditcard_method").val(key)
-
         }
     }
 }
