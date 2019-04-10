@@ -32,7 +32,8 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     protected $_code = 'buckaroo3extended_creditcard';
-    protected $_method = 'creditcard';
+    protected $_method = '';
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -43,22 +44,27 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+        $_method = $this->getMethod();
         $request = $observer->getRequest();
         $vars = $request->getVars();
+
         $array = array(
-            $this->_method => array(
-                'action'  => 'Pay',
-                'version' => 1
+            $_method => array(
+                'action'  => 'PayEncrypted',
+                'version' => 0
             )
         );
+
         if (array_key_exists('services', $vars) && is_array($vars['services'])) {
             $vars['services'] = array_merge($vars['services'], $array);
         } else {
             $vars['services'] = $array;
         }
+
         $request->setVars($vars);
         return $this;
     }
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -69,11 +75,56 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
         $request            = $observer->getRequest();
+        $vars = $request->getVars();
+
         $this->_billingInfo = $request->getBillingInfo();
         $this->_order       = $request->getOrder();
+
+        $encryptedData = $this->getEncryptedData();
+        $_method = $this->getMethod();
+
+        $array = array(
+            'EncryptedCardData' => $encryptedData,
+        );
+
+        if (array_key_exists('customVars', $vars) && array_key_exists($_method, $vars['customVars']) && is_array($vars['customVars'][$_method])) {
+            $vars['customVars'][$_method] = array_merge($vars['customVars'][$_method], $array);
+        } else {
+            $vars['customVars'][$_method] = $array;
+        }
+
+        $request->setVars($vars);
+
         return $this;
     }
+
+    protected function getEncryptedData()
+    {
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+
+        $encryptedCardData = $additionalFields['encryptedCardData'];
+
+        return $encryptedCardData;
+    }
+
+    public function setMethod()
+    {
+        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+
+        $this->_method = $additionalFields['method'];
+    }
+
+    public function getMethod()
+    {
+        if (!$this->_method) {
+            $this->setMethod();
+        }
+
+        return $this->_method;
+    }
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -84,12 +135,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
         $request = $observer->getRequest();
+
         $codeBits = explode('_', $this->_code);
         $code = end($codeBits);
+
         $request->setMethod($code);
+
         return $this;
     }
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -100,20 +156,27 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
         $refundRequest = $observer->getRequest();
+
         $vars = $refundRequest->getVars();
+
         $array = array(
             'action'  => 'Refund',
             'version' => 1
         );
+
         if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
             $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
         } else {
             $vars['services'][$this->_method] = $array;
         }
+
         $refundRequest->setVars($vars);
+
         return $this;
     }
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -123,6 +186,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
     {
         return $this;
     }
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -133,13 +197,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
         $response = $observer->getPostArray();
+
         $order = $observer->getOrder();
         $enrolled = false;
         $authenticated = false;
+
         if (isset($response['brq_SERVICE_creditcard_Enrolled']) && isset($response['brq_SERVICE_creditcard_Authentication'])) {
             $enrolled = $response['brq_SERVICE_creditcard_Enrolled'];
             $enrolled = ($enrolled == 'Y') ? true : false;
+
             /**
              * The status selected below determines how the payment or authorize is processed.
              * Attempt (A) and Yes (Y) will lead to a successful transaction/payment.
@@ -148,12 +216,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
             $authenticated = $response['brq_SERVICE_creditcard_Authentication'];
             $authenticated = ($authenticated == 'Y' || $authenticated == 'A') ? true : false;
         }
+
         $order->setBuckarooSecureEnrolled($enrolled)->setBuckarooSecureAuthenticated($authenticated)->save();
         if ($order->getTransactionKey()) {
             $this->_updateSecureStatus($enrolled, $authenticated, $order);
         }
+
         return $this;
     }
+
     /**
      * @param Varien_Event_Observer $observer
      *
@@ -164,13 +235,17 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         if ($this->_isChosenMethod($observer) === false) {
             return $this;
         }
+
         $order = $observer->getOrder();
         $enrolled = $order->getBuckarooSecureEnrolled();
         $authenticated = $order->getBuckarooSecureAuthenticated();
+
         if (is_null($enrolled) || is_null($authenticated)) {
             return $this;
         }
+
         $this->_updateSecureStatus($enrolled, $authenticated, $order);
+
         return $this;
     }
 }

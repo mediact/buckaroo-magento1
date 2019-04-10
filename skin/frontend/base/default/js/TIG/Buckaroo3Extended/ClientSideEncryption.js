@@ -9,17 +9,20 @@ function getEncryptedData() {
     var cardHolderNameValid = BuckarooClientSideEncryption.V001.validateCardholderName(cardHolderName);
     var expirationYearValid = BuckarooClientSideEncryption.V001.validateYear(expirationYear);
     var expirationMonthValid = BuckarooClientSideEncryption.V001.validateMonth(expirationMonth);
-
-    if (cardNumberValid && cvcValid && cardHolderNameValid && expirationYearValid && expirationMonthValid) {
-        BuckarooClientSideEncryption.V001.encryptCardData(cardNumber,
-            expirationYear,
-            expirationMonth,
-            cvc,
-            cardHolderName,
-            function(encryptedCardData) {
-                console.log(encryptedCardData);
-            });
+    debugger;
+    if (!cardNumberValid || !cvcValid || !cardHolderNameValid || !expirationYearValid || !expirationMonthValid) {
+        return;
     }
+    console.log('2');
+    BuckarooClientSideEncryption.V001.encryptCardData(cardNumber,
+        expirationYear,
+        expirationMonth,
+        cvc,
+        cardHolderName,
+        function (encryptedCardData) {
+            jQuery_1123("#buckaroo3extended_creditcard_encryptedCardData").val(encryptedCardData)
+        });
+    console.log('3');
 }
 
 function checkCardType(cardNumberElement) {
@@ -121,9 +124,8 @@ function checkCardType(cardNumberElement) {
     var creditcardNumber = cardNumberElement.value;
     for (var key in matches) {
         if (creditcardNumber.match(matches[key].regex)) {
-            console.log(key);
-            console.log(matches[key].logo);
+                jQuery_1123("#buckaroo3extended_creditcard_method").val(key)
+
         }
     }
 }
-
