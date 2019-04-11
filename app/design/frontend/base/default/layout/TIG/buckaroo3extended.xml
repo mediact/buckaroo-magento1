@@ -74,6 +74,10 @@
                 <type>skin_js</type>
                 <name>js/TIG/Buckaroo3Extended/afterpayObserver.js</name>
             </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/TIG/Buckaroo3Extended/ClientSideEncryption.js</name>
+            </action>
             <block type="core/text" name="buckaroo">
                 <action method="setText">
                     <text>

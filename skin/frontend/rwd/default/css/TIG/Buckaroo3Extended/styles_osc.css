@@ -95,3 +95,198 @@
  #payment_form_ccsave a.cvv-what-is-this{
     margin-left: 0 !important;
 }
+
+/* Credit Card - Default ============================================================================================ */
+
+.card.blank .expirationMonth_container,
+.card.blank .cardHolderName_container,
+.card.blank .card_back,
+.card.blank .card_kind {
+    margin: 10px 0;
+}
+
+.card.blank .select_wrapper select {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Credit Card - Styled ============================================================================================= */
+
+.card.styled {
+    font-family: "Courier New", "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    max-width: 320px;
+    height: auto;
+
+    margin-left: -10px;
+    margin-right: -40px;
+    width: 100%; /* IE backup */
+    width: calc(100% + 40px);
+}
+
+.card.styled label {
+    font-family: "Courier New", "Helvetica Neue", Verdana, Arial, sans-serif;
+    float:left !important;
+    margin-bottom: 0 !important;
+    display :inline;
+    line-height: 16px;
+    font-weight: normal;
+}
+
+.card.styled input[type="text"]{
+    height: 35px;
+    border: 1px solid #d1d1d1;
+    margin-left: 10px;
+    padding: 0 10px;
+    background: white;
+}
+
+/* Credit Card Front */
+
+.card.styled .card_front {
+    background: #e2e2e2;
+    float:left;
+    max-width: 320px;
+    width: 100%;
+    height: 200px;
+    padding: 20px;
+    border-radius:8px;
+    z-index: 20;
+    position: relative;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.card.styled .card_front .cardNumber_container,
+.card.styled .card_front .expirationMonth_container,
+.card.styled .card_front .cardHolderName_container {
+    float:left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.card.styled .card_front .cardNumber_container label {
+    width: 100%;
+    float: left;
+}
+
+.card.styled .card_front .cardNumber_container input {
+    width: 100%;
+    float: left;
+    margin: 0;
+}
+
+.card.styled .card_front .expirationMonth_container label {
+    width: 100%;
+    float: left !important;
+}
+
+.card.styled .card_front .expirationMonth_container input {
+    float: left;
+    width: 45% !important; /* IE backup */
+    width: calc(50% - 10px) !important;
+}
+
+.card.styled .card_front .expirationMonth_container .select_wrapper {
+    position: relative;
+    float: left;
+    width: 50%;
+    cursor: pointer;
+}
+
+.card.styled .card_front .expirationMonth_container .select_wrapper:after {
+    content: '\203A';
+    transform: rotate(90deg);
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top: -5px;
+    pointer-events: none;
+}
+
+#onestepcheckout-form .card.styled .card_front .expirationMonth_container select {
+    float:left;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: white;
+    height: 35px;
+    padding: 0 25px 0 7px;
+    border-radius: 3px;
+    border: 1px solid #d1d1d1;
+    margin-top: 0;
+    width: 100% !important;
+    background-image: none !important;
+}
+
+.card.styled .card_front .cardHolderName_container {
+    margin: 5px 0 0 0;
+}
+
+.card.styled .card_front .cardHolderName_container label {
+    max-width: 30%;
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card.styled .card_front .cardHolderName_container input {
+    max-width: 70%;
+    width: 100%;
+    float: left;
+    margin: 0;
+}
+
+/* Credit Card Back */
+
+.card.styled .card_back {
+    background: #e2e2e2;
+    float:left;
+    max-width: 320px;
+    width: 100%;
+    height: 200px;
+    z-index: 10;
+    position: relative;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
+    clear: both;
+    border-radius: 8px;
+    margin: 10px 0 0 0;
+}
+
+.card.styled .card_back .magnet_stripe {
+    height: 50px;
+    width: 100%;
+    background: black;
+    margin:20px 0;
+}
+
+.card.styled .card_back .card_security {
+    padding: 5px 0 5px 20px;
+    background: #f5f5f5;
+    float: left;
+    width: 100%;
+    background-image: linear-gradient(transparent 50%, rgba(179, 206, 239, 0.2) 50%);
+    background-size: 7px 4px;
+}
+
+.card.styled .card_back .card_security label {
+    max-width: 30%;
+    width: 100%;
+    float:left !important;
+    padding-top: 4px;
+}
+
+.card.styled .card_back .card_security input {
+    max-width: 40%;
+    width: 100%;
+    float: left;
+    text-align: center;
+    border-color: #e8ecf3;
+}
+
+.card.styled .card_back .card_kind {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    text-align: right;
+}

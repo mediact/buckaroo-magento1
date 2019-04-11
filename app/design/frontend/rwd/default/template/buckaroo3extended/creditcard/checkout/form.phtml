@@ -4,296 +4,64 @@
 <ul id="payment_form_<?php echo $code ?>" style="display:none;"
     class="buckaroo3extended_input form-list buckaroo-method">
     <form id="cseTestForm">
-<div class="card osc">
-    <div class="card_front">
-        <div class="cardNumber_container">
-            <label for="cardNumber">Card number</label>
-            <input id="cardNumber" type="text" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX" onblur="checkCardType(this)" />
-        </div>
 
-        <div class="expirationMonth_container">
-            <label for="expirationMonth">Expiration</label>
-            <div class="select_wrapper">
-                <select id="expirationMonth" type="text" name="expirationMonth">
-                    <option value="0">Select a month</option>
-                    <option value="1">January</option>
-                    <option value="2">February</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">Augustus</option>
-                    <option value="9">September</option>
-                    <option value="10">Oktober</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                </select>
+        <div class="card blank">
+            <div class="card_front">
+                <div class="cardNumber_container">
+                    <label for="cardNumber"><?php echo $this->__('Card number'); ?></label>
+                    <input id="cardNumber" type="tel" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX" onblur="checkCardType(this)" />
+                </div>
+
+                <div class="expirationMonth_container">
+                    <label for="expirationMonth"><?php echo $this->__('Expiration');?></label>
+                    <div class="select_wrapper">
+                        <select id="expirationMonth" type="text" name="expirationMonth">
+                            <option value="0"><?php echo  $this->__('Select a month'); ?></option>
+                            <option value="1"><?php echo  $this->__('January');   ?></option>
+                            <option value="2"><?php echo  $this->__('February');  ?></option>
+                            <option value="3"><?php echo  $this->__('March');     ?></option>
+                            <option value="4"><?php echo  $this->__('April');     ?></option>
+                            <option value="5"><?php echo  $this->__('May');       ?></option>
+                            <option value="6"><?php echo  $this->__('June');      ?></option>
+                            <option value="7"><?php echo  $this->__('July');      ?></option>
+                            <option value="8"><?php echo  $this->__('August');    ?></option>
+                            <option value="9"><?php echo  $this->__('September'); ?></option>
+                            <option value="10"><?php echo $this->__('October');   ?></option>
+                            <option value="11"><?php echo $this->__('November');  ?></option>
+                            <option value="12"><?php echo $this->__('December');  ?></option>
+                        </select>
+                    </div>
+
+                    <input id="expirationYear" type="text" name="expirationYear" placeholder="<?php echo $this->__('Year: XXXX');?>"/>
+                </div>
+
+                <div class="cardHolderName_container">
+                    <label for="cardHolderName"><?php echo $this->__('Name cardholder');?></label>
+                    <input id="cardHolderName" type="text" name="cardHolderName" placeholder="<?php echo $this->__('Name');?>"/>
+                </div>
             </div>
 
-            <input id="expirationYear" type="text" name="expirationYear" placeholder="Year: XXXX"/>
+            <div class="card_back">
+                <div class="magnet_stripe"></div>
+                <div class="card_security">
+                    <label for="cvc"><?php echo $this->__('Security code');?></label>
+                    <input id="cvc" type="text" name="cvc" placeholder="XXX"/>
+                </div>
+                <div class="card_kind">
+                    <img class="creditcard-logo" alt="Credit Card type" height="25" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
+                </div>
+                <input type="hidden" name="buckaroo3extended_creditcard_encryptedCardData" id="buckaroo3extended_creditcard_encryptedCardData"/>
+                <input type="hidden" name="buckaroo3extended_creditcard_method" id="buckaroo3extended_creditcard_method"/>
+            </div>
         </div>
-
-        <div class="cardHolderName_container">
-            <label for="cardHolderName">Name cardholder</label>
-            <input id="cardHolderName" type="text" name="cardHolderName" placeholder="Name"/>
-        </div>
-    </div>
-
-    <div class="card_back">
-        <div class="shadow"></div>
-        <div class="magnet_stripe"></div>
-        <div class="card_security">
-            <label for="cvc">Security code</label>
-            <input id="cvc" type="text" name="cvc" placeholder="XXX"/>
-        </div>
-        <div class="card_kind">
-            <img src="creditcard_mastercard.png" alt="Credit Card type" height="25" />
-        </div>
-        <input type="hidden" name="buckaroo3extended_creditcard_encryptedCardData" id="buckaroo3extended_creditcard_encryptedCardData"/>
-        <input type="hidden" name="buckaroo3extended_creditcard_method" id="buckaroo3extended_creditcard_method"/>
-        <button type="button" class="submit btn btn-primary" style="float: left" onClick="getEncryptedData()">SUBMIT</button>
-    </div>
-
-</div>
+        <button type="button" class="submit btn btn-primary" style="float: left; clear: both; margin: 20px 0;padding: 10px;background: #3399cc;color: white;border: none;" onClick="getEncryptedData()">SUBMIT</button>
     </form>
-
-<style>
-
-    * {
-        box-sizing: border-box;
-    }
-
-
-    /* Credit Card - One Page Checkout - Default styling =========================================================== */
-
-    .card {
-        font-family: "Courier New", "Helvetica Neue", Verdana, Arial, sans-serif;
-        height: 200px;
-        overflow: hidden;
-        width: 490px;
-        font-size: 14px;
-        text-transform: uppercase;
-    }
-
-    .card input[type="text"]{
-        height: 35px;
-        border: 1px solid #d1d1d1;
-        margin-left: 10px;
-        padding: 0 7px;
-        background: white;
-    }
-
-    /* Credit Card Front */
-
-    .card .card_front {
-        background: #e2e2e2;
-        float:left;
-        width: 320px;
-        height: 200px;
-        padding: 20px;
-        border-radius:8px;
-        z-index: 20;
-        position: relative;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .card .card_front .cardNumber_container,
-    .card .card_front .expirationMonth_container,
-    .card .card_front .cardHolderName_container {
-        float:left;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .card .card_front .cardNumber_container label {
-        width: 100%;
-        float: left;
-    }
-
-    .card .card_front .cardNumber_container input {
-        width: 100%;
-        float: left;
-        margin: 0;
-    }
-
-    .card .card_front .expirationMonth_container label {
-        width: 100%;
-        float: left;
-    }
-
-    .card .card_front .expirationMonth_container input {
-        width: 100%;
-        float: left;
-        width: 135px;
-    }
-
-    .card .card_front .expirationMonth_container .select_wrapper {
-        position: relative;
-        float: left;
-    }
-
-    .card .card_front .expirationMonth_container .select_wrapper:after {
-        content: '\203A';
-        transform: rotate(90deg);
-        padding: 10px;
-        position: absolute;
-        right: 0px;
-        top: -2px;
-        pointer-events: none;
-    }
-
-    .card .card_front .expirationMonth_container select {
-        float:left;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background: white;
-        height: 35px;
-        padding: 0 25px 0 7px;
-        border-radius: 3px;
-        width: 135px;
-        border: 1px solid #d1d1d1;
-    }
-
-    .card .card_front .cardHolderName_container {
-        margin: 5px 0 0 0;
-    }
-
-    .card .card_front .cardHolderName_container label {
-        width: 100px;
-        float: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .card .card_front .cardHolderName_container input {
-        float: left;
-        width: 170px;
-    }
-
-    /* Credit Card Back */
-
-    .card .card_back {
-        background: #e2e2e2;
-        float:left;
-        width: 180px;
-        height: 200px;
-        border-radius: 0 8px 8px 0;
-        margin-left: -10px;
-        z-index: 10;
-        position: relative;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .card .shadow {
-        position: absolute;
-        top: 0;
-        height: 200px;
-        left: -20px;
-        pointer-events: none;
-        box-shadow: 20px 0px 30px rgba(0, 0, 0, 0.35);
-        width: 20px;
-    }
-
-    .card .card_back .magnet_stripe {
-        height: 50px;
-        width: 100%;
-        background: black;
-        margin:20px 0;
-    }
-
-    .card .card_back .card_security {
-        padding: 5px 0 5px 30px;
-        background: #f5f5f5;
-        float: left;
-        width: 100%;
-        background-image: linear-gradient(transparent 50%, rgba(179, 206, 239, 0.2) 50%);
-        background-size: 7px 4px;
-    }
-
-    .card .card_back .card_security label {
-        width: 70px;
-        float:left;
-        padding-top: 2px;
-    }
-
-    .card .card_back .card_security input {
-        width: 50px;
-        float: left;
-        text-align: center;
-        border-color: #e8ecf3;
-    }
-
-    .card .card_back .card_kind {
-        position: absolute;
-        bottom: 15px;
-        right: 15px;
-        text-align: right;
-    }
-
-
-
-
-
-
-
-
-    /* Credit Card - One Step Checkout - Exceptions =========================================================== */
-
-    .card.osc {
-        font-family: "Courier New", "Helvetica Neue", Verdana, Arial, sans-serif;
-        width: 320px;
-        font-size: 14px;
-        text-transform: uppercase;
-        overflow: visible;
-        height: auto;
-    }
-
-    .card.osc input[type="text"]{
-        height: 35px;
-        border: 1px solid #d1d1d1;
-        margin-left: 10px;
-        padding: 0 7px;
-        background: white;
-    }
-
-    /* Credit Card Front */
-
-    .card.osc .card_front {
-        background: #e2e2e2;
-        float:left;
-        width: 320px;
-        height: 200px;
-        padding: 20px;
-        border-radius:8px;
-        z-index: 20;
-        position: relative;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .card.osc .card_front .cardNumber_container input {
-        width: 100%;
-        float: left;
-        margin: 0;
-    }
-
-    /* Credit Card Back */
-
-    .card.osc .card_back {
-        clear: both;
-        width: 320px;
-        border-radius: 8px;
-        margin: 10px 0 0 0;
-    }
-
-    .card.osc .card_back .shadow {
-        display: none;
-    }
-
-    .card.osc .card_back .card_security {
-        padding: 5px 0 5px 20px;
-    }
-
-</style>
 </ul>
+
+<script>
+    jQuery_1123('#cardNumber').on("keydown", function(){
+       if(jQuery_1123('#cardNumber').val().length <= 4){
+           jQuery_1123('.creditcard-logo').attr("src", "<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>");
+        }
+    });
+</script>
