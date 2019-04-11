@@ -106,6 +106,10 @@ function checkCardType(cardNumberElement) {
             'regex': '^9792[0-8][0-9]{11}$',
             'logo': ''
         },
+        'Visa Electron': {
+            'regex': '^(4026[0-9]{2}|417500|4508[0-9]{2}|4844[0-9]{2}|4913[0-9]{2}|4917[0-9]{2})[0-9]{10}$',
+            'logo': ''
+        },
         'Visa': {
             'regex': '^4[0-9]{15,18}$',
             'logo': '/creditcard_types/creditcard_visa.png'
@@ -119,7 +123,6 @@ function checkCardType(cardNumberElement) {
             'logo': '/creditcard_types/creditcard_verve.png'
         }
     };
-
     var creditcardNumber = cardNumberElement.value;
     var sourcePath = jQuery_1123('.creditcard-logo').attr('src');
     var index = sourcePath.indexOf('/creditcard_types/');
@@ -129,7 +132,6 @@ function checkCardType(cardNumberElement) {
     for (var key in matches) {
         if (creditcardNumber.match(matches[key].regex)) {
             jQuery_1123("#buckaroo3extended_creditcard_method").val(key);
-
             ChangeImageSourcePath();
         }
     }
@@ -138,4 +140,16 @@ function checkCardType(cardNumberElement) {
     {
         jQuery_1123('.creditcard-logo').attr('src', sourcePath.replace(sourcePath, sourcePath + matches[key].logo));
     }
+}
+
+function removeSpaces(cardNumberElement) {
+    jQuery_1123(cardNumberElement).on({
+        keydown: function(e) {
+            if (e.which === 32)
+                return false;
+        },
+        change: function() {
+            this.value = this.value.replace(/\s/g, "");
+        }
+    });
 }
