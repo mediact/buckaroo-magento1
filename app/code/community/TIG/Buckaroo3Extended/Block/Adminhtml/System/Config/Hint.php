@@ -40,6 +40,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'kbc',
         'p24',
         'dankort',
+        'nexi',
     );
 
     public $services = array(
