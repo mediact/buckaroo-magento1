@@ -1315,7 +1315,7 @@
                     <buckaroo3extended_paymentmethod_observer_nexi>
                         <type>Singleton</type>
                         <class>buckaroo3extended/paymentMethods_nexi_observer</class>
-                        <method>buckaroo3extended_request_addcustomvars</method>
+                        <method>buckaroo3extended_request_setmethod</method>
                     </buckaroo3extended_paymentmethod_observer_nexi>
                 </observers>
             </buckaroo3extended_request_setmethod>

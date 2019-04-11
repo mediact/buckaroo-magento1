@@ -96,8 +96,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Nexi_Observer extends TIG_Bucka
         }
 
         $request = $observer->getRequest();
+
         $codeBits = explode('_', $this->_code);
         $code = end($codeBits);
+
         $request->setMethod($code);
 
         return $this;
@@ -156,6 +158,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Nexi_Observer extends TIG_Bucka
 
         $response = $observer->getPostArray();
         $order = $observer->getOrder();
+
         $enrolled = false;
         $authenticated = false;
 
