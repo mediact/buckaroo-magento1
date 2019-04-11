@@ -32,7 +32,7 @@
 class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
 {
     protected $_code = 'buckaroo3extended_creditcard';
-    protected $_method = 'creditcard';
+    protected $_method = '';
 
     /**
      * @param Varien_Event_Observer $observer
