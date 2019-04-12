@@ -16,18 +16,18 @@
                     <div class="select_wrapper">
                         <select id="expirationMonth" type="text" name="expirationMonth" onblur="getEncryptedData()">
                             <option value="0"><?php echo  $this->__('Select a month'); ?></option>
-                            <option value="1"><?php echo  $this->__('January');   ?></option>
-                            <option value="2"><?php echo  $this->__('February');  ?></option>
-                            <option value="3"><?php echo  $this->__('March');     ?></option>
-                            <option value="4"><?php echo  $this->__('April');     ?></option>
-                            <option value="5"><?php echo  $this->__('May');       ?></option>
-                            <option value="6"><?php echo  $this->__('June');      ?></option>
-                            <option value="7"><?php echo  $this->__('July');      ?></option>
-                            <option value="8"><?php echo  $this->__('August');    ?></option>
-                            <option value="9"><?php echo  $this->__('September'); ?></option>
-                            <option value="10"><?php echo $this->__('October');   ?></option>
-                            <option value="11"><?php echo $this->__('November');  ?></option>
-                            <option value="12"><?php echo $this->__('December');  ?></option>
+                            <option value="1"><?php echo  $this->__('01 - January');   ?></option>
+                            <option value="2"><?php echo  $this->__('02 - February');  ?></option>
+                            <option value="3"><?php echo  $this->__('03 - March');     ?></option>
+                            <option value="4"><?php echo  $this->__('04 - April');     ?></option>
+                            <option value="5"><?php echo  $this->__('05 - May');       ?></option>
+                            <option value="6"><?php echo  $this->__('06 - June');      ?></option>
+                            <option value="7"><?php echo  $this->__('07 - July');      ?></option>
+                            <option value="8"><?php echo  $this->__('08 - August');    ?></option>
+                            <option value="9"><?php echo  $this->__('09 - September'); ?></option>
+                            <option value="10"><?php echo $this->__('10 - October');   ?></option>
+                            <option value="11"><?php echo $this->__('11 - November');  ?></option>
+                            <option value="12"><?php echo $this->__('12 - December');  ?></option>
                         </select>
                     </div>
 
@@ -44,10 +44,18 @@
                 <div class="magnet_stripe"></div>
                 <div class="card_security">
                     <label for="cvc"><?php echo $this->__('Security code');?></label>
-                    <input id="cvc" type="text" name="cvc" onblur="getEncryptedData()" placeholder="XXX"/>
+                    <div class="field">
+                        <input id="cvc" type="text" name="cvc" onblur="getEncryptedData()" placeholder="XXX"/>
+                    </div>
+                    <div class="info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="510" height="510" viewBox="0 0 510 510"><path d="M229.5 382.5h51v-153h-51V382.5zM255 0C114.8 0 0 114.8 0 255s114.8 255 255 255 255-114.7 255-255S395.3 0 255 0zM255 459c-112.2 0-204-91.8-204-204S142.8 51 255 51s204 91.8 204 204S367.2 459 255 459zM229.5 178.5h51v-51h-51V178.5z"/></svg>
+                        <div class="popup">
+                            <?php echo $this->__('Or "CVV" or "CVC". <br/><br/> A 3-digit code located to the right of signature strip on the back of your card, separate from the card number.'); ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="card_kind">
-                    <img class="creditcard-logo" alt="Credit Card type" height="25" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
+                    <img class="creditcard-logo" alt="Credit Card type" height="30" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
                 </div>
                 <input type="hidden" name="buckaroo3extended_creditcard_encryptedCardData" id="buckaroo3extended_creditcard_encryptedCardData"/>
                 <input type="hidden" name="buckaroo3extended_creditcard_method" id="buckaroo3extended_creditcard_method"/>
