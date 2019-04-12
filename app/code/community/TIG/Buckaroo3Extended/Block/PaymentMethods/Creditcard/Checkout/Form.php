@@ -39,4 +39,28 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Creditcard_Checkout_Form extend
         $this->setTemplate('buckaroo3extended/creditcard/checkout/form.phtml');
         parent::_construct();
     }
+
+    public function getDesign()
+    {
+        return Mage::getStoreConfig(
+            'buckaroo/' . $this->getMethodCode() . '/design', Mage::app()->getStore()->getStoreId()
+        );
+    }
+
+    public function designValue()
+    {
+        $design = $this->getDesign();
+
+        switch ($design) {
+            case TIG_Buckaroo3Extended_Model_Sources_CreditcardDesign::CREDITCARD_PAYMENT_METHOD_STYLED:
+                $style = 'card styled';
+                break;
+            case TIG_Buckaroo3Extended_Model_Sources_CreditcardDesign::CREDITCARD_PAYMENT_METHOD_NOSTYLE:
+            default:
+                $style = 'card blank';
+                break;
+        }
+
+        return $style;
+    }
 }

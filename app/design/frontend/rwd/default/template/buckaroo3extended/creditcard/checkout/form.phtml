@@ -4,11 +4,11 @@
 <ul id="payment_form_<?php echo $code ?>" style="display:none;"
     class="buckaroo3extended_input form-list buckaroo-method">
     <form id="cseTestForm">
-        <div class="card blank">
+        <div class=" <?php echo $this->designValue() ?>">
             <div class="card_front">
                 <div class="cardNumber_container">
                     <label for="cardNumber"><?php echo $this->__('Card number'); ?></label>
-                    <input id="cardNumber" type="tel" name="cardNumber" placeholder="XXXX XXXX XXXX XXXX" onblur="checkCardType(this)" onkeydown="removeSpaces(this)"/>
+                    <input id="cardNumber" type="tel" name="cardNumber" onblur="checkCardType(this)" onkeydown="removeSpaces(this)"/>
                 </div>
 
                 <div class="expirationMonth_container">
@@ -31,12 +31,12 @@
                         </select>
                     </div>
 
-                    <input id="expirationYear" type="text" name="expirationYear" onblur="getEncryptedData()" placeholder="<?php echo $this->__('Year: XXXX');?>"/>
+                    <input id="expirationYear" type="text" name="expirationYear" onblur="getEncryptedData()" />
                 </div>
 
                 <div class="cardHolderName_container">
                     <label for="cardHolderName"><?php echo $this->__('Name cardholder');?></label>
-                    <input id="cardHolderName" type="text" name="cardHolderName" onblur="getEncryptedData()" placeholder="<?php echo $this->__('Name');?>"/>
+                    <input id="cardHolderName" type="text" name="cardHolderName" onblur="getEncryptedData()" />
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
                 <div class="magnet_stripe"></div>
                 <div class="card_security">
                     <label for="cvc"><?php echo $this->__('Security code');?></label>
-                    <input id="cvc" type="text" name="cvc" onblur="getEncryptedData()" placeholder="XXX"/>
+                    <input id="cvc" type="text" name="cvc" onblur="getEncryptedData()" />
                 </div>
                 <div class="card_kind">
                     <img class="creditcard-logo" alt="Credit Card type" height="25" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
