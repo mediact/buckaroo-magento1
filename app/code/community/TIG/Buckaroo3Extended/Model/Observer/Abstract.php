@@ -360,17 +360,22 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     /**
      * processes the customer's phone number so as to fit the betaalgarant SOAP request
      *
+     * @param null|int|string $phonenumber
+     *
      * @return array
      */
-    protected function _processPhoneNumberCM()
+    protected function _processPhoneNumberCM($phonenumber = null)
     {
+        $number = $phonenumber;
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        if (isset($additionalFields['BPE_PhoneNumber'])) {
+
+        if (!$number && isset($additionalFields['BPE_PhoneNumber'])) {
             $number = $additionalFields['BPE_PhoneNumber'];
-        } else {
-            $number = ($this->_billingInfo['telephone'])?:'1234567890';
         }
 
+        if (!$number) {
+            $number = ($this->_billingInfo['telephone'])?:'1234567890';
+        }
 
         //the final output must like this: 0031123456789 for mobile: 0031612345678
         //so 13 characters max else number is not valid
@@ -424,17 +429,22 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     /**
      * processes the customer's BE phone number so as to fit the betaalgarant SOAP request
      *
+     * @param null|int|string $phonenumber
+     *
      * @return array
      */
-    protected function _processPhoneNumberCMBe()
+    protected function _processPhoneNumberCMBe($phonenumber = null)
     {
+        $number = $phonenumber;
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        if (isset($additionalFields['BPE_PhoneNumber'])) {
+
+        if (!$number && isset($additionalFields['BPE_PhoneNumber'])) {
             $number = $additionalFields['BPE_PhoneNumber'];
-        } else {
-            $number = ($this->_billingInfo['telephone'])?:'012345678';
         }
 
+        if (!$number) {
+            $number = ($this->_billingInfo['telephone'])?:'012345678';
+        }
 
         //the final output must like this: 003212345678 for mobile: 0032461234567
         //so 13 characters max else number is not valid

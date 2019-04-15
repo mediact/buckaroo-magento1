@@ -336,31 +336,30 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
             $this->_redirect($redirectData['path'], $redirectData['params']);
 
             return;
-        } else {
-            $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-
-            $this->_paymentCode = $this->_order->getPayment()->getMethod();
-
-            $debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
-            $debugEmail .= 'POST variables received: ' . var_export($postData, true) . "\n\n";
-
-            /**
-             * @var TIG_Buckaroo3Extended_Model_Response_Return $module
-             */
-            $module = Mage::getModel(
-                'buckaroo3extended/response_return',
-                array(
-                    'order'      => $this->_order,
-                    'postArray'  => $postData,
-                    'debugEmail' => $debugEmail,
-                    'method'     => $this->_paymentCode,
-                )
-            );
-
-            $module->processReturn();
         }
 
-        $this->_redirect('');
+        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+
+        $this->_paymentCode = $this->_order->getPayment()->getMethod();
+
+        $debugEmail = 'Payment code: ' . $this->_paymentCode . "\n\n";
+        $debugEmail .= 'POST variables received: ' . var_export($postData, true) . "\n\n";
+
+        /**
+         * @var TIG_Buckaroo3Extended_Model_Response_Return $module
+         */
+        $module = Mage::getModel(
+            'buckaroo3extended/response_return',
+            array(
+                'order'      => $this->_order,
+                'postArray'  => $postData,
+                'debugEmail' => $debugEmail,
+                'method'     => $this->_paymentCode,
+            )
+        );
+
+        $module->processReturn();
+        return;
     }
 
     protected function _processPushAccordingToType()
