@@ -56,7 +56,7 @@ Alternatively we could calculate widths automatically using block input paramete
 <div class="input-box customer-idnumber<?php echo '-' . $this->getPaymentMethodCode() ?> customer-idnumber">
 
     <div class="idnumber">
-        <input type="text" class="input-text validate-alphanum <?php if ($this->isRequired()) echo ' required-entry' ?>"
+        <input type="text" class="input-text <?php if ($this->isRequired()) echo ' required-entry' ?>"
                id="<?php echo $this->getFieldId()?>"
                name="<?php echo $this->getFieldName()?>" />
     </div>

@@ -16,5 +16,5 @@
         "issues": "http://servicedesk.tig.nl/hc/nl/requests/new"
     },
     "homepage": "https://tig.nl/buckaroo",
-    "minimum-stability": "stable"
+    "minimum-stability": "rc"
 }
