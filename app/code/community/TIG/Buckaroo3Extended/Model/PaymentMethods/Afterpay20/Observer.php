@@ -273,7 +273,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         $addressInfo[] = $this->getParameterLine('Country', $address->getCountryId(), $addressType);
         $addressInfo[] = $this->getParameterLine($phonenumberKey, $phonenumber['clean'], $addressType);
         $addressInfo[] = $this->getParameterLine('Email', $address->getEmail(), $addressType);
-        $addressInfo[] = $this->getParameterLine('ConversationLanguage', $address->getCountryId(), $addressType);
 
 
         //TODO: Enable when finnish id number is implemented
@@ -296,6 +295,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     private function getShippingAddress($pakjeGemakAddress = false)
     {
         $shippingAddress = $this->_order->getShippingAddress();
+
+        if (!$shippingAddress) {
+            $shippingAddress = $this->_order->getBillingAddress();
+        }
 
         if (!$pakjeGemakAddress) {
             return $shippingAddress;
@@ -775,7 +778,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
 
         //get both the order-addresses
         $oBillingAddress = $this->_order->getBillingAddress()->getData();
-        $oShippingAddress = $this->_order->getShippingAddress()->getData();
+        $oShippingAddress = $this->_order->getShippingAddress();
+        $oShippingAddress = (!$oShippingAddress ? $oBillingAddress : $oShippingAddress->getData());
 
         //remove the keys with corresponding values from both the addressess
         $oBillingAddressFiltered = array_diff_key($oBillingAddress, array_flip($excludeKeys));
