@@ -320,40 +320,65 @@
     padding: 20px;
     position: absolute;
     width: 200px;
-    left: -205px;
-    top: -20px;
+    left: -179px;
+    top: 30px;
     box-shadow: 1px 2px 3px rgba(144, 144, 144, 0.6196078431372549);
     z-index: 100;
 }
 
 .card .card_security .info .popup:before {
     position: absolute;
-    left: 200px;
-    top: 22px;
+    left: 186.5px;
+    top: -15px;
     content: '';
     width: 0;
     height: 0;
     border-right: 7px solid transparent;
-    border-left: 7px solid #d4d4d4;
+    border-bottom: 7px solid #d4d4d4;
     border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
+    border-left: 7px solid transparent;
 }
 
 .card .card_security .info .popup:after {
     position: absolute;
-    left: 198.5px;
-    top: 22px;
+    left: 187px;
+    top: -13px;
     content: '';
     width: 0;
     height: 0;
     border-right: 7px solid transparent;
-    border-left: 7px solid #fff;
+    border-bottom: 7px solid #fff;
     border-top: 7px solid transparent;
-    border-bottom: 7px solid transparent;
+    border-left: 7px solid transparent;
 }
 
 .card .card_security .info:hover .popup {
     display :block;
+}
+
+@media screen and (min-width: 860px){
+    .card .card_security .info .popup {
+        left: 34px;
+        top: -17px;
+    }
+
+    .card .card_security .info .popup:before {
+        left: -14px;
+        top: 22px;
+        border-left: 7px solid transparent;
+        border-right: 7px solid #d4d4d4;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+    }
+
+    .card .card_security .info .popup:after {
+        left: -13.5px;
+        top: 22px;
+        border-left: 7px solid transparent;
+        border-right: 7px solid #fff;
+        border-top: 7px solid transparent;
+        border-bottom: 7px solid transparent;
+    }
 }
 
 /* Exceptions for Blank */
@@ -380,5 +405,11 @@
 }
 
 .card.styled .card_security .info .popup {
-    top: -14px;
+    top :35px;
+}
+
+@media screen and (min-width: 860px) {
+    .card.styled .card_security .info .popup {
+        top :-14px;
+    }
 }
