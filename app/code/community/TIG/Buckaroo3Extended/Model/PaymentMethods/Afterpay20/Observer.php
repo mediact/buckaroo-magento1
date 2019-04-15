@@ -297,6 +297,10 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
     {
         $shippingAddress = $this->_order->getShippingAddress();
 
+        if (!$shippingAddress) {
+            $shippingAddress = $this->_order->getBillingAddress();
+        }
+
         if (!$pakjeGemakAddress) {
             return $shippingAddress;
         }
@@ -775,7 +779,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
 
         //get both the order-addresses
         $oBillingAddress = $this->_order->getBillingAddress()->getData();
-        $oShippingAddress = $this->_order->getShippingAddress()->getData();
+        $oShippingAddress = $this->_order->getShippingAddress();
+        $oShippingAddress = (!$oShippingAddress ? $oBillingAddress : $oShippingAddress->getData());
 
         //remove the keys with corresponding values from both the addressess
         $oBillingAddressFiltered = array_diff_key($oBillingAddress, array_flip($excludeKeys));
