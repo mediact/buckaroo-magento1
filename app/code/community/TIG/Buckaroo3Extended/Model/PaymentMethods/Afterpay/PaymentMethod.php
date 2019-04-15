@@ -157,7 +157,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod
     {
         $storeId = Mage::app()->getStore()->getId();
 
-        if (!$this->checkQuoteAndSession($quote)) {
+        if (!$this->checkQuoteAndSession($quote, $storeId)) {
             return false;
         }
 
@@ -206,7 +206,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay_PaymentMethod
         return $canUseBuckaroo;
     }
 
-    protected function checkQuoteAndSession($quote, &$storeId)
+    protected function checkQuoteAndSession($quote, $storeId)
     {
         // Check if quote is null, and try to look it up based on adminhtml session
         if (!$quote && Mage::helper('buckaroo3extended')->isAdmin()) {
