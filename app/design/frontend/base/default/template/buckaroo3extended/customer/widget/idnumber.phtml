@@ -56,10 +56,20 @@ Alternatively we could calculate widths automatically using block input paramete
 <div class="input-box customer-idnumber<?php echo '-' . $this->getPaymentMethodCode() ?> customer-idnumber">
 
     <div class="idnumber">
-        <input type="text" class="input-text validate-alphanum <?php if ($this->isRequired()) echo ' required-entry' ?>"
+        <input type="text" class="input-text validate-tig-buckaroo-alphanum-hyphen <?php if ($this->isRequired()) echo ' required-entry' ?>"
                id="<?php echo $this->getFieldId()?>"
                name="<?php echo $this->getFieldName()?>" />
     </div>
 
     <div class="validation-advice" style="display:none;"></div>
 </div>
+
+<script type="text/javascript">
+    Validation.add(
+        'validate-tig-buckaroo-alphanum-hyphen',
+        'Please use only letters (a-z or A-Z), numbers (0-9) or hyphens (-) in this field. No spaces or other characters are allowed.',
+        function(v) {
+            return Validation.get('IsEmpty').test(v) ||  /^[a-zA-Z0-9-]+$/.test(v)
+        }
+    );
+</script>
