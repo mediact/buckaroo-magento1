@@ -8559,17 +8559,27 @@
                             <label>Creditcard design</label>
                             <comment>Enable or disable creditcard design.</comment>
                             <frontend_type>select</frontend_type>
-                            <source_model>buckaroo3extended/sources_creditcardDesign</source_model>
+                            <source_model>buckaroo3extended/sources_yesno</source_model>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </design>
+                        <issuers translate="label comment tooltip">
+                            <label>Accepted creditcards</label>
+                            <comment>Select accepted credit cards.</comment>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>buckaroo3extended/sources_creditcardIssuers</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </issuers>
                         <title translate="label comment">
                             <label>Frontend label</label>
                             <comment>Determines the frontend label shown.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>40</sort_order>
+                            <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8578,7 +8588,7 @@
                             <label>Frontend sort order</label>
                             <comment>Determines the sorting of payment methods.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>50</sort_order>
+                            <sort_order>60</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8589,7 +8599,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>60</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8599,7 +8609,7 @@
                             <comment>Hold orders which have no Creditcard SecureCode.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>70</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8609,7 +8619,7 @@
                             <comment>Activate to send an order confirmation e-mail when the order has been successfully placed. Specific for this payment method. This does not automatically mean that the payment has been made (yet).</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>80</sort_order>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8618,7 +8628,7 @@
                             <comment>Enable or disable advanced options.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>90</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8627,7 +8637,7 @@
                             <label>Fee</label>
                             <comment>The above amount is calculated based on de Tax settings in System > Configuration > Sales > Tax.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>100</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8640,7 +8650,7 @@
                             <label>Fee label</label>
                             <comment>This label will be displayed next to the fee on the checkout, order, invoice and creditmemo pages and pdfs.</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>110</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8654,7 +8664,7 @@
                             <comment>Maximum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount smaller then the maximum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>120</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8667,7 +8677,7 @@
                             <comment>Minimum order amount allowed.</comment>
                             <tooltip>The payment method show only for orders with an order amount greater than the minimum amount.</tooltip>
                             <frontend_type>text</frontend_type>
-                            <sort_order>130</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8680,7 +8690,7 @@
                             <comment>Enable or disable specific status.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_yesno</source_model>
-                            <sort_order>140</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8694,7 +8704,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesSuccess</source_model>
-                            <sort_order>150</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8709,7 +8719,7 @@
                             <tooltip>To make a new status available it needs to be assigned to the correct state. See Magento documentation about state and status.</tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>buckaroo3extended/sources_statusesFailed</source_model>
-                            <sort_order>160</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -8725,7 +8735,7 @@
                             <tooltip>Your contract with Buckaroo must allow for the selected currencies to be used with this payment method.</tooltip>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>buckaroo3extended/sources_creditcard_availableCurrencies</source_model>
-                            <sort_order>170</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
