@@ -20,3 +20,4 @@
 "Name","Name"
 "Security code","CVV / CVC Code"
 'Or "CVV" or "CVC". <br/><br/> A 3-digit code located to the right of signature strip on the back of your card, separate from the card number.','Oder "CVV" oder "CVC". <br/> <br/> Ein dreistelliger Code, der sich rechts neben dem Unterschriftenstreifen auf der Rückseite Ihrer Karte befindet, getrennt von der Kartennummer.'
+"Card type","Kreditkartentyp"

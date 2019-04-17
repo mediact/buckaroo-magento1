@@ -4,8 +4,18 @@
 <ul id="payment_form_<?php echo $code ?>" style="display:none;"
     class="buckaroo3extended_input form-list buckaroo-method">
     <form id="cseTestForm">
-        <div class=" <?php echo $this->designValue() ?>">
+        <div class=" card styled <?php //echo $this->designValue() ?>">
             <div class="card_front">
+
+                <div class="cardType_container">
+                    <label for="cardType"><?php echo $this->__('Card type'); ?></label>
+                    <div class="select_wrapper">
+                        <select id="cardType" class="required-entry" name="cardType" onblur="getEncryptedData()">
+                            <option value="Card type"><?php echo  $this->__('Card type');   ?></option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="cardNumber_container">
                     <label for="cardNumber"><?php echo $this->__('Card number'); ?></label>
                     <input id="cardNumber" class="required-entry" type="tel" name="cardNumber" onblur="processCardNumber(this)" onkeydown="removeSpaces(this)"/>
@@ -30,6 +40,7 @@
                             <option value="12"><?php echo $this->__('12 - December');  ?></option>
                         </select>
                     </div>
+
                     <div class="select_wrapper" >
                         <select id="expirationYear" class="required-entry" name="expirationYear" onblur="getEncryptedData()">
                             <option value="0"><?php echo  $this->__('Year'); ?></option>
