@@ -400,7 +400,7 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "10 - October","10 - oktober"
 "11 - November","11 - november"
 "12 - December","12 - december"
-"Year: XXXX","Jaar: XXXX"
+"Year","Jaar"
 "Name cardholder","Naam kaarthouder"
 "Name","Naam"
 "Security code","CVV / CVC Code"
@@ -408,3 +408,4 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "Select accepted credit cards.","Selecteer geaccepteerde creditcards."
 "Accepted creditcards","Geaccepteerde creditcards"
 "Enable or disable creditcard design.","Schakel het creditcardontwerp in of uit."
+"Month","Maand"

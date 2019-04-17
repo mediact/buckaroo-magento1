@@ -11,11 +11,11 @@
                     <input id="cardNumber" class="required-entry" type="tel" name="cardNumber" onblur="processCardNumber(this)" onkeydown="removeSpaces(this)"/>
                 </div>
 
-                <div class="expirationMonth_container">
+                <div class="expiration_container">
                     <label for="expirationMonth"><?php echo $this->__('Expiration');?></label>
                     <div class="select_wrapper">
-                        <select id="expirationMonth" class="required-entry" type="text" name="expirationMonth" onblur="getEncryptedData()">
-                            <option value="0"><?php echo  $this->__('Select a month'); ?></option>
+                        <select id="expirationMonth" class="required-entry" name="expirationMonth" onblur="getEncryptedData()">
+                            <option value="0"><?php echo  $this->__('Month'); ?></option>
                             <option value="1"><?php echo  $this->__('01 - January');   ?></option>
                             <option value="2"><?php echo  $this->__('02 - February');  ?></option>
                             <option value="3"><?php echo  $this->__('03 - March');     ?></option>
@@ -30,8 +30,14 @@
                             <option value="12"><?php echo $this->__('12 - December');  ?></option>
                         </select>
                     </div>
-
-                    <input id="expirationYear" type="text" class="required-entry" name="expirationYear" onblur="getEncryptedData()" />
+                    <div class="select_wrapper" >
+                        <select id="expirationYear" class="required-entry" name="expirationYear" onblur="getEncryptedData()">
+                            <option value="0"><?php echo  $this->__('Year'); ?></option>
+                            <option value="1"><?php echo  $this->__('2019');   ?></option>
+                            <option value="2"><?php echo  $this->__('2020');   ?></option>
+                            <option value="3"><?php echo  $this->__('2021');   ?></option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="cardHolderName_container">
@@ -55,7 +61,7 @@
                     </div>
                 </div>
                 <div class="card_kind">
-                    <img class="creditcard-logo" alt="Credit Card type" height="30" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
+                    <img class="creditcard-logo" alt="Credit Card type" height="35" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
                 </div>
                 <input type="hidden" name="buckaroo3extended_creditcard_encryptedCardData" id="buckaroo3extended_creditcard_encryptedCardData"/>
                 <input type="hidden" name="buckaroo3extended_creditcard_method" id="buckaroo3extended_creditcard_method"/>

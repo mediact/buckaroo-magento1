@@ -58,17 +58,32 @@
 
 /* Credit Card - Default ============================================================================================ */
 
-.card.blank .expirationMonth_container,
+.card.blank .expiration_container,
 .card.blank .cardHolderName_container,
 .card.blank .card_back,
 .card.blank .card_kind {
     margin: 10px 0;
 }
 
-.card.blank .select_wrapper select {
+.card .card_front .expiration_container label {
     width: 100%;
-    margin-bottom: 10px;
+    float: left;
 }
+
+.card.blank .card_front .expiration_container .select_wrapper {
+    float: left;
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+}
+
+.card.blank .select_wrapper #expirationMonth,
+.card.blank .select_wrapper #expirationYear {
+    margin-bottom: 10px;
+    width: 100% !important;
+    max-width: 156px;
+}
+
 
 /* Credit Card - Styled ============================================================================================= */
 
@@ -116,7 +131,7 @@
 }
 
 .card.styled .card_front .cardNumber_container,
-.card.styled .card_front .expirationMonth_container,
+.card.styled .card_front .expiration_container,
 .card.styled .card_front .cardHolderName_container {
     float:left;
     width: 100%;
@@ -134,35 +149,20 @@
     margin: 0;
 }
 
-.card.styled .card_front .expirationMonth_container label {
-    width: 100%;
-    float: left !important;
-}
-
-.card.styled .card_front .expirationMonth_container input {
-    float: left;
-    width: 45%; /* IE backup */
-    width: calc(50% - 10px);
-}
-
-.card.styled .card_front .expirationMonth_container .select_wrapper {
-    position: relative;
+.card.styled .card_front .expiration_container .select_wrapper {
     float: left;
     width: 50%;
+    position: relative;
     cursor: pointer;
 }
 
-.card.styled .card_front .expirationMonth_container .select_wrapper:after {
-    content: '\203A';
-    transform: rotate(90deg);
-    padding: 10px;
-    position: absolute;
-    right: 0;
-    top: -5px;
-    pointer-events: none;
+.card.styled .card_front .expiration_container .select_wrapper:nth-child(3) {
+    width: 43%; /* IE backup */
+    width: calc(50% - 10px);
+    margin-left: 10px;
 }
 
-.card.styled .card_front .expirationMonth_container select {
+.card.styled .card_front select {
     float:left;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -174,6 +174,17 @@
     border: 1px solid #d1d1d1;
     margin-top: 0;
     width: 100% !important;
+    background-image: none !important;
+}
+
+.card.styled .card_front .expiration_container .select_wrapper:after {
+    content: '\203A';
+    transform: rotate(90deg);
+    padding: 10px;
+    position: absolute;
+    right: 0;
+    top: -5px;
+    pointer-events: none;
 }
 
 .card.styled .card_front .cardHolderName_container {
@@ -181,14 +192,14 @@
 }
 
 .card.styled .card_front .cardHolderName_container label {
-    max-width: 30%;
+    max-width: 40%;
     float: left;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .card.styled .card_front .cardHolderName_container input {
-    max-width: 70%;
+    max-width: 60%;
     width: 100%;
     float: left;
     margin: 0;
