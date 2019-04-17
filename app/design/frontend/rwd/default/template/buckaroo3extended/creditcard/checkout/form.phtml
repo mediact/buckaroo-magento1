@@ -6,6 +6,16 @@
     <form id="cseTestForm">
         <div class="card <?php echo $this->designValue() ?>">
             <div class="card_front">
+
+                <div class="cardType_container">
+                    <label for="cardType"><?php echo $this->__('Card type'); ?></label>
+                    <div class="select_wrapper">
+                        <select id="cardType" class="required-entry" name="cardType" onblur="getEncryptedData()">
+                            <option value="Card type"><?php echo  $this->__('Card type');   ?></option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="cardNumber_container">
                     <label for="cardNumber"><?php echo $this->__('Card number'); ?></label>
                     <input id="cardNumber" class="required-entry" type="tel" name="cardNumber" onblur="processCardNumber(this)" onkeydown="removeSpaces(this)"/>
@@ -21,7 +31,8 @@
                             }?>
                         </select>
                     </div>
-                    <div class="select_wrapper" >
+
+                    <div class="select_wrapper">
                         <select id="expirationYear" class="required-entry" name="expirationYear" onblur="getEncryptedData()">
                         </select>
                     </div>
