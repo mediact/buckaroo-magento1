@@ -37,11 +37,8 @@
                     <div class="select_wrapper">
                         <select id="expirationYear" class="required-entry" name="expirationYear" onblur="getEncryptedData()">
                             <?php
-                            $starting_year  =date('Y');
-                            $ending_year = date('Y', strtotime('+10 year'));
-
-                            for ($starting_year; $starting_year<= $ending_year; $starting_year++) {
-                                echo '<option' . ' value="' . $starting_year .'">' . $starting_year. '</option>';
+                            for ($i = 0; $i <= 10; $i++) {
+                                echo '<option' . ' value="' . (date('Y') + $i) .'">' . (date('Y') + $i).'</option>';
                             }?>
                         </select>
                     </div>
