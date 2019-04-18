@@ -60,17 +60,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_PaymentMethod extend
     protected $_code = 'buckaroo3extended_creditcard';
     protected $_formBlockType = 'buckaroo3extended/paymentMethods_creditcard_checkout_form';
 
-    public function getOrderPlaceRedirectUrl()
+    public function validate()
     {
-        $session = Mage::getSingleton('checkout/session');
-
         $postData = Mage::app()->getRequest()->getPost();
 
         if(isset($postData[$this->_code.'_encryptedCardData'],$postData[$this->_code.'_method']))
         {
-            $session->setData('additionalFields', array('encryptedCardData' => $postData[$this->_code.'_encryptedCardData'],'method' => $postData[$this->_code.'_method']));
+            $this->getInfoInstance()->setAdditionalInformation(array($this->_code.'_encryptedCardData' => $postData[$this->_code.'_encryptedCardData'], $this->_code.'_method' => $postData[$this->_code.'_method']));
         }
 
-        return parent::getOrderPlaceRedirectUrl();
+        return parent::validate();
     }
+
+
+
+
+
 }

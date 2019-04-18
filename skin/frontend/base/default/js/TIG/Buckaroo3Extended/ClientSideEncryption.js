@@ -24,28 +24,6 @@ function getEncryptedData() {
         });
 }
 
-function checkIssuer(creditcardNumber) {
-    var matches = {
-
-    };
-
-    for (var key in matches) {
-        if (creditcardNumber.match(matches[key].regex)) {
-
-            return matches[key];
-        }
-    }
-    console.log(console.log('no match'))
-}
-
-function processCardNumber(cardNumberElement)
-{
-    var Issuer = checkIssuer(cardNumberElement.value);
-
-    jQuery_1123("#buckaroo3extended_creditcard_method").val(Issuer.name);
-
-    changeCardLogo(Issuer);
-}
 
 function removeSpaces(cardNumberElement)
 {
@@ -60,12 +38,12 @@ function removeSpaces(cardNumberElement)
     });
 }
 
-function changeCardLogo(Issuer)
+function changeCardLogo(issuerElement)
 {
     var sourcePath = jQuery_1123('.creditcard-logo').attr('src');
     var index = sourcePath.indexOf('/creditcard_types/');
 
     sourcePath = sourcePath.substring(0,index);
 
-    jQuery_1123('.creditcard-logo').attr('src', sourcePath.replace(sourcePath, sourcePath + Issuer.logo));
+    jQuery_1123('.creditcard-logo').attr('src', sourcePath.replace(sourcePath, sourcePath + issuerElement.getAttribute('data-logo')));
 }

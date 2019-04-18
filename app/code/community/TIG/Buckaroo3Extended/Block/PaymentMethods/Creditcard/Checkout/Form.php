@@ -44,7 +44,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Creditcard_Checkout_Form extend
     {
         $storeId = Mage::app()->getStore()->getStoreId();
 
-        if(Mage::getStoreConfig('buckaroo/creditcard/design', $storeId)) {
+        if(Mage::getStoreConfig('buckaroo/buckaroo3extended_creditcard/design', $storeId)) {
             return 'styled';
         }
 
@@ -60,8 +60,15 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Creditcard_Checkout_Form extend
 
     public function selectedIssuers()
     {
-        $issuers =  explode(',', $this->getIssuers());
+       $issuers = TIG_Buckaroo3Extended_Model_Sources_CreditcardIssuers::toOptionArray();
+       $allowed = explode(',', $this->getIssuers());
 
-        return $issuers;
+       foreach ($issuers as $key => $issuer) {
+           if (!in_array($issuer['value'], $allowed)) {
+               unset($issuers[$key]);
+           }
+       }
+
+       return $issuers;
     }
 }

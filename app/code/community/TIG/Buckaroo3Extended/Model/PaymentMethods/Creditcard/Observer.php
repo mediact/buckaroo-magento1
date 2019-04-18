@@ -62,6 +62,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         }
 
         $request->setVars($vars);
+
         return $this;
     }
 
@@ -76,14 +77,16 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
             return $this;
         }
 
-        $request            = $observer->getRequest();
+        $request = $observer->getRequest();
         $vars = $request->getVars();
 
         $this->_billingInfo = $request->getBillingInfo();
-        $this->_order       = $request->getOrder();
+        $this->_order = $request->getOrder();
 
-        $encryptedData = $this->getEncryptedData();
         $_method = $this->getMethod();
+        $payment = $this->_order->getPayment();
+
+        $encryptedData = $payment->getAdditionalInformation()['buckaroo3extended_creditcard_encryptedCardData'];
 
         $array = array(
             'EncryptedCardData' => $encryptedData,
@@ -100,20 +103,11 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         return $this;
     }
 
-    protected function getEncryptedData()
-    {
-        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-
-        $encryptedCardData = $additionalFields['encryptedCardData'];
-
-        return $encryptedCardData;
-    }
-
     public function setMethod()
     {
-        $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
+        $payment = $this->_order->getPayment();
 
-        $this->_method = $additionalFields['method'];
+        $this->_method = $payment->getAdditionalInformation()['buckaroo3extended_creditcard_method'];
     }
 
     public function getMethod()
@@ -157,22 +151,24 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
             return $this;
         }
 
-        $refundRequest = $observer->getRequest();
+        $request = $observer->getRequest();
+        $this->_order = $request->getOrder();
+        $vars = $request->getVars();
+        $_method = $this->getMethod();
 
-        $vars = $refundRequest->getVars();
 
         $array = array(
-            'action'  => 'Refund',
+            'action' => 'Refund',
             'version' => 1
         );
 
-        if (array_key_exists('services', $vars) && is_array($vars['services'][$this->_method])) {
-            $vars['services'][$this->_method] = array_merge($vars['services'][$this->_method], $array);
+        if (array_key_exists('services', $vars) && is_array($vars['services'][$_method])) {
+            $vars['services'][$_method] = array_merge($vars['services'][$_method], $array);
         } else {
-            $vars['services'][$this->_method] = $array;
+            $vars['services'][$_method] = $array;
         }
 
-        $refundRequest->setVars($vars);
+        $request->setVars($vars);
 
         return $this;
     }
