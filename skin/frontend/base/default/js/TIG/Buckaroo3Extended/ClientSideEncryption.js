@@ -24,7 +24,6 @@ function getEncryptedData() {
         });
 }
 
-
 function removeSpaces(cardNumberElement)
 {
     jQuery_1123(cardNumberElement).on({
