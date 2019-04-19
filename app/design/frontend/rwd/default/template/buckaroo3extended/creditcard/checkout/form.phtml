@@ -28,7 +28,7 @@
                     <label for="expirationMonth"><?php echo $this->__('Month');?></label>
                     <div class="select_wrapper">
                         <select id="expirationMonth" class="required-entry" name="expirationMonth" onblur="getEncryptedData()">
-                            <option value="<?php echo $this->__('Select a month');?>"></option>
+                            <option value=""><?php echo $this->__('Select a month'); ?></option>
                             <?php for ($m=1; $m<=12; $m++) {
                                 echo '<option' . ' value="' . $m .'">' . $m. '</option>';
                             }?>
@@ -36,10 +36,10 @@
                     </div>
                 </div>
                 <div class="expirationYear_container">
-                    <label for="expirationMonth"><?php echo $this->__('Year');?></label>
+                    <label for="expirationMonth"><?php echo $this->__('Year'); ?></label>
                     <div class="select_wrapper">
                         <select id="expirationYear" class="required-entry" name="expirationYear" onblur="getEncryptedData()">
-                            <option value="<?php echo $this->__('Select a year');?>"></option>
+                            <option value=""><?php echo $this->__('Select a year');?></option>
                             <?php
                             for ($i = 0; $i <= 10; $i++) {
                                 echo '<option' . ' value="' . (date('Y') + $i) .'">' . (date('Y') + $i).'</option>';
