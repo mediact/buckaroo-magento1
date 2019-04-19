@@ -11,7 +11,7 @@
                     <label for="buckaroo3extended_creditcard_method"><?php echo $this->__('Card type'); ?></label>
                     <div class="select_wrapper">
                         <select id="buckaroo3extended_creditcard_method" class="required-entry" name="buckaroo3extended_creditcard_method" onchange="changeCardLogo(this.options[this.selectedIndex])">
-                            <option value="" data-logo="/creditcard_types/creditcard_blank.png"><?php echo $this->__('Please select a card'); ?></option>
+                            <option value="" data-logo="/creditcard_types/creditcard_blank.png"><?php echo $this->__('Please choose'); ?></option>
                             <?php foreach ($this->selectedIssuers() as $key => $cardName) {
                                     echo '<option value="' . $cardName['code'] . '" data-logo="' . $cardName['logo'] . '">' . $cardName['label'] . '</option>';
                                 }?>

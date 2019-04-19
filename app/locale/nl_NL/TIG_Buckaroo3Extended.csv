@@ -410,4 +410,6 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "Enable or disable creditcard design.","Schakel het creditcardontwerp in of uit."
 "Month","Maand"
 "Card type","Kaarttype"
-"Please select a card","Selecteer een kaart"
+"Please choose","Kies een kaart"
+"Select a year","Kies een jaar"
+"Select a month","Kies een maand"

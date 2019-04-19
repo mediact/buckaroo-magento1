@@ -58,11 +58,19 @@
 
 /* Credit Card - Default ============================================================================================ */
 
-.card.blank .expiration_container,
+.card.blank {
+    max-width: 220px;
+}
+
+.card.blank .cardType_container,
 .card.blank .cardHolderName_container,
 .card.blank .card_back,
 .card.blank .card_kind {
     margin: 10px 0;
+}
+
+.card.blank .expirationMonth_container {
+    margin-top: 10px;
 }
 
 .card .card_front .expiration_container label {
