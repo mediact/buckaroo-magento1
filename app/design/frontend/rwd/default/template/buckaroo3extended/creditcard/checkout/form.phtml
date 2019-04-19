@@ -24,16 +24,18 @@
                     <input id="cardNumber" class="required-entry" type="tel" name="cardNumber" onblur="getEncryptedData()" onkeydown="removeSpaces(this)"/>
                 </div>
 
-                <div class="expiration_container">
-                    <label for="expirationMonth"><?php echo $this->__('Expiration');?></label>
+                <div class="expirationMonth_container">
+                    <label for="expirationMonth"><?php echo $this->__('Month');?></label>
                     <div class="select_wrapper">
                         <select id="expirationMonth" class="required-entry" name="expirationMonth" onblur="getEncryptedData()">
                             <?php for ($m=1; $m<=12; $m++) {
-                            echo '<option' . ' value="' . $m .'">' . $m. '</option>';
+                                echo '<option' . ' value="' . $m .'">' . $m. '</option>';
                             }?>
                         </select>
                     </div>
-
+                </div>
+                <div class="expirationYear_container">
+                    <label for="expirationMonth"><?php echo $this->__('Year');?></label>
                     <div class="select_wrapper">
                         <select id="expirationYear" class="required-entry" name="expirationYear" onblur="getEncryptedData()">
                             <?php
@@ -43,6 +45,7 @@
                         </select>
                     </div>
                 </div>
+
 
                 <div class="cardHolderName_container">
                     <label for="cardHolderName"><?php echo $this->__('Name cardholder');?></label>
