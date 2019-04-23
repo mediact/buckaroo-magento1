@@ -58,11 +58,19 @@
 
 /* Credit Card - Default ============================================================================================ */
 
-.card.blank .expiration_container,
+.card.blank {
+    max-width: 220px;
+}
+
+.card.blank .cardType_container,
 .card.blank .cardHolderName_container,
 .card.blank .card_back,
 .card.blank .card_kind {
     margin: 10px 0;
+}
+
+.card.blank .expirationMonth_container {
+    margin-top: 10px;
 }
 
 .card .card_front .expiration_container label {
@@ -87,6 +95,18 @@
 
 
 /* Credit Card - Styled ============================================================================================= */
+
+/* Errors */
+
+.card.styled .validation-advice {
+    text-transform: none;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    margin-top: 2px;
+    float: left;
+    width: 100%;
+    font-size: 12px;
+    text-align: right;
+}
 
 /* Card Type */
 
@@ -144,7 +164,7 @@
     float:left;
     max-width: 320px;
     width: 100%;
-    height: 200px;
+    min-height: 200px;
     padding: 20px;
     border-radius:8px;
     z-index: 20;
@@ -152,7 +172,14 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-.card.styled .card_front .expiration_container,
+.card.styled .card_front .expirationMonth_container,
+.card.styled .card_front .expirationYear_container {
+    float:left;
+    width: 50%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
 .card.styled .card_front .cardHolderName_container {
     float:left;
     width: 100%;
@@ -175,14 +202,16 @@
 .card.styled .card_front .select_wrapper {
     position: relative;
     cursor: pointer;
+    float: left;
+    width: 100%;
 }
 
-.card.styled .card_front .expiration_container .select_wrapper {
+.card.styled .card_front .expirationMonth_container {
     float: left;
     width: 50%;
 }
 
-.card.styled .card_front .expiration_container .select_wrapper:nth-child(3) {
+.card.styled .card_front .expirationYear_container {
     width: 43%; /* IE backup */
     width: calc(50% - 10px);
     margin-left: 10px;
@@ -238,7 +267,7 @@
     float:left;
     max-width: 320px;
     width: 100%;
-    height: 200px;
+    min-height: 200px;
     z-index: 10;
     position: relative;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='32' viewBox='0 0 16 32'%3E%3Cg fill='%239C92AC' fill-opacity='0.12'%3E%3Cpath fill-rule='evenodd' d='M0 24h4v2H0v-2zm0 4h6v2H0v-2zm0-8h2v2H0v-2zM0 0h4v2H0V0zm0 4h2v2H0V4zm16 20h-6v2h6v-2zm0 4H8v2h8v-2zm0-8h-4v2h4v-2zm0-20h-6v2h6V0zm0 4h-4v2h4V4zm-2 12h2v2h-2v-2zm0-8h2v2h-2V8zM2 8h10v2H2V8zm0 8h10v2H2v-2zm-2-4h14v2H0v-2zm4-8h6v2H4V4zm0 16h6v2H4v-2zM6 0h2v2H6V0zm0 24h2v2H6v-2z'/%3E%3C/g%3E%3C/svg%3E");
@@ -261,6 +290,7 @@
     width: 100%;
     background-image: linear-gradient(transparent 50%, rgba(179, 206, 239, 0.2) 50%);
     background-size: 7px 4px;
+    max-height: 46px;
 }
 
 .card.styled .card_back .card_security label {
