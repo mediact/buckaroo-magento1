@@ -55,13 +55,15 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_PaymentMethod
      */
     protected function _getBPEPostData($post)
     {
-        $customerBirthDate = date(
-            'd-m-Y', strtotime(
-                $post['payment'][$this->_code]['day']
-                . '-' . $post['payment'][$this->_code]['month']
-                . '-' . $post['payment'][$this->_code]['year']
-            )
-        );
+        $customerBirthDate = null;
+        $dobPostData = $post['payment'][$this->_code];
+
+        if (isset($dobPostData['day']) && isset($dobPostData['month']) && isset($dobPostData['year'])) {
+            $customerBirthDate = date(
+                'd-m-Y',
+                strtotime($dobPostData['day'] . '-' . $dobPostData['month'] . '-' . $dobPostData['year'])
+            );
+        }
 
         $array = array(
             'BPE_Customergender'    => $post[$this->_code . '_BPE_Customergender'],

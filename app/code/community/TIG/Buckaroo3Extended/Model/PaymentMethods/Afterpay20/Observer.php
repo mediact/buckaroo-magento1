@@ -616,7 +616,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         /** @var Mage_Sales_Model_Resource_Order_Invoice_Collection $invoiceCollection */
         $invoiceCollection = $this->_order->getInvoiceCollection();
 
-        if (!empty($invoiceCollection)) {
+        if (!empty($invoiceCollection->getItems())) {
             $discountObject = $invoiceCollection->getLastItem();
         }
 
