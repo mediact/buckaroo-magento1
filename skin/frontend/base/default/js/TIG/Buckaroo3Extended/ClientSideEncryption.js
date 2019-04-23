@@ -1,5 +1,4 @@
 function getEncryptedData() {
-    return false;
     var cardNumber = jQuery_1123("#cardNumber").val();
     var cvc = jQuery_1123("#cvc").val();
     var cardHolderName = jQuery_1123("#cardHolderName").val();
@@ -54,7 +53,7 @@ Validation.add('validate-creditcard', 'Please enter a valid creditcard.', functi
     return BuckarooClientSideEncryption.V001.validateCardNumber(value);
 });
 
-Validation.add('validate-cvc', 'Please enter a valid cvc / cvc code.', function (value) {
+Validation.add('validate-cvc', 'Please enter a valid cvv / cvc code.', function (value) {
     return BuckarooClientSideEncryption.V001.validateCvc(value);
 });
 
@@ -68,4 +67,9 @@ Validation.add('validate-year', 'Please enter a valid year.', function (value) {
 
 Validation.add('validate-month', 'Please enter a valid month.', function (value) {
     return BuckarooClientSideEncryption.V001.validateMonth(value);
+});
+
+/** The button isn't ready yet on document load. This will create the event prematurely and gets triggered in the form.phtml. **/
+jQuery("html").on("loadEncryptedDataFunction", function() {
+    jQuery('#payment-buttons-container button:first').on('click', function() { getEncryptedData(); } );
 });
