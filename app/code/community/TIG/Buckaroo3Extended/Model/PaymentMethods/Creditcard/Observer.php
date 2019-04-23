@@ -103,7 +103,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Creditcard_Observer extends TIG
         return $this;
     }
 
-    public function setMethod()
+    public function setMethod($method)
     {
         $payment = $this->_order->getPayment();
 
