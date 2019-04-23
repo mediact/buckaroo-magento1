@@ -426,7 +426,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
         $requestParameters = array();
 
         foreach ($this->_vars['customVars'][$name] as $fieldName => $value) {
-            if ($fieldName == 'Articles' && is_array($value) && !empty($value)) {
+            if ($fieldName === 'Articles' && is_array($value) && !empty($value)) {
                 foreach ($value as $groupId => $articleArray) {
                     if (!is_array($articleArray) || empty($articleArray)) {
                         continue;
@@ -434,7 +434,7 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
                     foreach ($articleArray as $articleName => $articleValue) {
                         $newParameter          = Mage::getModel('buckaroo3extended/soap_requestParameter');
-                        $newParameter->Name    = $articleName;
+                        $newParameter->Name    = isset($articleValue['name']) ? $articleValue['name'] : $articleName;
                         $newParameter->GroupID = isset($articleValue['groupId']) ? $articleValue['groupId'] : $groupId;
                         $newParameter->Group   = isset($articleValue['group']) ? $articleValue['group'] : "Article";
                         $newParameter->_       = $articleValue['value'];
@@ -484,6 +484,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
             if (isset($value['groupId']) && !empty($value['groupId'])) {
                 $requestParameter->GroupID = $value['groupId'];
             }
+
+            if (isset($value['name']) && !empty($value['name'])) {
+                $requestParameter->Name = $value['name'];
+            }
         }
 
         return $requestParameter;
@@ -515,6 +519,10 @@ final class TIG_Buckaroo3Extended_Model_Soap extends TIG_Buckaroo3Extended_Model
 
                 if (isset($value['groupId']) && !empty($value['groupId'])) {
                     $requestParameter->GroupID = $value['groupId'];
+                }
+
+                if (isset($value['name']) && !empty($value['name'])) {
+                    $requestParameter->Name = $value['name'];
                 }
             } else {
                 $requestParameter->_ = $value;
