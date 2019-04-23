@@ -731,6 +731,37 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
     }
 
     /**
+     * @param $street
+     *
+     * @return array
+     */
+    public function processAddress($street)
+    {
+        $format = [
+            'house_number'    => '',
+            'number_addition' => '',
+            'street'          => $street
+        ];
+
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $street, $matches)) {
+            // Check if the number is at the beginning of streetname
+            if ('' == $matches[1]) {
+                preg_match('#^([0-9]+)(.*?)([0-9]+)(.*)#s', $street, $matches);
+                $format['house_number'] = trim($matches[3]);
+                $format['street'] = trim($matches[1]) . trim($matches[2]);
+            } else {
+                $format['street']          = trim($matches[1]);
+                $format['house_number']    = trim($matches[2]);
+                $format['number_addition'] = trim($matches[3]);
+            }
+        } else {
+            $format['street'] = $street;
+        }
+
+        return $format;
+    }
+
+    /**
      * Checks if shipping-address is different from billing-address.
      * Buckaroo needs the bool value as a string, therefore the bool is returned as text.
      *

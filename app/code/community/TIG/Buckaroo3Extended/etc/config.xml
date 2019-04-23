@@ -2658,7 +2658,6 @@
                 <allowed_currencies>EUR</allowed_currencies>
                 <limit_by_ip>0</limit_by_ip>
             </buckaroo3extended_creditcard>
-
         </buckaroo>
         <tax>
             <calculation>
