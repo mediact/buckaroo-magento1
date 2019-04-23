@@ -11,7 +11,7 @@ function getEncryptedData() {
     var expirationMonthValid = BuckarooClientSideEncryption.V001.validateMonth(expirationMonth);
 
     if (!cardNumberValid || !cvcValid || !cardHolderNameValid || !expirationYearValid || !expirationMonthValid) {
-        return;
+        return false;
     }
 
     BuckarooClientSideEncryption.V001.encryptCardData(cardNumber,
@@ -22,6 +22,8 @@ function getEncryptedData() {
         function (encryptedCardData) {
             jQuery_1123("#buckaroo3extended_creditcard_encryptedCardData").val(encryptedCardData)
         });
+
+    return true;
 }
 
 function removeSpaces(cardNumberElement)
@@ -46,3 +48,28 @@ function changeCardLogo(issuerElement)
 
     jQuery_1123('.creditcard-logo').attr('src', sourcePath.replace(sourcePath, sourcePath + issuerElement.getAttribute('data-logo')));
 }
+
+Validation.add('validate-creditcard', 'Please enter a valid creditcard.', function (value) {
+    return BuckarooClientSideEncryption.V001.validateCardNumber(value);
+});
+
+Validation.add('validate-cvc', 'Please enter a valid cvv / cvc code.', function (value) {
+    return BuckarooClientSideEncryption.V001.validateCvc(value);
+});
+
+Validation.add('validate-cardholdername', 'Please enter a valid name.', function (value) {
+    return BuckarooClientSideEncryption.V001.validateCardholderName(value);
+});
+
+Validation.add('validate-year', 'Please enter a valid year.', function (value) {
+    return BuckarooClientSideEncryption.V001.validateYear(value);
+});
+
+Validation.add('validate-month', 'Please enter a valid month.', function (value) {
+    return BuckarooClientSideEncryption.V001.validateMonth(value);
+});
+
+/** The button isn't ready yet on document load. This will create the event prematurely and gets triggered in the form.phtml. **/
+jQuery("html").on("loadEncryptedDataFunction", function() {
+    jQuery('#payment-buttons-container button:first').on('click', function() { getEncryptedData(); } );
+});
