@@ -545,7 +545,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Afterpay20_Observer
         $article[] = $this->getParameterLine('VatPercentage', $taxPercent, 'Article', $groupId);
         $article[] = $this->getParameterLine('Quantity', 1, 'Article', $groupId);
         $article[] = $this->getParameterLine('Identifier', $item->getOrderItemId(), 'Article', $groupId);
-        $article[] = $this->getParameterLine('ImageUrl', $orderItem->getProduct()->getImageUrl(), 'Article', $groupId);
+        //$article[] = $this->getParameterLine('ImageUrl', $orderItem->getProduct()->getImageUrl(), 'Article', $groupId);
         $article[] = $this->getParameterLine('Url', $orderItem->getProduct()->getProductUrl(), 'Article', $groupId);
 
         return $article;
