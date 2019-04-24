@@ -221,8 +221,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
             $currency = Mage::app()->getStore()->getBaseCurrencyCode();
         }
 
-        // currency is not available for this module
-        if (!in_array($currency, $this->allowedCurrencies)) {
+        /**
+         * Currency is not available for this module.
+         * Check for both the Method allowed currencies & the config's allowed currencies.
+         */
+        $configCurrencies = explode(',', Mage::getStoreConfig('buckaroo/' . $this->getCode() . '/allowed_currencies'));
+        if (!in_array($currency, $this->allowedCurrencies) || !in_array($currency, $configCurrencies)) {
             return false;
         }
 

@@ -102,6 +102,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_Capayable_PaymentMeth
     public function testIsAvailable($billingData, $shippingData, $expected)
     {
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended_capayable/active', 1);
+        Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended_capayable/allowed_currencies', 'EUR');
         Mage::app()->getStore()->setConfig('payment/buckaroo3extended_capayable/active', 1);
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/key', 1);
         Mage::app()->getStore()->setConfig('buckaroo/buckaroo3extended/thumbprint', 1);
