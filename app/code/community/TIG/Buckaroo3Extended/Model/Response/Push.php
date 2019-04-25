@@ -368,7 +368,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
         $brqAmount = Mage::app()->getLocale()->currency($currencyCode)->toCurrency($amountToCurrency);
 
-        if ($paymentMethod->getConfigPaymentAction() != Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+        if ($paymentMethod->canPushInvoice($this->getPostArray())) {
             $description .= 'Total amount of ' . $brqAmount . ' has been paid';
         } else {
             $description .= 'Total amount of ' . $brqAmount . ' has been authorized. Please create an invoice to capture the authorized amount.';
@@ -541,7 +541,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param bool $description
      * @return bool
      */
-    public function processPendingPayment($newStates, $description = false) 
+    public function processPendingPayment($newStates, $description = false)
     {
         return $this->_processPendingPayment($newStates, $description);
     }
@@ -551,7 +551,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param bool $description
      * @return bool
      */
-    public function processSuccess($newStates, $description = false) 
+    public function processSuccess($newStates, $description = false)
     {
         return $this->_processSuccess($newStates, $description);
     }
@@ -561,7 +561,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param bool $description
      * @return bool
      */
-    public function processFailed($newStates, $description = false) 
+    public function processFailed($newStates, $description = false)
     {
         return $this->_processFailed($newStates, $description);
     }
@@ -570,7 +570,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
      * @param $newStates
      * @return bool
      */
-    public function processIncorrectPayment($newStates) 
+    public function processIncorrectPayment($newStates)
     {
         return $this->_processIncorrectPayment($newStates);
     }
@@ -589,7 +589,7 @@ class TIG_Buckaroo3Extended_Model_Response_Push extends TIG_Buckaroo3Extended_Mo
 
         //Check if the method has to be authorized first before an invoice can be made
         $paymentMethod = $this->_order->getPayment()->getMethodInstance();
-        if ($paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+        if (!$paymentMethod->canPushInvoice($this->getPostArray())) {
             return false;
         }
 
