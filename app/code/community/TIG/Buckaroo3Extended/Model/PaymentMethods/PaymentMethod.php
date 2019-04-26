@@ -322,4 +322,18 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     {
         return false;
     }
+
+    /**
+     * @param $responseData
+     *
+     * @return bool
+     */
+    public function canPushInvoice($responseData)
+    {
+        if ($this->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -384,7 +384,9 @@ class TIG_Buckaroo3Extended_NotifyController extends Mage_Core_Controller_Front_
                     && $this->_postArray['brq_transaction_method'] != 'payperemail'
                 )
                 || ($this->_paymentCode == 'buckaroo3extended_klarna'
-                    && $this->_postArray['brq_primary_service'] == 'klarna'
+                    && ($this->_postArray['brq_primary_service'] == 'klarna'
+                        || $this->_postArray['brq_transaction_method'] == 'klarna'
+                    )
                 )
             )
             && $this->_order->getIncrementId() == $this->_postArray['brq_invoicenumber']
