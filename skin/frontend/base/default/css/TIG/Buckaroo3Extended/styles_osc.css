@@ -57,11 +57,31 @@
     max-width: 100%;
 }
 
+/* Card Kind */
+.card .card_front .card_kind {
+    margin-bottom: 10px;
+}
+
+.card.styled .card_front .card_kind {
+    position: absolute;
+    top: 30px;
+    right: 20px;
+    text-align: right;
+}
+
 /* Card Type */
 
 .card .cardType_container {
-    width: 50%;
+    width: 100%;
     float:left;
+    margin-bottom: 10px;
+}
+
+.card.styled .cardType_container {
+    width: 70%;
+    float:left;
+    margin-top: -6px;
+    margin-bottom: 10px;
 }
 
 .card .cardType_container .select_wrapper {
@@ -72,10 +92,10 @@
 /* Card Number */
 
 .card .cardNumber_container {
-    width: 43%; /* IE backup */
-    width: calc(50% - 10px);
-    margin-left: 10px;
+    width: 100%;
     float:left;
+
+    margin-bottom: 10px;
 }
 
 /* Expiration */
@@ -216,14 +236,13 @@
 }
 
 .card.styled .card_front .cardHolderName_container label {
-    max-width: 40%;
+    max-width: 100%;
     float: left;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .card.styled .card_front .cardHolderName_container input {
-    max-width: 60%;
     width: 100%;
     float: left;
     margin: 0;
@@ -263,10 +282,13 @@
 }
 
 .card.styled .card_back .card_security label {
-    max-width: 30%;
+    max-width: 50%;
     width: 100%;
     float:left !important;
-    padding-top: 4px;
+    padding-top: 9px;
+    -ms-text-overflow :ellipsis;
+    text-overflow :ellipsis;
+    overflow: hidden;
 }
 
 .card.styled .card_back .card_security input {
@@ -274,15 +296,9 @@
     width: 100%;
     float: left;
     text-align: center;
-    border-color: #e8ecf3;
+    border-color: #c4d1e6;
 }
 
-.card.styled .card_back .card_kind {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    text-align: right;
-}
 
 /* Creditcard Security Code - Tooltip =============================================================================== */
 
@@ -292,8 +308,9 @@
 
 .card .card_security .info {
     float:left;
-    width: 20%;
+    width: 15%;
     position: relative;
+    text-align: center;
 }
 
 .card .card_security .info svg {
@@ -387,7 +404,7 @@
 
 .card.styled .card_security .field {
     float:left;
-    width: 50%;
+    width: 30%;
     margin: 0;
 }
 

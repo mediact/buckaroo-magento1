@@ -5,6 +5,11 @@
     class="buckaroo3extended_input form-list buckaroo-method">
         <div class="card <?php echo $this->designValue() ?>">
             <div class="card_front">
+
+                <div class="card_kind">
+                    <img class="creditcard-logo" alt="Credit Card type" height="35" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
+                </div>
+
                 <div class="cardType_container">
                      <label for="buckaroo3extended_creditcard_method"><?php echo $this->__('Card'); ?></label>
                     <div class="select_wrapper">
@@ -20,6 +25,11 @@
                 <div class="cardNumber_container">
                     <label for="cardNumber"><?php echo $this->__('Card number'); ?></label>
                     <input id="cardNumber" class="required-entry validate-creditcard" type="tel" name="cardNumber" onblur="getEncryptedData()" onkeydown="removeSpaces(this)"/>
+                </div>
+
+                <div class="cardHolderName_container">
+                    <label for="cardHolderName"><?php echo $this->__('Name cardholder');?></label>
+                    <input id="cardHolderName" type="text" class="required-entry validate-cardholdername" name="cardHolderName" onblur="getEncryptedData()" />
                 </div>
 
                 <div class="expirationMonth_container">
@@ -46,10 +56,6 @@
                     </div>
                 </div>
 
-                <div class="cardHolderName_container">
-                    <label for="cardHolderName"><?php echo $this->__('Name cardholder');?></label>
-                    <input id="cardHolderName" type="text" class="required-entry validate-cardholdername" name="cardHolderName" onblur="getEncryptedData()" />
-                </div>
             </div>
 
             <div class="card_back">
@@ -67,9 +73,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card_kind">
-                    <img class="creditcard-logo" alt="Credit Card type" height="35" src="<?php echo $this->getSkinUrl('images/tig_buckaroo3extended/creditcard_types/creditcard_blank.png');?>" />
-                </div>
+
                 <input type="hidden" name="buckaroo3extended_creditcard_encryptedCardData" id="buckaroo3extended_creditcard_encryptedCardData"/>
             </div>
         </div>
