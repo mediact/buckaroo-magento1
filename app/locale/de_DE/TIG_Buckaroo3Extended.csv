@@ -1,7 +1,10 @@
 "%sInvoice payment terms%s","%sRechnungsbedingungen%s"
+"Card","Karte"
 "Card number","Kartennummer"
 "Expiration","Ablaufdatum"
-"Select a month","Wählen Sie einen Monat aus"
+"Please choose","wähle eine Karte"
+"Select a month","Wähle einen Monat"
+"Select a year","Wähle ein Jahr"
 "Month","Monat"
 "01 - January","01 - Januar"
 "02 - February","02 - Februar"
@@ -18,6 +21,7 @@
 "Year","Jahr"
 "Name cardholder","Name Karteninhaber"
 "Name","Name"
-"Security code","CVV / CVC Code"
-'Or "CVV" or "CVC". <br/><br/> A 3-digit code located to the right of signature strip on the back of your card, separate from the card number.','Oder "CVV" oder "CVC". <br/> <br/> Ein dreistelliger Code, der sich rechts neben dem Unterschriftenstreifen auf der Rückseite Ihrer Karte befindet, getrennt von der Kartennummer.'
+'CVV or CVC. <br/><br/>','"CVV" or "CVC". <br/><br/>'
+'A 3-digit code located to the right of signature strip on the back of your card, separate from the card number.','A 3-digit code located to the right of signature strip on the back of your card, separate from the card number.'
 "Card type","Kreditkartentyp"
+"Security code","Sicherheitscode"
