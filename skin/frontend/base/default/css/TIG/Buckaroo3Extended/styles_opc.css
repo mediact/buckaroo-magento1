@@ -251,6 +251,7 @@ dd#dd_method_buckaroo3extended_creditcard {
     margin-top: 0;
     width: 100% !important;
     background-image: none !important;
+    font-size: 90%;
 }
 
 .card.styled .card_front .select_wrapper:after {
