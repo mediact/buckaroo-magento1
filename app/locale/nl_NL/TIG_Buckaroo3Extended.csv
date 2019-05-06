@@ -408,7 +408,7 @@ TIG_Buckaroo3Extended::Fee label, Betaaltoeslag label
 "Name cardholder","Naam kaarthouder"
 "Name","Naam"
 "CVV or CVC. <br/><br/>","CVV of CVC. <br/><br/>"
-"A 3-digit code located to the right of signature strip on the back of your card, separate from the card number.","Een code van 3 cijfers rechts van de handtekeningstrook op de achterkant van uw kaart, los van het kaartnummer."
+"A 3 or 4 digit code located to the right of signature strip on the back of your card, separate from the card number.","Een code van 3 of 4 cijfers rechts van de handtekeningstrook op de achterkant van uw kaart, los van het kaartnummer."
 "Security code","Beveiligingscode"
 "Select accepted credit cards.","Selecteer geaccepteerde creditcards."
 "Accepted creditcards","Geaccepteerde creditcards"
