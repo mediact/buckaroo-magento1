@@ -117,14 +117,14 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
      */
     public function getGender()
     {
-        $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
+        $gender = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
 
         if (!$gender && $this->getCustomer()) {
-            $gender = (int) $this->getCustomer()->getGender();
+            $gender = $this->getCustomer()->getGender();
         }
 
         if (!$gender) {
-            $gender = (int) $this->getQuote()->getCustomerGender();
+            $gender = $this->getQuote()->getCustomerGender();
         }
 
         return $gender;
