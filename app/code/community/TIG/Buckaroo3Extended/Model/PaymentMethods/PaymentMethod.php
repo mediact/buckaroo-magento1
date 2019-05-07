@@ -221,8 +221,12 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
             $currency = Mage::app()->getStore()->getBaseCurrencyCode();
         }
 
-        // currency is not available for this module
-        if (!in_array($currency, $this->allowedCurrencies)) {
+        /**
+         * Currency is not available for this module.
+         * Check for both the Method allowed currencies & the config's allowed currencies.
+         */
+        $configCurrencies = explode(',', Mage::getStoreConfig('buckaroo/' . $this->getCode() . '/allowed_currencies'));
+        if (!in_array($currency, $this->allowedCurrencies) || !in_array($currency, $configCurrencies)) {
             return false;
         }
 
@@ -317,5 +321,19 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_PaymentMethod extends Mage_Paym
     public function getRejectedMessage($responsedData)
     {
         return false;
+    }
+
+    /**
+     * @param $responseData
+     *
+     * @return bool
+     */
+    public function canPushInvoice($responseData)
+    {
+        if ($this->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -383,7 +383,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
             $paymentMethod->getConfigPaymentAction() == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
             $newStates = $observer->getPush()->getNewStates($response['status']);
             $order->setState($newStates[0])
-                  ->save();
+                ->save();
         }
 
         return $this;
@@ -701,7 +701,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         $additionalFields   = $session->getData('additionalFields');
 
         $addressType    = ucfirst($address->getAddressType());
-        $streetFull     = $this->processAddress($address->getStreetFull());
+        $street         = $address['street'];
+        $streetFull     = $this->processAddress($street);
 
         $rawPhoneNumber = $address->getTelephone();
         if (!is_numeric($rawPhoneNumber) || $rawPhoneNumber == '-') {
@@ -727,6 +728,37 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         );
 
         return $addressInfo;
+    }
+
+    /**
+     * @param $street
+     *
+     * @return array
+     */
+    public function processAddress($street)
+    {
+        $format = [
+            'house_number'    => '',
+            'number_addition' => '',
+            'street'          => $street
+        ];
+
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $street, $matches)) {
+            // Check if the number is at the beginning of streetname
+            if ('' == $matches[1]) {
+                preg_match('#^([0-9]+)(.*?)([0-9]+)(.*)#s', $street, $matches);
+                $format['house_number'] = trim($matches[3]);
+                $format['street'] = trim($matches[1]) . trim($matches[2]);
+            } else {
+                $format['street']          = trim($matches[1]);
+                $format['house_number']    = trim($matches[2]);
+                $format['number_addition'] = trim($matches[3]);
+            }
+        } else {
+            $format['street'] = $street;
+        }
+
+        return $format;
     }
 
     /**
@@ -761,38 +793,6 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_Observer extends TIG_Buc
         }
 
         return "false";
-    }
-
-    /**
-     * @param $fullStreet
-     *
-     * @return array
-     */
-    private function processAddress($fullStreet)
-    {
-        //get address from billingInfo
-        $address = $fullStreet;
-
-        $ret = array();
-        $ret['house_number'] = '';
-        $ret['number_addition'] = '';
-        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
-            if ('' == $matches[1]) {
-                // Number at beginning
-                $ret['house_number'] = trim($matches[2]);
-                $ret['street']         = trim($matches[3]);
-            } else {
-                // Number at end
-                $ret['street']            = trim($matches[1]);
-                $ret['house_number']    = trim($matches[2]);
-                $ret['number_addition'] = trim($matches[3]);
-            }
-        } else {
-            // No number
-            $ret['street'] = $address;
-        }
-
-        return $ret;
     }
 
     /**

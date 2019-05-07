@@ -79,8 +79,8 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
             && is_array($vars['customVars'][$serviceName])) {
             $vars['customVars'][$serviceName] = array_merge(
                 $vars['customVars'][$serviceName], array(
-                'DateDue'                 => $dueDate,
-                'InvoiceDate'             => $invoiceDate,
+                    'DateDue'                 => $dueDate,
+                    'InvoiceDate'             => $invoiceDate,
                 )
             );
         } else {
@@ -111,10 +111,10 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         );
 
         $creditmanagementArray = array(
-                'AmountVat'        => $VAT,
-                'CustomerType'     => 1,
-                'MaxReminderLevel' => $reminderLevel,
-                'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
+            'AmountVat'        => $VAT,
+            'CustomerType'     => 1,
+            'MaxReminderLevel' => $reminderLevel,
+            'PaymentMethodsAllowed' => $this->_getPaymentMethodsAllowed(),
         );
 
         if (array_key_exists('customVars', $vars) && is_array($vars['customVars']['creditmanagement'])) {
@@ -236,13 +236,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
         if ($processedPhoneNumber['mobile']) {
             $vars['customVars'][$serviceName] = array_merge(
                 $vars['customVars'][$serviceName], array(
-                'MobilePhoneNumber' => $processedPhoneNumber['clean'],
+                    'MobilePhoneNumber' => $processedPhoneNumber['clean'],
                 )
             );
         } else {
             $vars['customVars'][$serviceName] = array_merge(
                 $vars['customVars'][$serviceName], array(
-                'PhoneNumber' => $processedPhoneNumber['clean'],
+                    'PhoneNumber' => $processedPhoneNumber['clean'],
                 )
             );
         }
@@ -271,35 +271,33 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     }
 
     /**
-     * @param string $fullStreet
-     *
+     * @param $street
      * @return array
      */
-    protected function _processAddress($fullStreet)
+    protected function _processAddress($street)
     {
-        //get address from billingInfo
-        $address = $fullStreet;
+        $format = [
+            'house_number'    => '',
+            'number_addition' => '',
+            'street'          => $street
+        ];
 
-        $ret = array();
-        $ret['house_number'] = '';
-        $ret['number_addition'] = '';
-        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $address, $matches)) {
+        if (preg_match('#^(.*?)([0-9]+)(.*)#s', $street, $matches)) {
+            // Check if the number is at the beginning of streetname
             if ('' == $matches[1]) {
-                // Number at beginning
-                $ret['house_number'] = trim($matches[2]);
-                $ret['street']         = trim($matches[3]);
+                preg_match('#^([0-9]+)(.*?)([0-9]+)(.*)#s', $street, $matches);
+                $format['house_number'] = trim($matches[3]);
+                $format['street'] = trim($matches[1]) . trim($matches[2]);
             } else {
-                // Number at end
-                $ret['street']            = trim($matches[1]);
-                $ret['house_number']    = trim($matches[2]);
-                $ret['number_addition'] = trim($matches[3]);
+                $format['street']          = trim($matches[1]);
+                $format['house_number']    = trim($matches[2]);
+                $format['number_addition'] = trim($matches[3]);
             }
         } else {
-            // No number
-            $ret['street'] = $address;
+            $format['street'] = $street;
         }
 
-        return $ret;
+        return $format;
     }
 
     /**
@@ -360,17 +358,22 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     /**
      * processes the customer's phone number so as to fit the betaalgarant SOAP request
      *
+     * @param null|int|string $phonenumber
+     *
      * @return array
      */
-    protected function _processPhoneNumberCM()
+    protected function _processPhoneNumberCM($phonenumber = null)
     {
+        $number = $phonenumber;
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        if (isset($additionalFields['BPE_PhoneNumber'])) {
+
+        if (!$number && isset($additionalFields['BPE_PhoneNumber'])) {
             $number = $additionalFields['BPE_PhoneNumber'];
-        } else {
-            $number = ($this->_billingInfo['telephone'])?:'1234567890';
         }
 
+        if (!$number) {
+            $number = ($this->_billingInfo['telephone'])?:'1234567890';
+        }
 
         //the final output must like this: 0031123456789 for mobile: 0031612345678
         //so 13 characters max else number is not valid
@@ -424,17 +427,22 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
     /**
      * processes the customer's BE phone number so as to fit the betaalgarant SOAP request
      *
+     * @param null|int|string $phonenumber
+     *
      * @return array
      */
-    protected function _processPhoneNumberCMBe()
+    protected function _processPhoneNumberCMBe($phonenumber = null)
     {
+        $number = $phonenumber;
         $additionalFields = Mage::getSingleton('checkout/session')->getData('additionalFields');
-        if (isset($additionalFields['BPE_PhoneNumber'])) {
+
+        if (!$number && isset($additionalFields['BPE_PhoneNumber'])) {
             $number = $additionalFields['BPE_PhoneNumber'];
-        } else {
-            $number = ($this->_billingInfo['telephone'])?:'012345678';
         }
 
+        if (!$number) {
+            $number = ($this->_billingInfo['telephone'])?:'012345678';
+        }
 
         //the final output must like this: 003212345678 for mobile: 0032461234567
         //so 13 characters max else number is not valid
@@ -717,13 +725,13 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
 
         if ($status) {
             $order->setStatus($status)
-                  ->addStatusHistoryComment(
-                      Mage::helper('buckaroo3extended')->__(
-                          "3D Secure enrolled: %s<br/>3D Secure authenticated: %s",
-                          $enrolledString,
-                          $authenticatedString
-                      ), $status
-                  );
+                ->addStatusHistoryComment(
+                    Mage::helper('buckaroo3extended')->__(
+                        "3D Secure enrolled: %s<br/>3D Secure authenticated: %s",
+                        $enrolledString,
+                        $authenticatedString
+                    ), $status
+                );
         } else {
             $order->addStatusHistoryComment(
                 Mage::helper('buckaroo3extended')->__(
@@ -811,7 +819,7 @@ class TIG_Buckaroo3Extended_Model_Observer_Abstract extends TIG_Buckaroo3Extende
                     'The order consists of virtual product(s), which is not supported by Seller Protection.'
                 );
                 $order->addStatusHistoryComment($commentVirtual)
-                      ->save();
+                    ->save();
             }
         }
     }
