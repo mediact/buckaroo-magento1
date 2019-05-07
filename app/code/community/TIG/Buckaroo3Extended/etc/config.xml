@@ -2,12 +2,12 @@
 <config>
     <modules>
         <TIG_Buckaroo3Extended>
-            <version>4.21.0-RC5</version>
+            <version>4.21.0</version>
         </TIG_Buckaroo3Extended>
     </modules>
     <tig>
         <buckaroo>
-            <stability>rc</stability>
+            <stability>stable</stability>
         </buckaroo>
     </tig>
     <frontend>
