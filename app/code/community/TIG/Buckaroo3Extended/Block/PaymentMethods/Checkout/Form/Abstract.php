@@ -27,16 +27,13 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
     public function getMethodLabelAfterHtml($useSpan = true)
     {
         //this is the Module of Klarna NOT the Buckaroo Klarna Payment Option
-        if(Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
+        if (Mage::helper('buckaroo3extended')->getIsKlarnaEnabled()) {
             return '';
         }
 
         $code = $this->getMethod()->getCode();
 
         $quote = $this->getQuote();
-        /** @todo generate the fee amount dynamic, based on TAX-settings  */
-        //$paymentFeeModel = Mage::getModel('buckaroo3extended/paymentFee_quote_address_total_fee');
-        //$paymentFee = $paymentFeeModel->getPaymentFeeBeforeSelect($quote, $code);
         $paymentFee = Mage::getStoreConfig(
             sprintf(self::XPATH_BUCKAROO_FEE, $code),
             $quote->getStoreId()
@@ -120,14 +117,14 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
      */
     public function getGender()
     {
-        $gender = (int) $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
+        $gender = $this->getSession()->getData($this->getMethodCode() . '_BPE_Customergender');
 
         if (!$gender && $this->getCustomer()) {
-            $gender = (int) $this->getCustomer()->getGender();
+            $gender = $this->getCustomer()->getGender();
         }
 
         if (!$gender) {
-            $gender = (int) $this->getQuote()->getCustomerGender();
+            $gender = $this->getQuote()->getCustomerGender();
         }
 
         return $gender;
@@ -157,7 +154,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract extends 
         }
 
         if ($dob) {
-            $dob = Mage::getModel('core/date')->date('Y-m-d', $dob);
+            $dob = Mage::getSingleton('core/date')->date('Y-m-d', $dob);
         }
 
         return $dob;

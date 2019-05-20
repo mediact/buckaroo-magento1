@@ -39,8 +39,8 @@
 class TIG_Buckaroo3Extended_Model_PaymentFee_System_Config_Source_FeeTaxClass
 {
     /**
-     * Get available tax classes for Buckaroo Payment Fee. Available tax classes are the same as those used for product tax
-     * classes.
+     * Get available tax classes for Buckaroo Payment Fee. Available tax classes are the same as
+     * those used for product tax classes.
      *
      * @return array
      */

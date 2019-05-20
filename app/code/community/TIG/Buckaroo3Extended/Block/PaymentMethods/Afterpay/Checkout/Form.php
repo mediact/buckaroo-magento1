@@ -1,5 +1,6 @@
 <?php
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form
+    extends TIG_Buckaroo3Extended_Block_PaymentMethods_Checkout_Form_Abstract
 {
     public function __construct()
     {
@@ -9,12 +10,16 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
 
     public function getPaymethod()
     {
-        return Mage::getStoreConfig('buckaroo/' . $this->getMethodCode() . '/paymethod', Mage::app()->getStore()->getStoreId());
+        return Mage::getStoreConfig(
+            'buckaroo/' . $this->getMethodCode() . '/paymethod', Mage::app()->getStore()->getStoreId()
+        );
     }
 
     public function getBusiness()
     {
-        return Mage::getStoreConfig('buckaroo/' . $this->getMethodCode() . '/business', Mage::app()->getStore()->getStoreId());
+        return Mage::getStoreConfig(
+            'buckaroo/' . $this->getMethodCode() . '/business', Mage::app()->getStore()->getStoreId()
+        );
     }
 
     public function getCompanyCOCRegistration()
@@ -24,12 +29,12 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
 
     public function getCompanyName()
     {
-        return  $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyName');
+        return $this->getSession()->getData($this->getMethodCode() . '_BPE_CompanyName');
     }
 
     public function getBusinessSelect()
     {
-        return  $this->getSession()->getData($this->getMethodCode() . '_BPE_BusinessSelect');
+        return $this->getSession()->getData($this->getMethodCode() . '_BPE_BusinessSelect');
     }
 
     /**
@@ -90,7 +95,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
     /**
      * @return string
      */
-    private function getAcceptgiroUrl()
+    protected function getAcceptgiroUrl()
     {
         $url = $this->getDigiacceptUrl();
 
@@ -100,11 +105,11 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
     /**
      * @return string
      */
-    private function getDigiacceptUrl()
+    protected function getDigiacceptUrl()
     {
-        $businessIsB2C = $this->businessIsB2C();
+        $businessIsBtoC = $this->businessIsB2C();
 
-        switch ($businessIsB2C) {
+        switch ($businessIsBtoC) {
             case false:
                 $url = $this->getB2BUrl();
                 break;
@@ -120,7 +125,7 @@ class TIG_Buckaroo3Extended_Block_PaymentMethods_Afterpay_Checkout_Form extends 
     /**
      * @return bool
      */
-    private function businessIsB2C()
+    protected function businessIsB2C()
     {
         $result = true;
         $business = $this->getBusiness();

@@ -114,8 +114,8 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
             $invoiceDiscount += (double)abs($invoice->getGiftCardsAmount());
         }
 
-	// fix for rounding problems less than one cent
-	$differenceOrderAndInvoiceTotal = abs($orderTotal - $invoiceTotal);
+    // fix for rounding problems less than one cent
+    $differenceOrderAndInvoiceTotal = abs($orderTotal - $invoiceTotal);
 
         if (($orderDiscount > 0 || $invoiceDiscount > 0) && $differenceOrderAndInvoiceTotal > 0.01) {
             return false;
@@ -154,5 +154,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Klarna_PaymentMethod extends TI
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canPushInvoice($responseData)
+    {
+        if (isset($responseData['brq_datarequest'])) {
+            return false;
+        }
+
+        if (!isset($responseData['brq_datarequest']) && isset($responseData['brq_transactions'])) {
+            return true;
+        }
+
+        return parent::canPushInvoice($responseData);
     }
 }

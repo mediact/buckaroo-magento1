@@ -11,7 +11,6 @@
 Issues with outdated version will be rejected.
 - [ ] I've **verified** and **I assure** that I'm running the latest version of the TIG Buckaroo Magento extension.
 
-
 ---
 
 ### What is the purpose of your *issue*?
@@ -19,6 +18,12 @@ Issues with outdated version will be rejected.
 - [ ] Bug report (encountered problems with the TIG Buckaroo Magento extension)
 - [ ] Extension support request (request for adding support for a new extension)
 - [ ] Other
+
+---
+
+### If your issue contains security sensitive information
+** If your issue may contain sensitive information, please send us an e-mail at security@tig.nl.**
+- [ ] This issue does not contain any security sensitive information
 
 ---
 

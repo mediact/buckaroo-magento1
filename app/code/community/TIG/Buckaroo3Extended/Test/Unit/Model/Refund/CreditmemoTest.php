@@ -17,9 +17,9 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         foreach ($properties as $property) {
             $name = $property->getName();
             if ($property->isProtected()) {
-                $name = chr(0) . '*' .chr(0) .$name;
+                $name = '*' . $name;
             } elseif ($property->isPrivate()) {
-                $name = chr(0)  . $class.  chr(0).$name;
+                $name = $class . $name;
             }
 
             $serealized .= serialize($name);
@@ -33,53 +33,43 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
 
         $serealized .="}";
 
+        // @codingStandardsIgnoreLine
         return unserialize($serealized);
     }
 
-    protected function _getInstance($data = array()){
+    protected function _getInstance($data = array())
+    {
         $creditmemo = $this->createInstanceWithoutConstructor('TIG_Buckaroo3Extended_Model_Refund_Creditmemo');
 
-        if(!array_key_exists('order',$data)){
-
-        }else{
-            $this->invokeMethod($creditmemo,'setCurrentOrder',array($data['order']));
+        if (array_key_exists('order', $data)) {
+            $this->invokeMethod($creditmemo, 'setCurrentOrder', array($data['order']));
         }
 
-        if(!array_key_exists('storeId',$data)){
-            $order =  $this->invokeMethod($creditmemo,'getOrder');
-            $this->invokeMethod($creditmemo,'setStoreId',array($order->getStoreId()));
-        }else{
-            $this->invokeMethod($creditmemo,'setStoreId',array($data['storeId']));
+        if (!array_key_exists('storeId', $data)) {
+            $order =  $this->invokeMethod($creditmemo, 'getOrder');
+            $this->invokeMethod($creditmemo, 'setStoreId', array($order->getStoreId()));
+        } else {
+            $this->invokeMethod($creditmemo, 'setStoreId', array($data['storeId']));
         }
 
-        if(!array_key_exists('payment',$data)){
-
-        }else{
-            $this->invokeMethod($creditmemo,'',array($data['payment']));
+        if (array_key_exists('payment', $data)) {
+            $this->invokeMethod($creditmemo, '', array($data['payment']));
         }
 
-        if(!array_key_exists('postArray',$data)){
-
-        }else{
-            $this->invokeMethod($creditmemo,'setPostArray',array($data['postArray']));
+        if (array_key_exists('postArray', $data)) {
+            $this->invokeMethod($creditmemo, 'setPostArray', array($data['postArray']));
         }
 
-        if(!array_key_exists('XML',$data)){
-
-        }else{
-            $this->invokeMethod($creditmemo,'setResponseXML',array($data['XML']));
+        if (array_key_exists('XML', $data)) {
+            $this->invokeMethod($creditmemo, 'setResponseXML', array($data['XML']));
         }
 
-        if(!array_key_exists('response',$data)){
-
-        }else{
-            $this->invokeMethod($creditmemo,'setResponse',array($data['response']));
+        if (array_key_exists('response', $data)) {
+            $this->invokeMethod($creditmemo, 'setResponse', array($data['response']));
         }
 
-        if(!array_key_exists('debugEmail',$data)){
-
-        }else{
-            $this->invokeMethod($creditmemo,'setDebugEmail',array($data['debugEmail']));
+        if (array_key_exists('debugEmail', $data)) {
+            $this->invokeMethod($creditmemo, 'setDebugEmail', array($data['debugEmail']));
         }
 
         return $creditmemo;
@@ -97,7 +87,8 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
      * @test
      * @dataProvider _getCreditmemoDataItemsTestProvider
      */
-    public function _getCreditmemoDataItemsTest($id, $qty){
+    public function _getCreditmemoDataItemsTest($id, $qty)
+    {
         $postArray = array('brq_amount_credit'=>3);
 
         // Create the mock order item.
@@ -109,22 +100,20 @@ class TIG_Buckaroo3Extended_Model_Refund_CreditmemoTest extends TIG_Buckaroo3Ext
         $mockMageOrderItem->method('getQtyInvoiced')->will($this->returnValue($qty));
 
         // Create the mock order.
-        $mockMageOrder = $this->getMockBuilder('Mage_Sales_Model_Order')->setMethods(array('getId', 'getAllItems'))->getMock();
+        $mockMageOrder = $this->getMockBuilder('Mage_Sales_Model_Order')
+            ->setMethods(array('getId', 'getAllItems'))
+            ->getMock();
         $mockMageOrder->method('getId')->will($this->returnValue(1));
-        $mockMageOrder->method('getAllItems')->will($this->returnValue(array(
-                $mockMageOrderItem,
-            )));
+        $mockMageOrder->method('getAllItems')->will($this->returnValue(array($mockMageOrderItem)));
 
         $creditmemo = $this->_getInstance(
             array(
                 'postArray'=>$postArray,
                 'order'=>$mockMageOrder,
-            ));
-        $result = $this->invokeMethod($creditmemo,'_getCreditmemoDataItems');
+                )
+        );
+        $result = $this->invokeMethod($creditmemo, '_getCreditmemoDataItems');
 
-            $this->assertArrayHasKey($id,$result);
-
+        $this->assertArrayHasKey($id, $result);
     }
-
-
 }

@@ -5,7 +5,7 @@ class TIG_Buckaroo3Extended_Model_Adminhtml_System_Config_Backend_Buckaroo_Fee e
     public function _beforeSave()
     {
         $groups = $this->getGroups();
-        foreach($groups as &$group) {
+        foreach ($groups as &$group) {
             $fields = $group['fields'];
             if (array_key_exists('payment_fee', $fields)) {
                 $fee = $group['fields']['payment_fee']['value'];
@@ -27,9 +27,13 @@ class TIG_Buckaroo3Extended_Model_Adminhtml_System_Config_Backend_Buckaroo_Fee e
 
         if (empty($matches)) {
             Mage::throwException(
-                Mage::helper('buckaroo3extended')->__('Fee value is improperly formatted. Fee must be a positive number or a percentage with a single decimal seperator.')
+                Mage::helper('buckaroo3extended')->__(
+                    'Fee value is improperly formatted. Fee must be a positive number or a percentage with a ' .
+                    'single decimal seperator.'
+                )
             );
         }
+
         return $matches[0];
     }
 }

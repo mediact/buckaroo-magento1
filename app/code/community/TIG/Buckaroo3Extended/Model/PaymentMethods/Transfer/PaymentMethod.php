@@ -30,17 +30,21 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Transfer_PaymentMethod extends 
         $post = Mage::app()->getRequest()->getPost();
 
         $customerBirthDate = date(
-            'Y-m-d', strtotime($post['payment'][$this->_code]['year']
+            'Y-m-d', strtotime(
+                $post['payment'][$this->_code]['year']
                 . '-' . $post['payment'][$this->_code]['month']
-                . '-' . $post['payment'][$this->_code]['day'])
+                . '-' . $post['payment'][$this->_code]['day']
+            )
         );
 
-        if (isset($_POST[$this->_code.'_BPE_Customergender'])) {
-            $session->setData('additionalFields',array(
-                'BPE_Customergender'    => $_POST[$this->_code.'_BPE_Customergender'],
-                'BPE_Customermail'      => $_POST[$this->_code.'_BPE_Customermail'],
+        if (isset($post[$this->_code.'_BPE_Customergender'])) {
+            $session->setData(
+                'additionalFields', array(
+                'BPE_Customergender'    => $post[$this->_code.'_BPE_Customergender'],
+                'BPE_Customermail'      => $post[$this->_code.'_BPE_Customermail'],
                 'BPE_customerbirthdate' => $customerBirthDate
-            ));
+                )
+            );
         }
 
         return parent::getOrderPlaceRedirectUrl();

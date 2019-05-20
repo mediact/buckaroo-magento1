@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentFee_Sales_Order_Invoice_Totals_Fee extends Mage_Sales_Block_Order_Invoice_Totals
+class TIG_Buckaroo3Extended_Block_PaymentFee_Sales_Order_Invoice_Totals_Fee
+    extends Mage_Sales_Block_Order_Invoice_Totals
 {
     /**
      * Display modes for the Buckaroo fee.

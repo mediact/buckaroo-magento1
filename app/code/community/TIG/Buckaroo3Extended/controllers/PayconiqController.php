@@ -32,7 +32,7 @@
 class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Front_Action
 {
     /** @var null|Mage_Sales_Model_Order */
-    private $order = null;
+    protected $_order = null;
 
     public function checkoutAction()
     {
@@ -71,13 +71,12 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
         $storeId = $this->getOrder()->getStoreId();
         $url = Mage::getStoreConfig('buckaroo/buckaroo3extended_advanced/failure_redirect', $storeId);
         $this->_redirect($url);
-        return;
     }
 
     /**
      * @return bool
      */
-    private function canShowPage()
+    protected function canShowPage()
     {
         $session = Mage::getSingleton('checkout/session');
 
@@ -92,22 +91,22 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     /**
      * @return Mage_Sales_Model_Order
      */
-    private function getOrder()
+    protected function getOrder()
     {
-        if ($this->order != null) {
-            return $this->order;
+        if ($this->_order != null) {
+            return $this->_order;
         }
 
         $orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-        $this->order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
+        $this->_order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
 
-        return $this->order;
+        return $this->_order;
     }
 
     /**
      * @throws Mage_Core_Exception
      */
-    private function sendCancelRequest()
+    protected function sendCancelRequest()
     {
         $payment = $this->getOrder()->getPayment();
 
@@ -129,7 +128,7 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     /**
      * @throws Mage_Core_Exception
      */
-    private function updateStatusHistory()
+    protected function updateStatusHistory()
     {
         $order = $this->getOrder();
         $comment = Mage::helper('buckaroo3extended')->__('Your payment was unsuccessful, cancelled by consumer.');
@@ -143,7 +142,7 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
         }
     }
 
-    private function restoreQuote()
+    protected function restoreQuote()
     {
         $order = $this->getOrder();
         $quote = Mage::getModel('sales/quote')
@@ -154,7 +153,7 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
         Mage::getSingleton('checkout/session')->replaceQuote($quote);
     }
 
-    private function addErrorMessage()
+    protected function addErrorMessage()
     {
         $order = $this->getOrder();
         $errorMessagePath = TIG_Buckaroo3Extended_Model_Response_Abstract::BUCK_RESPONSE_CANCELED_BY_USER;
@@ -166,7 +165,7 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     /**
      * @throws Mage_Core_Exception
      */
-    private function cancelOrder()
+    protected function cancelOrder()
     {
         $order = $this->getOrder();
 
@@ -190,7 +189,7 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     /**
      * @param array $cards
      */
-    private function refundGiftcards($cards)
+    protected function refundGiftcards($cards)
     {
         if (!is_array($cards)) {
             return;
@@ -204,7 +203,7 @@ class TIG_Buckaroo3Extended_PayconiqController extends Mage_Core_Controller_Fron
     /**
      * @param array $card
      */
-    private function revertGiftcard($card)
+    protected function revertGiftcard($card)
     {
         if (!isset($card['authorized'])) {
             return;

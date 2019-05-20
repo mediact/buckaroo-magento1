@@ -1,6 +1,7 @@
 <?php
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract 
-{    
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG_Buckaroo3Extended_Model_Observer_Abstract
+{
+    
     protected $_code = 'buckaroo3extended_onlinegiro';
     protected $_method = 'onlinegiro';
     
@@ -84,6 +85,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
         } else {
             $vars['customVars'][$this->_method] = $array;
         }
+
         $request->setVars($vars);
         
         return $this;
@@ -120,21 +122,20 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Onlinegiro_Observer extends TIG
         $order = $observer->getOrder();
         $postArray = $push->getPostArray();
         
-        if (
-            isset($postArray['brq_payment_method']) 
+        if (isset($postArray['brq_payment_method']) 
             && !$order->getPaymentMethodUsedForTransaction() 
             && $postArray['brq_statuscode'] == '190'
             )
         {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_payment_method']);
-        } elseif (
-            isset($postArray['brq_transaction_method']) 
+        } elseif (isset($postArray['brq_transaction_method']) 
             && !$order->getPaymentMethodUsedForTransaction()
             && $postArray['brq_statuscode'] == '190'
             )
         {
             $order->setPaymentMethodUsedForTransaction($postArray['brq_transaction_method']);
         }
+
         $order->save();
 
         //if set to true, the push processing will be stopped here. Needs to be set to false, to make

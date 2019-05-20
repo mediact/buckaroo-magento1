@@ -68,8 +68,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Service
 
         /**
          * There are 3 possible ways to add the Payment fee tax info:
-         *  - Go through all tax info records of an order and add the Payment fee info to the record with the same title and
-         *    a discrepancy in the recorded and expected amount.
+         *  - Go through all tax info records of an order and add the Payment fee info to the record with the same
+         * title and a discrepancy in the recorded and expected amount.
          *  - Add a missing tax info record.
          *  - Recalculate the tax info for the Payment fee and update the amount of the tax record with the same title.
          */
@@ -80,14 +80,15 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Service
             /**
              * Try to find a tax record that does not have a corresponding tax item record.
              */
-            $taxCollection = Mage::getResourceModel('sales/order_tax_collection');
-            $taxCollection->addFieldToFilter('order_id', array('eq'  => $order->getId()));
-            $taxCollection->getSelect()
-                ->joinLeft(
-                    array('item' => Mage::getSingleton('core/resource')->getTableName('tax/sales_order_tax_item')),
-                    'main_table.tax_id = item.tax_id',
-                    array()
-                )->where("item.tax_id is NULL");
+            $taxItemCollection = Mage::getResourceModel('tax/sales_order_tax_item_collection');
+            $taxItemCollection->addFieldToSelect('tax_id');
+            $taxItemCollection->getSelect()->distinct();
+
+            $taxItemIds = $taxItemCollection->getColumnValues('tax_id');
+
+            $taxCollection = Mage::getResourceModel('sales/order_tax_collection')
+                                 ->addFieldToFilter('order_id', array('eq'  => $order->getId()))
+                                 ->addFieldToFilter('tax_id', array('nin' => $taxItemIds));
 
             /**
              * If we have found a missing record, we need to add it with the COD fee tax info. Otherwise we need to
@@ -148,8 +149,8 @@ class TIG_Buckaroo3Extended_Model_PaymentFee_Service
     protected function _addBuckarooFeeTaxInfoFromCollection($taxCollection, $fullInfo, $source)
     {
         /**
-         * Go through all tax records and add the Buckaroo Payment fee tax to the entry that has the right title. If no entry exists
-         * with that title, add it.
+         * Go through all tax records and add the Buckaroo Payment fee tax to the entry that has the
+         * right title. If no entry exists with that title, add it.
          */
         foreach ($taxCollection as $tax) {
             foreach ($fullInfo as $key => $taxInfo) {

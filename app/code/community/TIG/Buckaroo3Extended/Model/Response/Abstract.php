@@ -87,6 +87,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
             $this->_debugEmail .= "The authenticity of the response could NOT be verified. \n";
             return $this->_verifyError();
         }
+
         $this->_debugEmail .= "Verified as authentic! \n\n";
 
         if (!$this->_order->getTransactionKey()
@@ -147,14 +148,22 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     protected function _requiredAction($response)
     {
         switch ($response['status']) {
-            case self::BUCKAROO_SUCCESS:           return $this->_success();
-            case self::BUCKAROO_FAILED:            return $this->_failed($response['message']);
-            case self::BUCKAROO_ERROR:             return $this->_error($response['message']);
-            case self::BUCKAROO_NEUTRAL:           return $this->_neutral();
-            case self::BUCKAROO_PENDING_PAYMENT:   return $this->_pendingPayment();
-            case self::BUCKAROO_INCORRECT_PAYMENT: return $this->_incorrectPayment($response['message']);
-            case self::BUCKAROO_REJECTED:          return $this->_rejected($response['message']);
-            default:                               return $this->_neutral();
+            case self::BUCKAROO_SUCCESS:           
+                return $this->_success();
+            case self::BUCKAROO_FAILED:            
+                return $this->_failed($response['message']);
+            case self::BUCKAROO_ERROR:             
+                return $this->_error($response['message']);
+            case self::BUCKAROO_NEUTRAL:           
+                return $this->_neutral();
+            case self::BUCKAROO_PENDING_PAYMENT:   
+                return $this->_pendingPayment();
+            case self::BUCKAROO_INCORRECT_PAYMENT: 
+                return $this->_incorrectPayment($response['message']);
+            case self::BUCKAROO_REJECTED:          
+                return $this->_rejected($response['message']);
+            default:                               
+                return $this->_neutral();
         }
     }
 
@@ -193,8 +202,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->sendDebugEmail();
 
-        header('Location:' . $redirectUrl);
-        exit;
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($redirectUrl)->sendResponse();
+
+        return;
     }
 
     /**
@@ -247,8 +258,10 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
 
         $this->sendDebugEmail();
 
-        header('Location:' . $returnUrl);
-        exit;
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _failed($message = '')
@@ -288,8 +301,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _error($message = '')
@@ -297,7 +313,7 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= "The transaction generated an error. \n";
 
         Mage::getSingleton('core/session')->addError(
-                $this->_getCorrectFailureMessage($message)
+            $this->_getCorrectFailureMessage($message)
         );
 
         $this->_order->addStatusHistoryComment(
@@ -321,8 +337,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _rejected($message = '')
@@ -355,8 +374,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _neutral()
@@ -382,8 +404,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . '\n';
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     /**
@@ -395,45 +420,59 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
     {
         switch ($message) {
             case 'Payment failure' :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_PAYMENT_FAILURE,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_PAYMENT_FAILURE,
+                        $this->_order->getStoreId()
+                    )
                 );
                 break;
             case 'Validation error' :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_VALIDATION_ERROR,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_VALIDATION_ERROR,
+                        $this->_order->getStoreId()
+                    )
                 );
                 break;
             case 'Technical error' :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_TECHNICAL_ERROR,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_TECHNICAL_ERROR,
+                        $this->_order->getStoreId()
+                    )
                 );
                 break;
             case 'Payment rejected' :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_PAYMENT_REJECTED,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_PAYMENT_REJECTED,
+                        $this->_order->getStoreId()
+                    )
                 );
                 break;
             case 'Cancelled by consumer' :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_CANCELED_BY_USER,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_CANCELED_BY_USER,
+                        $this->_order->getStoreId()
+                    )
                 );
                 break;
             case 'Cancelled by merchant' :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_CANCELED_BY_MERCHANT,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_CANCELED_BY_MERCHANT,
+                        $this->_order->getStoreId()
+                    )
                 );
                 break;
             default :
-                return Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                    self::BUCK_RESPONSE_DEFAUL_MESSAGE,
-                    $this->_order->getStoreId())
+                return Mage::helper('buckaroo3extended')->__(
+                    Mage::getStoreConfig(
+                        self::BUCK_RESPONSE_DEFAUL_MESSAGE,
+                        $this->_order->getStoreId()
+                    )
                 );
         }
     }
@@ -576,8 +615,11 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $this->_debugEmail .= 'Redirecting user to...' . $returnUrl . "\n";
 
         $this->sendDebugEmail();
-        header('Location:' . $returnUrl);
-        exit;
+
+        Mage::app()->getResponse()->clearHeaders();
+        Mage::app()->getResponse()->setRedirect($returnUrl)->sendResponse();
+
+        return;
     }
 
     protected function _verifyResponse()
@@ -614,9 +656,9 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $xPath = new DOMXPath($responseDomDoc);
 
         //register namespaces to use in xpath query's
-        $xPath->registerNamespace('wsse','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
-        $xPath->registerNamespace('sig','http://www.w3.org/2000/09/xmldsig#');
-        $xPath->registerNamespace('soap','http://schemas.xmlsoap.org/soap/envelope/');
+        $xPath->registerNamespace('wsse', 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
+        $xPath->registerNamespace('sig', 'http://www.w3.org/2000/09/xmldsig#');
+        $xPath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
 
         //Get the SignedInfo nodeset
         $SignedInfoQuery = '//wsse:Security/sig:Signature/sig:SignedInfo';
@@ -660,17 +702,17 @@ class TIG_Buckaroo3Extended_Model_Response_Abstract extends TIG_Buckaroo3Extende
         $xPath = new DOMXPath($responseDomDoc);
 
         //register namespaces to use in xpath query's
-        $xPath->registerNamespace('wsse','http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
-        $xPath->registerNamespace('sig','http://www.w3.org/2000/09/xmldsig#');
-        $xPath->registerNamespace('soap','http://schemas.xmlsoap.org/soap/envelope/');
+        $xPath->registerNamespace('wsse', 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd');
+        $xPath->registerNamespace('sig', 'http://www.w3.org/2000/09/xmldsig#');
+        $xPath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
 
         $controlHashReference = $xPath->query('//*[@Id="_control"]')->item(0);
         $controlHashCanonical = $controlHashReference->C14N(true, false);
-        $controlHash = base64_encode(pack('H*',sha1($controlHashCanonical)));
+        $controlHash = base64_encode(pack('H*', sha1($controlHashCanonical)));
 
         $bodyHashReference = $xPath->query('//*[@Id="_body"]')->item(0);
         $bodyHashCanonical = $bodyHashReference->C14N(true, false);
-        $bodyHash = base64_encode(pack('H*',sha1($bodyHashCanonical)));
+        $bodyHash = base64_encode(pack('H*', sha1($bodyHashCanonical)));
 
         if (in_array($controlHash, $digestValues) === true && in_array($bodyHash, $digestValues) === true) {
             $verified = true;

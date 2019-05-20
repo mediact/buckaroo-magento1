@@ -51,7 +51,9 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
     {
         $data = $this->getRequest()->getPost();
 
-        if (!is_array($data) || !isset($data['name']) || !isset($data['value']) || strpos($data['name'], 'buckaroo') === false) {
+        if (!is_array($data) || !isset($data['name']) || !isset($data['value'])
+            || strpos($data['name'], 'buckaroo') === false
+        ) {
             return;
         }
 
@@ -60,8 +62,6 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
 
         $session = Mage::getSingleton('checkout/session');
         $session->setData($name, $value);
-
-        return;
     }
 
     public function pospaymentPendingAction()
@@ -96,19 +96,18 @@ class TIG_Buckaroo3Extended_CheckoutController extends Mage_Core_Controller_Fron
             case 'canceled':
                 $responseHandler->restoreQuote();
 
-                Mage::getSingleton('core/session')->addError(
-                    Mage::helper('buckaroo3extended')->__(Mage::getStoreConfig(
-                        $responseHandler::BUCK_RESPONSE_DEFAUL_MESSAGE,
-                        $order->getStoreId()
-                    ))
-                );
+                $config = Mage::getStoreConfig($responseHandler::BUCK_RESPONSE_DEFAUL_MESSAGE, $order->getStoreId());
+                $errorMessage = Mage::helper('buckaroo3extended')->__($config);
+                Mage::getSingleton('core/session')->addError($errorMessage);
 
                 $response['returnUrl'] = $this->getFailedUrl($order->getStoreId());
                 break;
         }
 
-        echo json_encode($response);
-        exit;
+        $jsonResponse = Mage::helper('core')->jsonEncode($response);
+
+        $this->getResponse()->clearHeaders()->setHeader('Content-type', 'application/json');;
+        $this->getResponse()->setBody($jsonResponse);
     }
 
     /**

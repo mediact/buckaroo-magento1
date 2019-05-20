@@ -36,7 +36,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     protected $_code = 'unittest_payment';
 
@@ -142,6 +143,7 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
      */
     public function testHideForPosPayment($terminalid, $methodCode, $expected)
     {
+        // @codingStandardsIgnoreLine
         $_COOKIE['Pos-Terminal-Id'] = $terminalid;
 
         $instance = $this->_getInstance();
@@ -186,7 +188,9 @@ class TIG_Buckaroo3Extended_Test_Unit_Model_PaymentMethods_PaymentMethodTest ext
      */
     public function testGetPosPaymentTerminalId($terminalidCookie, $terminalidHeader, $expected)
     {
+        // @codingStandardsIgnoreLine
         $_COOKIE['Pos-Terminal-Id'] = $terminalidCookie;
+        // @codingStandardsIgnoreLine
         $_SERVER['HTTP_POS_TERMINAL_ID'] = $terminalidHeader;
 
         $instance = $this->_getInstance();

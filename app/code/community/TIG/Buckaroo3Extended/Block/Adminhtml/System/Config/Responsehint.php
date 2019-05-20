@@ -30,6 +30,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Responsehint
         'eps',
         'afterpay',
         'afterpay2',
+        'afterpay20',
         'masterpass',
     );
 
@@ -48,6 +49,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Responsehint
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         return $this->toHtml();

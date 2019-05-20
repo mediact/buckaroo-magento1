@@ -35,11 +35,14 @@ $installer = $this;
 
 $installer->startSetup();
 $conn = $installer->getConnection();
+$tableName = $installer->getTable('sales/order');
 
-$conn->addColumn(
-    $installer->getTable('sales/order'),
-    'buckaroo_reservation_number',
-    'varchar(255) null'
-);
+if (!$conn->tableColumnExists($tableName, 'buckaroo_reservation_number')) {
+    $conn->addColumn(
+        $tableName,
+        'buckaroo_reservation_number',
+        'varchar(255) null'
+    );
+}
 
 $installer->endSetup();

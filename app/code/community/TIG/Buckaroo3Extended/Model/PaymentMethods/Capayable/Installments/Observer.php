@@ -29,7 +29,8 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Installments_Observer extends TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer
+class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Installments_Observer
+    extends TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Observer
 {
     protected $_code = 'buckaroo3extended_capayableinstallments';
 
@@ -90,7 +91,7 @@ class TIG_Buckaroo3Extended_Model_PaymentMethods_Capayable_Installments_Observer
      * @param $vars
      * @return array
      */
-    private function _addGuaranteeVersion($vars)
+    protected function _addGuaranteeVersion($vars)
     {
         $storeId = Mage::app()->getStore()->getStoreId();
         $versionSetting = Mage::getStoreConfig('buckaroo/' . $this->_code . '/version', $storeId);

@@ -29,22 +29,23 @@
  * @copyright   Copyright (c) Total Internet Group B.V. https://tig.nl/copyright
  * @license     http://creativecommons.org/licenses/by-nc-nd/3.0/nl/deed.en_US
  */
-class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayable_Checkout_FormTest extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
+class TIG_Buckaroo3Extended_Block_PaymentMethods_Capayable_Checkout_FormTest
+    extends TIG_Buckaroo3Extended_Test_Framework_TIG_Test_TestCase
 {
     /** @var null|TIG_Buckaroo3Extended_Block_PaymentMethods_Capayable_Checkout_Form */
-    private $_instance = null;
+    protected $_instance = null;
 
     /** @var Mage_Sales_Model_Quote|PHPUnit_Framework_MockObject_MockObject */
-    private $quoteMock;
+    protected $_quoteMock;
 
     public function setUp()
     {
         $this->registerMockSessions('checkout');
 
-        $this->quoteMock = $this->getMockBuilder('Mage_Sales_Model_Quote')->disableOriginalConstructor()->getMock();
+        $this->_quoteMock = $this->getMockBuilder('Mage_Sales_Model_Quote')->disableOriginalConstructor()->getMock();
 
         $checkoutSession = Mage::getSingleton('checkout/session');
-        $checkoutSession->method('getQuote')->willReturn($this->quoteMock);
+        $checkoutSession->method('getQuote')->willReturn($this->_quoteMock);
     }
 
     /**

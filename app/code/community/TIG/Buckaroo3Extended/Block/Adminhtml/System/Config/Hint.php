@@ -32,6 +32,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'eps',
         'afterpay',
         'afterpay2',
+        'afterpay20',
         'masterpass',
         'klarna',
         'pospayment',
@@ -40,6 +41,8 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
         'kbc',
         'p24',
         'dankort',
+        'nexi',
+        'creditcard',
     );
 
     public $services = array(
@@ -57,6 +60,7 @@ class TIG_Buckaroo3Extended_Block_Adminhtml_System_Config_Hint
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
+    // @codingStandardsIgnoreLine
     public function render(Varien_Data_Form_Element_Abstract $element)
     {
         return $this->toHtml();

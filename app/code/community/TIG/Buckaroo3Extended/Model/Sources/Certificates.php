@@ -5,10 +5,12 @@ class TIG_Buckaroo3Extended_Model_Sources_Certificates
     {
         $collection = Mage::getResourceModel('buckaroo3extended/certificate_collection');
 
-        if ($collection->count() < 1) {
+        if ($collection->getSize() < 1) {
+            $label = Mage::helper('buckaroo3extended')->__('You have not yet uploaded any certificate files.');
+
             $array = array(
                 array(
-                    'label' => Mage::helper('buckaroo3extended')->__('You have not yet uploaded any certificate files.'),
+                    'label' => $label,
                     'value' => '',
                 ),
             );
@@ -23,7 +25,7 @@ class TIG_Buckaroo3Extended_Model_Sources_Certificates
             ),
         );
 
-        foreach($collection->getItems() as $certificate) {
+        foreach ($collection->getItems() as $certificate) {
             $array[] = array(
                 'value' => $certificate->getCertificateId(),
                 'label' => $certificate->getCertificateName() . ' (' . $certificate->getUploadDate() . ')',
